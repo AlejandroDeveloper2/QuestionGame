@@ -1,5 +1,6 @@
 import { TbProgress } from "react-icons/tb";
 import { FaCheck } from "react-icons/fa6";
+import { FaCheckDouble } from "react-icons/fa";
 import {
   MdTimer,
   MdTimelapse,
@@ -40,12 +41,12 @@ const AdminQuizControls = (): JSX.Element => {
     <AdminQuizControlsContainer>
       <BadgeWithLabel
         label="Estado del quiz"
-        Icon={TbProgress}
+        Icon={!quiz.isGameCompleted ? TbProgress : FaCheckDouble}
         style={{
           backgroundColor: "var(--primary-color-base)",
           color: "var(--white)",
         }}
-        value={!quiz.isQuizFinished ? "En progreso" : "Terminado"}
+        value={!quiz.isGameCompleted ? "En progreso" : "Terminado"}
       />
       <QuestionInfoContainer>
         <BadgeWithLabel
