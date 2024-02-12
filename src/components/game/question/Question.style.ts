@@ -46,11 +46,12 @@ const QuestionBox = styled.div`
 
   @media (min-width: ${breakpoints.tablet}px) {
     width: 500px;
-    font-size: var(--font-size-md);
+    p {
+      font-size: var(--font-size-md);
+    }
   }
   @media (min-width: ${breakpoints.desktop}px) {
     width: 1020px;
-    font-size: var(--font-size-md);
   }
 
   @keyframes move-to-left {

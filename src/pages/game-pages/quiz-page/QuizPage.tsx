@@ -33,22 +33,24 @@ const QuizPage = (): JSX.Element => {
 
   return (
     <>
-      <Modal
-        isModalVisible={
-          quiz.isGameCompleted ||
-          quiz.matchResult !== "EnEspera" ||
-          !quiz.isMatchStarted
-        }
-        closeModal={closeModal}
-      >
-        {quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
-          <AnswerReviewWindow closeModal={closeModal} />
-        ) : quiz.matchResult !== "EnEspera" && quiz.isGameCompleted ? (
-          <GameOverWindow />
-        ) : !quiz.isMatchStarted ? (
-          <WaitingMatchWindow />
-        ) : null}
-      </Modal>
+      {quiz.isQuizFinished ? null : (
+        <Modal
+          isModalVisible={
+            quiz.isGameCompleted ||
+            quiz.matchResult !== "EnEspera" ||
+            !quiz.isMatchStarted
+          }
+          closeModal={closeModal}
+        >
+          {quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
+            <AnswerReviewWindow closeModal={closeModal} />
+          ) : quiz.matchResult !== "EnEspera" && quiz.isGameCompleted ? (
+            <GameOverWindow />
+          ) : !quiz.isMatchStarted ? (
+            <WaitingMatchWindow />
+          ) : null}
+        </Modal>
+      )}
       <LoadingWindow
         opacity={quiz.isQuizStarted ? 0 : 1}
         isLoading={quiz.isQuizStarted ? false : true}
