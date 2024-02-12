@@ -1,3 +1,4 @@
+import { breakpoints } from "@styles/Breakpoints";
 import styled from "styled-components";
 
 const MainContainer = styled.main`
@@ -19,7 +20,7 @@ const MainContainer = styled.main`
     margin-top: var(--spacing-md);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: ${breakpoints.tablet}px) {
     h2 {
       font-size: var(--font-size-3xl);
     }

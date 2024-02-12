@@ -15,6 +15,7 @@ const inputTextStyle = css`
 
 const InputContainer = styled.div`
   width: 100%;
+  justify-self: center;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -32,13 +33,9 @@ const InputContainer = styled.div`
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    width: 400px;
     label {
       font-size: var(--font-size-xl);
     }
-  }
-  @media (min-width: ${breakpoints.desktop}px) {
-    width: 500px;
   }
 `;
 

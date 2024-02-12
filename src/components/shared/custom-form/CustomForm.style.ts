@@ -4,11 +4,10 @@ import { breakpoints } from "@styles/Breakpoints";
 import { FieldSetStyleProps } from "@models/StylePropsModels";
 
 const FormBody = styled.form`
-  width: 310px;
+  width: auto;
   height: auto;
   display: flex;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   flex-direction: column;
   gap: var(--spacing-sm);
   justify-content: flex-start;
@@ -16,12 +15,7 @@ const FormBody = styled.form`
   position: relative;
   /* margin-top: var(--spacing-2xl); */
 
-  @media (min-width: ${breakpoints.tablet}px) {
-    width: 400px;
-  }
-
   @media (min-width: ${breakpoints.desktop}px) {
-    width: auto;
     gap: var(--spacing-md);
   }
 `;
@@ -33,10 +27,8 @@ const FieldSetContainer = styled.fieldset<FieldSetStyleProps>`
   overflow-y: auto;
   gap: var(--spacing-sm);
   border: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
 
   @media (min-height: 700px) {
     max-height: 500px;
@@ -46,12 +38,14 @@ const FieldSetContainer = styled.fieldset<FieldSetStyleProps>`
     width: ${({ width }: FieldSetStyleProps) => width.md}%;
     padding: var(--spacing-md);
     max-height: 600px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   }
 
   @media (min-width: ${breakpoints.desktop}px) {
     gap: var(--spacing-md);
     max-height: 550px;
     width: ${({ width }: FieldSetStyleProps) => width.lg}px;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   }
 `;
 

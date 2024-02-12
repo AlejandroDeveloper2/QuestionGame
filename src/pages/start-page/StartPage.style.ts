@@ -54,6 +54,7 @@ const FormContainer = styled.div`
   form {
     fieldset {
       div[id="input-container"] {
+        width: 300px;
         label {
           color: var(--white);
         }
@@ -66,17 +67,31 @@ const FormContainer = styled.div`
     h1 {
       font-size: var(--font-size-4xl);
     }
-  }
-  @media (min-width: ${breakpoints.desktop}px) {
-    width: 500px;
-  }
-
-  @keyframes move-up {
-    0% {
-      transform: translateY(100%);
+    form {
+      fieldset {
+        div[id="input-container"] {
+          width: 400px;
+        }
+      }
     }
-    100% {
-      transform: translateY(0);
+    @media (min-width: ${breakpoints.desktop}px) {
+      width: 500px;
+      form {
+        fieldset {
+          div[id="input-container"] {
+            width: 500px;
+          }
+        }
+      }
+    }
+
+    @keyframes move-up {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(0);
+      }
     }
   }
 `;
