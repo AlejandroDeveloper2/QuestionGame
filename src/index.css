@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+  /* Font Family */
+  --primary-font-family: "Poppins", sans-serif;
+  --secondary-font-family: "Luckiest Guy", cursive;
+
+  /*Font sizing*/
+  --font-size-xs:12px;
+  --font-size-sm:14px;
+  --font-size-md:16px;
+  --font-size-xl:18px;
+  --font-size-2xl:24px;
+  --font-size-3xl:32px;
+  --font-size-4xl:36px;
+
+  /* Spacing */
+  --spacing-null:0;
+  --spacing-2xs:4px;
+  --spacing-xs:8px;
+  --spacing-sm:16px;
+  --spacing-md:24px;
+  --spacing-xl:32px;
+  --spacing-2xl:36px;
+  --spacing-3xl:40px;
+  --spacing-4xl:48px;
+
+  /* Border radius */
+  --radius-sm: 16px;
+  --radius-xl: 24px;
+
+
+  /*Color Schema */
+  --primary-color-base:#5A1263;
+  --primary-color-900:#790E87;
+  --primary-color-800:#9013A0;
+  --primary-color-700:#A61BB8;
+  --primary-color-600:#B927CD;
+  --primary-color-500:#CA38DD;
+  --primary-color-400:#D750E9;
+  --primary-color-300:#E370F2;
+  --primary-color-200:#ED98F9;
+  --primary-color-100:#F6C5FD;
+  --primary-color-0:#FEF5FF;
+
+  --red:#C75937;
+  --red-light:#da7152;
+
+  --gray:#4B4253;
+  --light-gray:#eeeeee;
+  --green:#1BCD58;
+  --orange:#dfad23; 
+
+  --white:#ffffff;
+
+  --bg-color:linear-gradient(180deg, var(--primary-color-base) 30%, var(--primary-color-700) 100%);
+
+  --overlay-color:rgba(0, 0, 0, 0.4);
+  --box-shadow-color:rgba(0,0,0,0.25);
+  --logo-overlay-color-1:rgba(0,0,0,0.2);
+  --logo-overlay-color-2:rgba(0,0,0,0.1);
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  display:block;
+  overflow-x:hidden;
+  background-image: var(--bg-color);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size:cover;
+  background-position: center center;
+}
+
+
