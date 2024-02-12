@@ -1,15 +1,13 @@
 import { IoCall } from "react-icons/io5";
 import { MdOutlineTimer } from "react-icons/md";
 
-import { useCallTimer } from "@hooks/index";
+import { CallWildCardProps } from "@models/ComponentPropsModels";
 
 import { BadgeWithLabel } from "@components/index";
 
 import { AnswerResultTitle, MessageContainer } from "./CallWildCard.style";
 
-const CallWildCard = (): JSX.Element => {
-  const seconds = useCallTimer();
-
+const CallWildCard = ({ callSeconds }: CallWildCardProps): JSX.Element => {
   return (
     <>
       <AnswerResultTitle>LLamada a un amigo</AnswerResultTitle>
@@ -23,7 +21,7 @@ const CallWildCard = (): JSX.Element => {
             backgroundColor: "var(--primary-color-base)",
             color: "var(--white)",
           }}
-          value={seconds + "s"}
+          value={callSeconds + "s"}
         />
       </MessageContainer>
     </>

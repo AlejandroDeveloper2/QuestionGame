@@ -22,7 +22,6 @@ const QuizPage = (): JSX.Element => {
   const { resetGame } = useQuizMatchStore();
   const { quiz, resetQuiz } = useQuizGameStore();
   const { closeModal } = useModal();
-  const { closeModal: closeModal2 } = useModal();
 
   useEffect(() => {
     if (!quiz.isQuizStarted && quiz.isQuizFinished) {
@@ -34,18 +33,21 @@ const QuizPage = (): JSX.Element => {
 
   return (
     <>
-      <Modal isModalVisible={!quiz.isMatchStarted} closeModal={closeModal2}>
-        <WaitingMatchWindow />
-      </Modal>
       <Modal
-        isModalVisible={quiz.isGameCompleted || quiz.matchResult !== "EnEspera"}
+        isModalVisible={
+          quiz.isGameCompleted ||
+          quiz.matchResult !== "EnEspera" ||
+          !quiz.isMatchStarted
+        }
         closeModal={closeModal}
       >
         {quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
           <AnswerReviewWindow closeModal={closeModal} />
-        ) : (
+        ) : quiz.matchResult !== "EnEspera" && quiz.isGameCompleted ? (
           <GameOverWindow />
-        )}
+        ) : !quiz.isMatchStarted ? (
+          <WaitingMatchWindow />
+        ) : null}
       </Modal>
       <LoadingWindow
         opacity={quiz.isQuizStarted ? 0 : 1}

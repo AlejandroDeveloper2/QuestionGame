@@ -78,6 +78,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
       await updateQuiz(quiz.id, "Correcta");
       set(({ correctAnswers }) => ({ correctAnswers: correctAnswers + 1 }));
       if (!quiz.isNewAttempt) {
+        set({ incorrectAnswers: 0 });
         set(({ accumulatedEarn, currentQuestion }) => ({
           accumulatedEarn: accumulatedEarn + currentQuestion.reward,
         }));

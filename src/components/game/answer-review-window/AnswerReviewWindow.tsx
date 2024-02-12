@@ -24,6 +24,7 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
     nextQuestion,
     exitMatch,
     randomQuestions,
+    incorrectAnswers,
   } = useQuizMatchStore();
 
   return isLoading ? (
@@ -44,15 +45,23 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
           ¡El tiempo se termino!
         </AnswerResultTitle>
       ) : null}
-      <MessageContainer>
-        {quiz.matchResult === "Correcta" ? <CheckSvg /> : <XSvg />}
-        {quiz.matchResult === "Correcta" ? (
+      {quiz.matchResult === "Correcta" && incorrectAnswers === 0 ? (
+        <MessageContainer>
+          <CheckSvg />
           <span>+ ${currentQuestion?.reward}</span>
-        ) : null}
-        {quiz.matchResult !== "Correcta" && quiz.matchResult !== "EnEspera" ? (
+        </MessageContainer>
+      ) : incorrectAnswers > 0 ? (
+        <MessageContainer>
+          <CheckSvg />
+          <span>¡Continua con el juego!</span>
+        </MessageContainer>
+      ) : quiz.matchResult === "Incorrecta" ||
+        quiz.matchResult === "SinResponder" ? (
+        <MessageContainer>
+          <XSvg />
           <p>¡Perdiste el acumulado!</p>
-        ) : null}
-      </MessageContainer>
+        </MessageContainer>
+      ) : null}
       <Controls>
         {quiz.matchResult === "Correcta" &&
         currentQuestionIndex < randomQuestions.length - 1 ? (

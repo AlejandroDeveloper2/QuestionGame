@@ -199,6 +199,10 @@ interface AnswerReviewProps {
   closeModal: () => void;
 }
 
+interface CallWildCardProps {
+  callSeconds: string;
+}
+
 export type {
   InputType,
   LogoProps,
@@ -232,4 +236,5 @@ export type {
   BadgeWithLabelProps,
   AnswerOptionProps,
   AnswerReviewProps,
+  CallWildCardProps,
 };

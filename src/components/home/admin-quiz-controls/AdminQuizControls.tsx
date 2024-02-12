@@ -11,11 +11,13 @@ import { GrNew } from "react-icons/gr";
 import { IoExitOutline } from "react-icons/io5";
 
 import useQuizGameStore from "@zustand/quizGameStore";
+import useQuizMatchStore from "@zustand/quizMatchStore";
 
 import {
   BadgeWithLabel,
   ButtonIconOnly,
   ButtonWithIcon,
+  Spinner,
 } from "@components/index";
 
 import {
@@ -23,13 +25,18 @@ import {
   QuestionInfoContainer,
   QuestionOptions,
 } from "./AdminQuizControls.style";
-import useQuizMatchStore from "@zustand/quizMatchStore";
 
 const AdminQuizControls = (): JSX.Element => {
-  const { quiz, finishQuiz, startMatch, giveNewAttempt } = useQuizGameStore();
+  const { quiz, finishQuiz, startMatch, giveNewAttempt, isLoading } =
+    useQuizGameStore();
   const { incorrectAnswers } = useQuizMatchStore();
 
-  return (
+  return isLoading ? (
+    <Spinner
+      message="Actualizando estado del quiz.."
+      color="var(--primary-color-base)"
+    />
+  ) : (
     <AdminQuizControlsContainer>
       <BadgeWithLabel
         label="Estado del quiz"
@@ -107,7 +114,12 @@ const AdminQuizControls = (): JSX.Element => {
             }}
           />
           <ButtonIconOnly
-            disabled={quiz.isGameCompleted || quiz.isNewAttempt}
+            disabled={
+              quiz.isGameCompleted ||
+              quiz.isNewAttempt ||
+              incorrectAnswers > 1 ||
+              quiz.matchResult !== "Incorrecta"
+            }
             type="button"
             Icon={GrNew}
             style={{
@@ -126,14 +138,13 @@ const AdminQuizControls = (): JSX.Element => {
             }}
             title="Conceder otra oportunidad"
             onClick={() => {
-              if (incorrectAnswers <= 1) {
-                giveNewAttempt(quiz.id, true);
-              }
+              giveNewAttempt(quiz.id, true);
             }}
           />
         </QuestionOptions>
       </QuestionInfoContainer>
       <ButtonWithIcon
+        disabled={!quiz.isGameCompleted}
         type="button"
         label="Terminar Quiz"
         Icon={IoExitOutline}

@@ -3,7 +3,7 @@ import { IoCall } from "react-icons/io5";
 
 import useQuizMatchStore from "@zustand/quizMatchStore";
 import useQuizGameStore from "@zustand/quizGameStore";
-import { useModal } from "@hooks/index";
+import { useCallTimer, useModal } from "@hooks/index";
 
 import { ButtonIconOnly, CallWildCard, Modal } from "@components/index";
 
@@ -13,11 +13,12 @@ const WildCardsMenu = (): JSX.Element => {
   const { isModalVisible, closeModal, openModal } = useModal();
   const { spendDividedWildCard, spendCallWildCard } = useQuizMatchStore();
   const { stopMatch, quiz } = useQuizGameStore();
+  const { callSeconds, startCallTimer } = useCallTimer();
 
   return (
     <>
       <Modal isModalVisible={isModalVisible} closeModal={closeModal}>
-        <CallWildCard />
+        <CallWildCard callSeconds={callSeconds} />
       </Modal>
       <WildCardsMenuContainer>
         <ButtonIconOnly
@@ -60,6 +61,7 @@ const WildCardsMenu = (): JSX.Element => {
           title="Comodin llamada a un amigo"
           onClick={() => {
             spendCallWildCard(openModal, closeModal);
+            startCallTimer();
             stopMatch(quiz.id);
           }}
         />
