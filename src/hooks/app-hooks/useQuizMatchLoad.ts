@@ -14,12 +14,8 @@ const useQuizMatchLoad = () => {
     incorrectAnswers,
     resetAccumulatedEarn,
   } = useQuizMatchStore();
-  const { toggle: toggleLoserSound } = useAudio(
-    "/public/sounds/loser-sound.mp3"
-  );
-  const { toggle: toggleWinnerSound } = useAudio(
-    "/public/sounds/winner-sound.mp3"
-  );
+  const { toggle: toggleLoserSound } = useAudio("/sounds/loser-sound.mp3");
+  const { toggle: toggleWinnerSound } = useAudio("/sounds/winner-sound.mp3");
 
   useEffect(() => {
     if (quiz.isQuizStarted) {
