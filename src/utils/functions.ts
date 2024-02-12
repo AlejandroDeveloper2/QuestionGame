@@ -78,13 +78,20 @@ export const shuffleQuestionsAnswer = (
   return newRandomQuestions;
 };
 
-export const giveNewAttempt = (randomQuestions: Question[]): Question => {
-  const filteredQuestions = randomQuestions.filter(
+export const giveNewAttempt = (
+  allQuestions: Question[],
+  randomQuestions: Question[]
+): Question => {
+  const filteredQuestions = allQuestions.filter(
     (question) => question.difficulty === "Experto"
   );
   const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
   const randomExpertQuestion = filteredQuestions.filter(
     (_, i) => i == randomIndex
   )[0];
+
+  if (randomQuestions.includes(randomExpertQuestion)) {
+    return giveNewAttempt(allQuestions, randomQuestions);
+  }
   return randomExpertQuestion;
 };

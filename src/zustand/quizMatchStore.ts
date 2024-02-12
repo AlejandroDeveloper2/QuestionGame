@@ -120,7 +120,9 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     if (quiz.isNewAttempt) {
       await updateQuiz(quiz.id, "EnEspera");
       set({ answerStyle: initialAnswerStyle });
-      set({ currentQuestion: giveNewAttempt(get().randomQuestions) });
+      set({
+        currentQuestion: giveNewAttempt(quiz.questions, get().randomQuestions),
+      });
       return;
     }
     set(({ randomQuestions, currentQuestionIndex }) => ({
