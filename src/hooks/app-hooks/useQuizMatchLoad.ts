@@ -15,10 +15,10 @@ const useQuizMatchLoad = () => {
     resetAccumulatedEarn,
   } = useQuizMatchStore();
   const { toggle: toggleLoserSound } = useAudio(
-    "/src/assets/sounds/loser-sound.mp3"
+    "/public/sounds/loser-sound.mp3"
   );
   const { toggle: toggleWinnerSound } = useAudio(
-    "/src/assets/sounds/winner-sound.mp3"
+    "/public/sounds/winner-sound.mp3"
   );
 
   useEffect(() => {

@@ -15,10 +15,10 @@ const AnswerOption = ({
   const { quiz, updateQuiz, stopMatch } = useQuizGameStore();
   const { answerStyle, answerQuestion } = useQuizMatchStore();
   const { toggle: toggleWrongAnswerSound } = useAudio(
-    "/src/assets/sounds/wrong-answer-sound.mp3"
+    "/public/sounds/wrong-answer-sound.mp3"
   );
   const { toggle: toggleCorrectAnswerSound } = useAudio(
-    "/src/assets/sounds/correct-answer-sound.mp3"
+    "/public/sounds/correct-answer-sound.mp3"
   );
 
   useEffect(() => {
