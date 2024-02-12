@@ -91,7 +91,7 @@ const AdminQuizControls = (): JSX.Element => {
         />
         <QuestionOptions>
           <ButtonIconOnly
-            disabled={quiz.isGameCompleted}
+            disabled={quiz.isGameCompleted || quiz.isMatchStarted}
             type="button"
             Icon={MdTimer}
             style={{
