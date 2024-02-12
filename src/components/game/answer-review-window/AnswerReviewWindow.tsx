@@ -50,7 +50,7 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
           <CheckSvg />
           <span>+ ${currentQuestion?.reward}</span>
         </MessageContainer>
-      ) : incorrectAnswers > 0 ? (
+      ) : incorrectAnswers > 0 && quiz.matchResult === "Correcta" ? (
         <MessageContainer>
           <CheckSvg />
           <span>¡Continua con el juego!</span>
