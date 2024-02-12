@@ -10,7 +10,9 @@ const getQuiz = async (): Promise<Quiz> => {
     isMatchStarted: false,
     isNewAttempt: false,
     isQuizStarted: false,
-    isQuizCompleted: false,
+    isGameCompleted: false,
+    matchResult: "EnEspera",
+    isQuizFinished: false,
   };
   const config = {
     headers: {
