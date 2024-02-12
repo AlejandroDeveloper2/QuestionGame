@@ -1,12 +1,20 @@
 import { FaPause } from "react-icons/fa";
 
+import useQuizGameStore from "@zustand/quizGameStore";
+
+import { Spinner } from "@components/index";
+
 import {
   AnswerResultTitle,
   MessageContainer,
 } from "./WaitingMatchWindow.style";
 
 const WaitingMatchWindow = (): JSX.Element => {
-  return (
+  const { isLoading } = useQuizGameStore();
+
+  return isLoading ? (
+    <Spinner color="var(--primary-color-base)" />
+  ) : (
     <>
       <AnswerResultTitle>Esperando</AnswerResultTitle>
       <MessageContainer>

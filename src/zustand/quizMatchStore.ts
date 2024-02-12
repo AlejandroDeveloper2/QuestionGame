@@ -77,9 +77,11 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     if (selectedAnswer.isCorrectAnswer) {
       await updateQuiz(quiz.id, "Correcta");
       set(({ correctAnswers }) => ({ correctAnswers: correctAnswers + 1 }));
-      set(({ accumulatedEarn, currentQuestion }) => ({
-        accumulatedEarn: accumulatedEarn + currentQuestion.reward,
-      }));
+      if (!quiz.isNewAttempt) {
+        set(({ accumulatedEarn, currentQuestion }) => ({
+          accumulatedEarn: accumulatedEarn + currentQuestion.reward,
+        }));
+      }
       const newStyles = get().answerStyle.map((style, i) => {
         if (idAnswer === i)
           return {
