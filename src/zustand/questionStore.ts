@@ -12,11 +12,12 @@ const useQuestionStore = create<QuestionStore>((set) => ({
   isLoading: false,
   questions: [],
   updateQuizQuestions: async (questions: Question[]) => {
-    const quizid = "7u4vlowa718iw8y";
+    const quizIdProduction = "7u4vlowa718iw8y";
+    //const quizIdLocal = "o8zag1glioetlww";
     try {
       await client
         .collection("quiz")
-        .update(quizid, { questions }, { $autoCancel: false });
+        .update(quizIdProduction, { questions }, { $autoCancel: false });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
       console.log(parsedError);

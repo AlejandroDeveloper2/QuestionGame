@@ -1,6 +1,10 @@
 import { NavigateFunction } from "react-router-dom";
 import { Answer, Category, MatchResult, Question, Quiz } from "./DataModels";
-import { AddCategoryFormData, AddQuestionFormData } from "./FormDataModel";
+import {
+  AddCategoryFormData,
+  AddQuestionFormData,
+  ConsolationAwardFormData,
+} from "./FormDataModel";
 import { AnswerOptionStyleProps } from "./StylePropsModels";
 
 interface QuizGameStore {
@@ -19,6 +23,11 @@ interface QuizGameStore {
   stopMatch: (id: string) => Promise<void>;
   updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>;
   giveNewAttempt: (id: string, isNewAttempt: boolean) => Promise<void>;
+  setConsolationAward: (
+    id: string,
+    award: ConsolationAwardFormData
+  ) => Promise<void>;
+  setCurrentQuestion: (id: string, currentQuestion: Question) => Promise<void>;
 }
 
 interface QuestionStore {
@@ -35,6 +44,9 @@ interface QuestionStore {
 }
 
 interface QuizMatchStore {
+  isDividedWildCard: boolean;
+  selectedAnswers: number;
+  timerValue: number;
   currentQuestionIndex: number;
   correctAnswers: number;
   incorrectAnswers: number;
@@ -44,6 +56,7 @@ interface QuizMatchStore {
   randomQuestions: Question[];
   currentQuestion: Question;
   answerStyle: AnswerOptionStyleProps[];
+  updateTimerValue: (timer: number) => void;
   updateTimeTaken: () => void;
   resetAccumulatedEarn: () => void;
   getRandomQuestions: (quiz: Quiz) => void;
@@ -51,8 +64,10 @@ interface QuizMatchStore {
     idAnswer: number,
     selectedAnswer: Answer,
     quiz: Quiz,
+    timerValue: number,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>,
-    stopMatch: (id: string) => Promise<void>
+    stopMatch: (id: string) => Promise<void>,
+    leaveGame: (id: string) => Promise<void>
   ) => Promise<void>;
   updatedCurrentQuestion: (
     quiz: Quiz,
@@ -63,7 +78,13 @@ interface QuizMatchStore {
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
   ) => Promise<void>;
   spendDividedWildCard: () => void;
+  resetDividedWildCard: () => void;
   spendCallWildCard: (openModal: () => void, closeModal: () => void) => void;
+  updateMatchStatus: (
+    id: string,
+    stopMatch: (id: string) => Promise<void>,
+    updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
+  ) => Promise<void>;
   exitMatch: (
     quiz: Quiz,
     leaveGame: (id: string) => Promise<void>

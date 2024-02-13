@@ -6,8 +6,10 @@ import useQuizMatchStore from "@zustand/quizMatchStore";
 import { useAudio } from "..";
 
 const useQuizMatchLoad = () => {
-  const { quiz, giveNewAttempt, updateQuiz } = useQuizGameStore();
+  const { quiz, giveNewAttempt, updateQuiz, setCurrentQuestion } =
+    useQuizGameStore();
   const {
+    currentQuestion,
     getRandomQuestions,
     updatedCurrentQuestion,
     currentQuestionIndex,
@@ -26,6 +28,10 @@ const useQuizMatchLoad = () => {
   useEffect(() => {
     updatedCurrentQuestion(quiz, updateQuiz);
   }, [currentQuestionIndex, quiz.isNewAttempt]);
+
+  useEffect(() => {
+    setCurrentQuestion(quiz.id, currentQuestion);
+  }, [currentQuestion]);
 
   useEffect(() => {
     if (quiz.isGameCompleted && quiz.matchResult === "Correcta") {

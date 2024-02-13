@@ -13,6 +13,17 @@ const getQuiz = async (): Promise<Quiz> => {
     isGameCompleted: false,
     matchResult: "EnEspera",
     isQuizFinished: false,
+    consolationAward: 0,
+    currentQuestion: {
+      id: "",
+      name: "",
+      questionBody: "",
+      answers: [],
+      time: 0,
+      reward: 0,
+      category: "",
+      difficulty: "Basico",
+    },
   };
   const config = {
     headers: {

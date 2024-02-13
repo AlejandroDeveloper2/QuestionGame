@@ -40,3 +40,5 @@ export { default as AnswerReviewWindow } from "@components/game/answer-review-wi
 export { default as GameOverWindow } from "@components/game/game-over-window/GameOverWindow";
 export { default as CallWildCard } from "@components/game/call-wild-card/CallWildCard";
 export { default as WaitingMatchWindow } from "@components/game/waiting-match-window/WaitingMatchWindow";
+export { default as ConsolationAwardForm } from "@components/game/consolation-award-form/ConsolationAwardForm";
+export { default as DividedWildCard } from "@components/game/divided-wild-card/divided-wild-card";

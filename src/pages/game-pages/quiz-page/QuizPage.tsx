@@ -19,7 +19,7 @@ import {
 
 const QuizPage = (): JSX.Element => {
   const navigate = useNavigate();
-  const { resetGame } = useQuizMatchStore();
+  const { resetGame, isDividedWildCard } = useQuizMatchStore();
   const { quiz, resetQuiz } = useQuizGameStore();
   const { closeModal } = useModal();
 
@@ -33,24 +33,27 @@ const QuizPage = (): JSX.Element => {
 
   return (
     <>
-      {quiz.isQuizFinished ? null : (
+      {quiz.isQuizFinished ? null : !isDividedWildCard ? (
         <Modal
           isModalVisible={
             quiz.isGameCompleted ||
-            quiz.matchResult !== "EnEspera" ||
-            !quiz.isMatchStarted
+            quiz.matchResult === "Correcta" ||
+            quiz.matchResult === "Incorrecta" ||
+            (!quiz.isMatchStarted && quiz.matchResult !== "SinResponder")
           }
           closeModal={closeModal}
         >
-          {quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
+          {(quiz.matchResult === "Correcta" ||
+            quiz.matchResult === "Incorrecta") &&
+          !quiz.isGameCompleted ? (
             <AnswerReviewWindow closeModal={closeModal} />
           ) : quiz.matchResult !== "EnEspera" && quiz.isGameCompleted ? (
             <GameOverWindow />
-          ) : !quiz.isMatchStarted ? (
+          ) : !quiz.isMatchStarted && quiz.matchResult !== "SinResponder" ? (
             <WaitingMatchWindow />
           ) : null}
         </Modal>
-      )}
+      ) : null}
       <LoadingWindow
         opacity={quiz.isQuizStarted ? 0 : 1}
         isLoading={quiz.isQuizStarted ? false : true}

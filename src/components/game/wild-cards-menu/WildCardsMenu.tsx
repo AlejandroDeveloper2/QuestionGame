@@ -3,20 +3,35 @@ import { IoCall } from "react-icons/io5";
 
 import useQuizMatchStore from "@zustand/quizMatchStore";
 import useQuizGameStore from "@zustand/quizGameStore";
-import { useCallTimer, useModal } from "@hooks/index";
+import { useCallTimer, useFloatPop, useModal } from "@hooks/index";
 
-import { ButtonIconOnly, CallWildCard, Modal } from "@components/index";
+import {
+  ButtonIconOnly,
+  CallWildCard,
+  DividedWildCard,
+  Modal,
+} from "@components/index";
 
 import { WildCardsMenuContainer } from "./WildCardsMenu.style";
 
 const WildCardsMenu = (): JSX.Element => {
   const { isModalVisible, closeModal, openModal } = useModal();
-  const { spendDividedWildCard, spendCallWildCard } = useQuizMatchStore();
+  const {
+    spendDividedWildCard,
+    spendCallWildCard,
+    selectedAnswers,
+    isDividedWildCard,
+  } = useQuizMatchStore();
   const { stopMatch, quiz } = useQuizGameStore();
   const { callSeconds, startCallTimer } = useCallTimer();
+  const { isPopUpVisible, togglePopUp } = useFloatPop(
+    selectedAnswers,
+    isDividedWildCard
+  );
 
   return (
     <>
+      <DividedWildCard isPopUpVisible={isPopUpVisible} />
       <Modal isModalVisible={isModalVisible} closeModal={closeModal}>
         <CallWildCard callSeconds={callSeconds} />
       </Modal>
@@ -39,7 +54,11 @@ const WildCardsMenu = (): JSX.Element => {
             },
           }}
           title="Comodin 50/50"
-          onClick={spendDividedWildCard}
+          onClick={() => {
+            stopMatch(quiz.id);
+            togglePopUp();
+            spendDividedWildCard();
+          }}
         />
         <ButtonIconOnly
           type="button"

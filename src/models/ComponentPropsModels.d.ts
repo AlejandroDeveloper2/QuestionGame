@@ -203,6 +203,10 @@ interface CallWildCardProps {
   callSeconds: string;
 }
 
+interface DividedWildCardProps {
+  isPopUpVisible: boolean;
+}
+
 export type {
   InputType,
   LogoProps,
@@ -237,4 +241,5 @@ export type {
   AnswerOptionProps,
   AnswerReviewProps,
   CallWildCardProps,
+  DividedWildCardProps,
 };

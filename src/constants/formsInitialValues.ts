@@ -3,6 +3,7 @@ import {
   AddQuestionFormData,
   StartFormData,
   AddCategoryFormData,
+  ConsolationAwardFormData,
 } from "@models/FormDataModel";
 
 export const startFormInitialValues: StartFormData = {
@@ -26,4 +27,8 @@ export const addAnswerFormInitialValues: AddAnswerFormData = {
 
 export const addCategoryFormInitialValues: AddCategoryFormData = {
   name: "",
+};
+
+export const consolationAwardFormInitialValues: ConsolationAwardFormData = {
+  consolationAward: 0,
 };

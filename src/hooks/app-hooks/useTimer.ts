@@ -3,12 +3,21 @@ import { useState, useEffect } from "react";
 
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
+import { useAudio } from "..";
 
 const useTimer = () => {
-  const { quiz, stopMatch, updateQuiz } = useQuizGameStore();
-  const { updateTimeTaken, currentQuestion } = useQuizMatchStore();
+  const { quiz, updateQuiz, stopMatch } = useQuizGameStore();
+  const { updateTimeTaken, currentQuestion, updateTimerValue } =
+    useQuizMatchStore();
   const [timerInterval, setTimerInterval] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
+
+  const { toggle: toggleTimeOutSound, stopAudio: stopTimeoutSound } = useAudio(
+    "/sounds/time-out-sound.mp3"
+  );
+  const { toggle: toggleTimerSound, stopAudio } = useAudio(
+    "/sounds/timer-sound.mp3"
+  );
 
   const beginTimer = (): void => {
     setTimerInterval(
@@ -25,6 +34,16 @@ const useTimer = () => {
   };
 
   useEffect(() => {
+    updateTimerValue(seconds);
+  }, [seconds]);
+
+  useEffect(() => {
+    if (seconds > 0 && seconds <= 5) {
+      toggleTimerSound();
+    } else stopAudio();
+  }, [seconds]);
+
+  useEffect(() => {
     setSeconds(currentQuestion?.time);
   }, [currentQuestion]);
 
@@ -35,17 +54,25 @@ const useTimer = () => {
       setSeconds(currentQuestion?.time);
       window.clearInterval(timerInterval);
     }
-  }, [quiz.isMatchStarted]);
+  }, [quiz.isMatchStarted, currentQuestion?.time]);
 
   useEffect(() => {
     if (seconds === 0 && quiz.isMatchStarted) {
+      toggleTimeOutSound();
       stopMatch(quiz.id);
       updateQuiz(quiz.id, "SinResponder");
       window.clearInterval(timerInterval);
-    } else if (quiz.isGameCompleted) {
+    } else if (quiz.isGameCompleted && !quiz.isMatchStarted) {
+      stopTimeoutSound();
       window.clearInterval(timerInterval);
+    } else if (quiz.matchResult === "SinResponder" && !quiz.isMatchStarted) {
+      window.clearInterval(timerInterval);
+      toggleTimeOutSound();
+    } else if (quiz.matchResult !== "SinResponder" && !quiz.isMatchStarted) {
+      window.clearInterval(timerInterval);
+      toggleTimeOutSound();
     }
-  }, [seconds, quiz.isGameCompleted, quiz.isMatchStarted]);
+  }, [seconds, quiz.isGameCompleted, quiz.matchResult, quiz.isMatchStarted]);
 
   return {
     seconds: `0:${seconds < 10 ? "0" + seconds : seconds}`,

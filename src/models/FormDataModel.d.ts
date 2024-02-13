@@ -23,9 +23,14 @@ interface AddCategoryFormData {
   name: string;
 }
 
+interface ConsolationAwardFormData {
+  consolationAward: number;
+}
+
 export type {
   StartFormData,
   AddQuestionFormData,
   AddAnswerFormData,
   AddCategoryFormData,
+  ConsolationAwardFormData,
 };

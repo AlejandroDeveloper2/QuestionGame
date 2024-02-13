@@ -20,7 +20,7 @@ const Badge = styled.div<BadgeStyleProps>`
     color: ${({ color }: BadgeStyleProps) => color};
   }
   span {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xl);
     font-family: var(--primary-font-family);
     color: ${({ color }: BadgeStyleProps) => color};
     text-align: center;
@@ -29,7 +29,7 @@ const Badge = styled.div<BadgeStyleProps>`
 
   @media (min-width: ${breakpoints.tablet}px) {
     span {
-      font-size: var(--font-size-md);
+      font-size: var(--font-size-2xl);
     }
   }
 `;
@@ -43,7 +43,7 @@ const BadgeContainer = styled.div`
   align-items: center;
 
   label {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-md);
     font-family: var(--primary-font-family);
     color: var(--gray);
     text-align: center;
@@ -53,7 +53,7 @@ const BadgeContainer = styled.div`
 
   @media (min-width: ${breakpoints.tablet}px) {
     label {
-      font-size: var(--font-size-md);
+      font-size: var(--font-size-xl);
     }
   }
 `;

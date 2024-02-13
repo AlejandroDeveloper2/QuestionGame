@@ -95,3 +95,15 @@ export const giveNewAttempt = (
   }
   return randomExpertQuestion;
 };
+
+export const getCorrectAnswer = (currentQuestionAnswers: Answer[]) => {
+  const answerMarks: AnswerMark[] = ["A", "B", "C", "D"];
+  const correctAnswer: Answer = currentQuestionAnswers?.filter(
+    (answer) => answer.isCorrectAnswer
+  )[0];
+  const indexAnswerMark: number = currentQuestionAnswers?.findIndex(
+    (answer) => answer.isCorrectAnswer
+  );
+
+  return { ...correctAnswer, answerMark: answerMarks[indexAnswerMark] };
+};

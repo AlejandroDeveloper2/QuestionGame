@@ -47,6 +47,10 @@ interface AnswerOptionStyleProps {
   opacity: number;
 }
 
+interface DividedWildCardStyleProps {
+  positionx: number;
+}
+
 export type {
   LoadStyleProps,
   LoadingWindowStyleProps,
@@ -58,4 +62,5 @@ export type {
   BadgeStyleProps,
   HeaderStyleProps,
   AnswerOptionStyleProps,
+  DividedWildCardStyleProps,
 };

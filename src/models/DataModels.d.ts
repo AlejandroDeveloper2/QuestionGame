@@ -31,7 +31,9 @@ interface Category extends AddCategoryFormData {
 interface Quiz {
   id: string;
   questions: Question[];
+  currentQuestion: Question;
   matchResult: MatchResult;
+  consolationAward: number;
   isMatchStarted: boolean;
   isNewAttempt: boolean;
   isQuizStarted: boolean;

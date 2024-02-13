@@ -16,7 +16,11 @@ const useAudio = (url: string) => {
       audio.removeEventListener("ended", () => setPlaying(false));
     };
   }, [audio]);
-  return { playing, toggle };
+
+  const stopAudio = () => {
+    setPlaying(false);
+  };
+  return { playing, toggle, stopAudio };
 };
 
 export default useAudio;

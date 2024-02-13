@@ -32,14 +32,14 @@ const QuestionBox = styled.div`
   p {
     font-family: var(--primary-font-family);
     font-style: normal;
-    font-weight: bold;
-    font-size: var(--font-size-sm);
+    font-weight: 900;
+    font-size: var(--font-size-xl);
     color: var(--gray);
     text-align: center;
   }
   div[id="question-badge"] {
     position: absolute;
-    left: -20px;
+    left: -40px;
     top: 25%;
     bottom: 0;
   }
@@ -47,7 +47,7 @@ const QuestionBox = styled.div`
   @media (min-width: ${breakpoints.tablet}px) {
     width: 500px;
     p {
-      font-size: var(--font-size-md);
+      font-size: var(--font-size-2xl);
     }
   }
   @media (min-width: ${breakpoints.desktop}px) {

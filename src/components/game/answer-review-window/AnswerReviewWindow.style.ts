@@ -18,7 +18,7 @@ const MessageContainer = styled.div`
   gap: var(--spacing-xl);
   justify-content: center;
   align-items: center;
-  svg {
+  &:first-of-type svg {
     animation: scale-in 0.6s ease-in;
     @keyframes scale-in {
       0% {
@@ -32,8 +32,8 @@ const MessageContainer = styled.div`
       }
     }
   }
-  span,
-  p {
+  span[id="match-result-span"],
+  p[id="match-result-p"] {
     font-family: var(--primary-font-family);
     font-style: normal;
     font-weight: bold;
@@ -41,14 +41,14 @@ const MessageContainer = styled.div`
     text-align: center;
     color: var(--primary-color-base);
   }
-  p {
+  p[id="match-result-p"] {
     font-size: var(--font-size-2xl);
     color: var(--gray);
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
     width: 400px;
-    p {
+    p[id="match-result-p"] {
       font-size: var(--font-size-3xl);
     }
   }

@@ -26,6 +26,7 @@ const FieldSetContainer = styled.fieldset<FieldSetStyleProps>`
   max-height: 300px;
   overflow-y: auto;
   gap: var(--spacing-sm);
+  justify-content: flex-start;
   border: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));

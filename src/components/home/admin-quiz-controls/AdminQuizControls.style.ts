@@ -10,12 +10,15 @@ const AdminQuizControlsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-height: 500px;
+  overflow-y: auto;
 
   @media (min-width: ${breakpoints.tablet}px) {
     width: 400px;
   }
   @media (min-width: ${breakpoints.tablet}px) {
     width: 500px;
+    max-height: 550px;
   }
 `;
 

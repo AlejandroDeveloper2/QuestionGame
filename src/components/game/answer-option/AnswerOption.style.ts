@@ -18,8 +18,8 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
   p {
     font-family: var(--primary-font-family);
     font-style: normal;
-    font-weight: bold;
-    font-size: var(--font-size-sm);
+    font-weight: 900;
+    font-size: var(--font-size-xl);
     color: ${({ color }: AnswerOptionStyleProps) => color}; //var(--gray);
     text-align: center;
   }
@@ -34,11 +34,10 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
 
   @media (min-width: ${breakpoints.tablet}px) {
     height: 80px;
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-2xl);
   }
   @media (min-width: ${breakpoints.desktop}px) {
     height: 100px;
-    font-size: var(--font-size-md);
   }
 `;
 

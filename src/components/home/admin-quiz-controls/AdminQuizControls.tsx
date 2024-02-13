@@ -7,6 +7,7 @@ import {
   MdPause,
   MdQuestionMark,
   MdOutlineCancel,
+  MdOutlineRestartAlt,
 } from "react-icons/md";
 import { GrNew } from "react-icons/gr";
 import { IoExitOutline } from "react-icons/io5";
@@ -18,6 +19,7 @@ import {
   BadgeWithLabel,
   ButtonIconOnly,
   ButtonWithIcon,
+  ConsolationAwardForm,
   Spinner,
 } from "@components/index";
 
@@ -26,11 +28,19 @@ import {
   QuestionInfoContainer,
   QuestionOptions,
 } from "./AdminQuizControls.style";
+import { getCorrectAnswer } from "@utils/functions";
 
 const AdminQuizControls = (): JSX.Element => {
-  const { quiz, finishQuiz, startMatch, giveNewAttempt, isLoading } =
-    useQuizGameStore();
-  const { incorrectAnswers } = useQuizMatchStore();
+  const {
+    quiz,
+    finishQuiz,
+    startMatch,
+    stopMatch,
+    updateQuiz,
+    giveNewAttempt,
+    isLoading,
+  } = useQuizGameStore();
+  const { incorrectAnswers, updateMatchStatus } = useQuizMatchStore();
 
   return isLoading ? (
     <Spinner
@@ -38,112 +48,156 @@ const AdminQuizControls = (): JSX.Element => {
       color="var(--primary-color-base)"
     />
   ) : (
-    <AdminQuizControlsContainer>
-      <BadgeWithLabel
-        label="Estado del quiz"
-        Icon={!quiz.isGameCompleted ? TbProgress : FaCheckDouble}
-        style={{
-          backgroundColor: "var(--primary-color-base)",
-          color: "var(--white)",
-        }}
-        value={!quiz.isGameCompleted ? "En progreso" : "Terminado"}
-      />
-      <QuestionInfoContainer>
+    <>
+      <AdminQuizControlsContainer>
         <BadgeWithLabel
-          label="Estado del timer"
-          Icon={quiz.isMatchStarted ? MdTimelapse : MdPause}
+          label="Estado del quiz"
+          Icon={!quiz.isGameCompleted ? TbProgress : FaCheckDouble}
           style={{
-            backgroundColor: "var(--primary-color-100)",
-            color: "var(--gray)",
-          }}
-          value={quiz.isMatchStarted ? "Corriendo" : "Pausado"}
-        />
-        <BadgeWithLabel
-          label="Respuesta del jugador"
-          Icon={
-            quiz.matchResult === "SinResponder"
-              ? MdQuestionMark
-              : quiz.matchResult === "Correcta"
-              ? FaCheck
-              : quiz.matchResult === "Incorrecta"
-              ? MdOutlineCancel
-              : MdTimelapse
-          }
-          style={{
-            backgroundColor:
-              quiz.matchResult === "SinResponder"
-                ? "var(--orange)"
-                : quiz.matchResult === "Correcta"
-                ? "var(--green)"
-                : quiz.matchResult === "Incorrecta"
-                ? "var(--red)"
-                : "var(--gray)",
+            backgroundColor: "var(--primary-color-base)",
             color: "var(--white)",
           }}
-          value={
-            quiz.matchResult === "SinResponder"
-              ? "Sin responder"
-              : quiz.matchResult === "Incorrecta"
-              ? "Incorrecta"
-              : quiz.matchResult === "Correcta"
-              ? "Correcta"
-              : "En espera"
-          }
+          value={!quiz.isGameCompleted ? "En progreso" : "Terminado"}
         />
-        <QuestionOptions>
-          <ButtonIconOnly
-            disabled={quiz.isGameCompleted || quiz.isMatchStarted}
-            type="button"
-            Icon={MdTimer}
+        <QuestionInfoContainer>
+          <BadgeWithLabel
+            label="Estado del timer"
+            Icon={quiz.isMatchStarted ? MdTimelapse : MdPause}
             style={{
-              background: "var(--white)",
+              backgroundColor: "var(--primary-color-100)",
               color: "var(--gray)",
-              width: {
-                sm: 60,
-                md: 60,
-                lg: 80,
-              },
-              height: {
-                sm: 60,
-                md: 60,
-                lg: 80,
-              },
             }}
-            title="Iniciar temporizador"
-            onClick={() => {
-              startMatch(quiz.id);
-            }}
+            value={quiz.isMatchStarted ? "Corriendo" : "Pausado"}
           />
-          <ButtonIconOnly
-            disabled={
-              quiz.isGameCompleted ||
-              quiz.isNewAttempt ||
-              incorrectAnswers > 1 ||
-              quiz.matchResult !== "Incorrecta"
-            }
-            type="button"
-            Icon={GrNew}
+
+          <BadgeWithLabel
+            label="Respuesta correcta "
+            Icon={FaCheck}
             style={{
-              background: "var(--primary-color-base)",
+              backgroundColor: "var(--green)",
               color: "var(--white)",
-              width: {
-                sm: 60,
-                md: 60,
-                lg: 80,
-              },
-              height: {
-                sm: 60,
-                md: 60,
-                lg: 80,
-              },
             }}
-            title="Conceder otra oportunidad"
-            onClick={() => {
-              giveNewAttempt(quiz.id, true);
-            }}
+            value={getCorrectAnswer(quiz.currentQuestion?.answers)?.answerMark}
           />
-        </QuestionOptions>
-      </QuestionInfoContainer>
+
+          <BadgeWithLabel
+            label="Respuesta del jugador"
+            Icon={
+              quiz.matchResult === "SinResponder"
+                ? MdQuestionMark
+                : quiz.matchResult === "Correcta"
+                ? FaCheck
+                : quiz.matchResult === "Incorrecta"
+                ? MdOutlineCancel
+                : MdTimelapse
+            }
+            style={{
+              backgroundColor:
+                quiz.matchResult === "SinResponder"
+                  ? "var(--orange)"
+                  : quiz.matchResult === "Correcta"
+                  ? "var(--green)"
+                  : quiz.matchResult === "Incorrecta"
+                  ? "var(--red)"
+                  : "var(--gray)",
+              color: "var(--white)",
+            }}
+            value={
+              quiz.matchResult === "SinResponder"
+                ? "Sin responder"
+                : quiz.matchResult === "Incorrecta"
+                ? "Incorrecta"
+                : quiz.matchResult === "Correcta"
+                ? "Correcta"
+                : "En espera"
+            }
+          />
+          {quiz.matchResult === "Incorrecta" ? <ConsolationAwardForm /> : null}
+          <QuestionOptions>
+            <ButtonIconOnly
+              disabled={
+                quiz.isGameCompleted ||
+                quiz.isMatchStarted ||
+                quiz.matchResult === "SinResponder"
+              }
+              type="button"
+              Icon={MdTimer}
+              style={{
+                background: "var(--white)",
+                color: "var(--gray)",
+                width: {
+                  sm: 60,
+                  md: 60,
+                  lg: 80,
+                },
+                height: {
+                  sm: 60,
+                  md: 60,
+                  lg: 80,
+                },
+              }}
+              title="Iniciar temporizador"
+              onClick={() => {
+                startMatch(quiz.id);
+              }}
+            />
+            <ButtonIconOnly
+              disabled={
+                quiz.isGameCompleted ||
+                quiz.isNewAttempt ||
+                incorrectAnswers > 1 ||
+                quiz.matchResult === "Correcta" ||
+                quiz.matchResult === "EnEspera"
+              }
+              type="button"
+              Icon={GrNew}
+              style={{
+                background: "var(--primary-color-base)",
+                color: "var(--white)",
+                width: {
+                  sm: 60,
+                  md: 60,
+                  lg: 80,
+                },
+                height: {
+                  sm: 60,
+                  md: 60,
+                  lg: 80,
+                },
+              }}
+              title="Conceder otra oportunidad"
+              onClick={() => {
+                giveNewAttempt(quiz.id, true);
+              }}
+            />
+            <ButtonIconOnly
+              disabled={
+                quiz.isGameCompleted || quiz.matchResult !== "SinResponder"
+              }
+              type="button"
+              Icon={MdOutlineRestartAlt}
+              style={{
+                background: "var(--orange)",
+                color: "var(--white)",
+                width: {
+                  sm: 60,
+                  md: 60,
+                  lg: 80,
+                },
+                height: {
+                  sm: 60,
+                  md: 60,
+                  lg: 80,
+                },
+              }}
+              title="Reiniciar pregunta"
+              onClick={() => {
+                updateMatchStatus(quiz.id, stopMatch, updateQuiz);
+              }}
+            />
+          </QuestionOptions>
+        </QuestionInfoContainer>
+      </AdminQuizControlsContainer>
       <ButtonWithIcon
         disabled={!quiz.isGameCompleted}
         type="button"
@@ -168,7 +222,7 @@ const AdminQuizControls = (): JSX.Element => {
           finishQuiz(quiz.id);
         }}
       />
-    </AdminQuizControlsContainer>
+    </>
   );
 };
 

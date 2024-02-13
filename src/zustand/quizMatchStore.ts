@@ -17,6 +17,9 @@ const initialAnswerStyle: AnswerOptionStyleProps[] = Array(4).fill({
 });
 
 const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
+  isDividedWildCard: false,
+  selectedAnswers: 0,
+  timerValue: 0,
   currentQuestionIndex: 0,
   correctAnswers: 0,
   incorrectAnswers: 0,
@@ -35,6 +38,9 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     difficulty: "Basico",
   },
   answerStyle: initialAnswerStyle,
+  updateTimerValue: (timer: number) => {
+    set({ timerValue: timer });
+  },
   updateTimeTaken: () => {
     set(({ timeTaken }) => ({ timeTaken: timeTaken + 1 }));
   },
@@ -52,7 +58,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     const expertRandomQuestions: Question[] = getRandomQuestionsPerCategory(
       quiz.questions,
       "Experto",
-      5
+      46
     );
     const finalRandomQuestions: Question[] = shuffleQuestionsAnswer(
       basicRandomQuestions.concat(
@@ -70,19 +76,37 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     idAnswer: number,
     selectedAnswer: Answer,
     quiz: Quiz,
+    timerValue: number,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>,
-    stopMatch: (id: string) => Promise<void>
+    stopMatch: (id: string) => Promise<void>,
+    leaveGame: (id: string) => Promise<void>
   ) => {
-    await stopMatch(quiz.id);
+    console.log(timerValue);
+    if (get().isDividedWildCard)
+      set(({ selectedAnswers }) => ({ selectedAnswers: selectedAnswers + 1 }));
+    else set({ selectedAnswers: 0 });
     if (selectedAnswer.isCorrectAnswer) {
-      await updateQuiz(quiz.id, "Correcta");
-      set(({ correctAnswers }) => ({ correctAnswers: correctAnswers + 1 }));
-      if (!quiz.isNewAttempt) {
-        set({ incorrectAnswers: 0 });
-        set(({ accumulatedEarn, currentQuestion }) => ({
-          accumulatedEarn: accumulatedEarn + currentQuestion.reward,
-        }));
+      if (quiz.matchResult === "SinResponder") {
+        window.setTimeout(async () => {
+          await leaveGame(quiz.id);
+        }, 2000);
+        set({ correctAnswers: 0 });
+      } else {
+        if (get().selectedAnswers >= 1 || get().selectedAnswers === 0) {
+          get().resetDividedWildCard();
+          await stopMatch(quiz.id);
+          await updateQuiz(quiz.id, "Correcta");
+          set(({ correctAnswers }) => ({ correctAnswers: correctAnswers + 1 }));
+        }
+
+        if (!quiz.isNewAttempt) {
+          set({ incorrectAnswers: 0 });
+          set(({ accumulatedEarn, currentQuestion }) => ({
+            accumulatedEarn: accumulatedEarn + currentQuestion.reward,
+          }));
+        }
       }
+
       const newStyles = get().answerStyle.map((style, i) => {
         if (idAnswer === i)
           return {
@@ -95,11 +119,26 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
       });
       set({ answerStyle: newStyles });
     } else {
-      await updateQuiz(quiz.id, "Incorrecta");
-      set(({ incorrectAnswers }) => ({
-        incorrectAnswers: incorrectAnswers + 1,
-      }));
-      set({ accumulatedEarn: 0 });
+      if (quiz.matchResult === "SinResponder") {
+        window.setTimeout(async () => {
+          await leaveGame(quiz.id);
+        }, 2000);
+        if (!get().isDividedWildCard)
+          set({ accumulatedEarn: quiz.consolationAward });
+        set({ incorrectAnswers: 0 });
+      } else {
+        if (get().selectedAnswers > 1 || get().selectedAnswers === 0) {
+          get().resetDividedWildCard();
+          await stopMatch(quiz.id);
+          await updateQuiz(quiz.id, "Incorrecta");
+        }
+        // } else if (get().selectedAnswers === 1) {
+        //   await updateQuiz(quiz.id, "EnEspera");
+        // }
+        set(({ incorrectAnswers }) => ({
+          incorrectAnswers: incorrectAnswers + 1,
+        }));
+      }
       const newStyles = get().answerStyle.map((style, i) => {
         if (idAnswer === i)
           return {
@@ -142,23 +181,13 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     }
   },
   spendDividedWildCard: () => {
+    set({ isDividedWildCard: true });
     set(({ usedWildcards }) => ({
       usedWildcards: usedWildcards + 1,
     }));
-    let counterWrongAnswers: number = 0;
-    const answerStyleCopy = get().answerStyle;
-    const finalAnswerStyle: AnswerOptionStyleProps[] = [];
-    get().currentQuestion.answers.forEach((answer, i) => {
-      if (!answer.isCorrectAnswer && counterWrongAnswers < 2) {
-        counterWrongAnswers += 1;
-        const style = { ...answerStyleCopy[i], opacity: 0 };
-        finalAnswerStyle.push(style);
-      } else {
-        const style = { ...answerStyleCopy[i], opacity: 1 };
-        finalAnswerStyle.push(style);
-      }
-    });
-    set({ answerStyle: finalAnswerStyle });
+  },
+  resetDividedWildCard: () => {
+    set({ isDividedWildCard: false, selectedAnswers: 0 });
   },
   spendCallWildCard: (openModal: () => void, closeModal: () => void) => {
     set(({ usedWildcards }) => ({
@@ -169,11 +198,22 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
       closeModal();
     }, 20000);
   },
+  updateMatchStatus: async (
+    id: string,
+    stopMatch: (id: string) => Promise<void>,
+    updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
+  ) => {
+    await stopMatch(id);
+    await updateQuiz(id, "EnEspera");
+  },
   exitMatch: async (quiz: Quiz, leaveGame: (id: string) => Promise<void>) => {
     await leaveGame(quiz.id);
   },
   resetGame: () => {
     set({
+      isDividedWildCard: false,
+      selectedAnswers: 0,
+      timerValue: 0,
       incorrectAnswers: 0,
       currentQuestionIndex: 0,
       correctAnswers: 0,

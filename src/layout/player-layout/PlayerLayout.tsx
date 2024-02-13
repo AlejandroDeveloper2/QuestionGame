@@ -86,7 +86,7 @@ const PlayerLayout = (): JSX.Element => {
               color: "var(--white)",
             }}
             Icon={FaCoins}
-            value={String(accumulatedEarn)}
+            value={"$" + String(accumulatedEarn)}
           />
         </GameStatictics>
       </Header>

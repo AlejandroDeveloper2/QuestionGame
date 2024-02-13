@@ -1,12 +1,13 @@
 import { GrLinkNext } from "react-icons/gr";
 import { IoExit } from "react-icons/io5";
+import { TbMoneybag } from "react-icons/tb";
 
 import { AnswerReviewProps } from "@models/ComponentPropsModels";
 
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
 
-import { ButtonWithIcon, Spinner } from "@components/index";
+import { BadgeWithLabel, ButtonWithIcon, Spinner } from "@components/index";
 
 import {
   AnswerResultTitle,
@@ -40,26 +41,27 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
         <AnswerResultTitle style={{ color: "var(--red)" }}>
           ¡Respuesta Incorrecta!
         </AnswerResultTitle>
-      ) : quiz.matchResult === "SinResponder" ? (
-        <AnswerResultTitle style={{ color: "var(--red)" }}>
-          ¡El tiempo se termino!
-        </AnswerResultTitle>
       ) : null}
       {quiz.matchResult === "Correcta" && incorrectAnswers === 0 ? (
         <MessageContainer>
           <CheckSvg />
-          <span>+ ${currentQuestion?.reward}</span>
+          <span id="match-result-span">+ ${currentQuestion?.reward}</span>
         </MessageContainer>
       ) : incorrectAnswers > 0 && quiz.matchResult === "Correcta" ? (
         <MessageContainer>
           <CheckSvg />
-          <span>¡Continua con el juego!</span>
+          <span id="match-result-span">¡Continua con el juego!</span>
         </MessageContainer>
-      ) : quiz.matchResult === "Incorrecta" ||
-        quiz.matchResult === "SinResponder" ? (
+      ) : quiz.matchResult === "Incorrecta" ? (
         <MessageContainer>
           <XSvg />
-          <p>¡Perdiste el acumulado!</p>
+          <p id="match-result-p">¡Perdiste el acumulado!</p>
+          <BadgeWithLabel
+            label="Premio seguro"
+            Icon={TbMoneybag}
+            style={{ backgroundColor: "var(--gray)", color: "var(--white)" }}
+            value={"$" + String(quiz.consolationAward)}
+          />
         </MessageContainer>
       ) : null}
       <Controls>

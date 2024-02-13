@@ -12,7 +12,7 @@ const AnswerOption = ({
   answerData,
   answerMark,
 }: AnswerOptionProps): JSX.Element => {
-  const { quiz, updateQuiz, stopMatch } = useQuizGameStore();
+  const { quiz, updateQuiz, stopMatch, leaveGame } = useQuizGameStore();
   const { answerStyle, answerQuestion } = useQuizMatchStore();
   const { toggle: toggleWrongAnswerSound } = useAudio(
     "/sounds/wrong-answer-sound.mp3"
@@ -22,10 +22,7 @@ const AnswerOption = ({
   );
 
   useEffect(() => {
-    if (
-      quiz.matchResult === "Incorrecta" ||
-      quiz.matchResult === "SinResponder"
-    ) {
+    if (quiz.matchResult === "Incorrecta") {
       toggleWrongAnswerSound();
     } else if (quiz.matchResult === "Correcta") {
       toggleCorrectAnswerSound();
@@ -39,7 +36,15 @@ const AnswerOption = ({
       bordercolor={answerStyle[idAnswer].bordercolor}
       opacity={answerStyle[idAnswer].opacity}
       onClick={() => {
-        answerQuestion(idAnswer, answerData, quiz, updateQuiz, stopMatch);
+        answerQuestion(
+          idAnswer,
+          answerData,
+          quiz,
+          0,
+          updateQuiz,
+          stopMatch,
+          leaveGame
+        );
       }}
     >
       <AnswerMarkBox>

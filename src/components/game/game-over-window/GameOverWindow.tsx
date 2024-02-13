@@ -46,7 +46,11 @@ const GameOverWindow = (): JSX.Element => {
               backgroundColor: "var(--primary-color-base)",
               color: "var(--white)",
             }}
-            value={String(accumulatedEarn)}
+            value={
+              quiz.consolationAward > 0
+                ? "$" + String(quiz.consolationAward)
+                : "$" + String(accumulatedEarn)
+            }
           />
         </li>
         <li>
