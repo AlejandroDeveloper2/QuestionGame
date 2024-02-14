@@ -29,7 +29,7 @@ const FieldSetContainer = styled.fieldset<FieldSetStyleProps>`
   justify-content: flex-start;
   border: none;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fill, 300px);
 
   @media (min-height: 700px) {
     max-height: 500px;
@@ -39,14 +39,14 @@ const FieldSetContainer = styled.fieldset<FieldSetStyleProps>`
     width: ${({ width }: FieldSetStyleProps) => width.md}%;
     padding: var(--spacing-md);
     max-height: 600px;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, 400px);
   }
 
   @media (min-width: ${breakpoints.desktop}px) {
     gap: var(--spacing-md);
     max-height: 550px;
     width: ${({ width }: FieldSetStyleProps) => width.lg}px;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fill, 500px);
   }
 `;
 
