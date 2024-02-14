@@ -51,10 +51,18 @@ const useTimer = () => {
     if (quiz.isMatchStarted) {
       beginTimer();
     } else {
-      setSeconds(currentQuestion?.time);
       window.clearInterval(timerInterval);
+      setSeconds(currentQuestion?.time);
     }
   }, [quiz.isMatchStarted, currentQuestion?.time]);
+
+  useEffect(() => {
+    if (seconds === 0) {
+      toggleTimeOutSound();
+    } else {
+      stopTimeoutSound();
+    }
+  }, [seconds]);
 
   useEffect(() => {
     if (seconds === 0 && quiz.isMatchStarted) {
@@ -62,17 +70,8 @@ const useTimer = () => {
       stopMatch(quiz.id);
       updateQuiz(quiz.id, "SinResponder");
       window.clearInterval(timerInterval);
-    } else if (quiz.isGameCompleted && !quiz.isMatchStarted) {
-      stopTimeoutSound();
-      window.clearInterval(timerInterval);
-    } else if (quiz.matchResult === "SinResponder" && !quiz.isMatchStarted) {
-      window.clearInterval(timerInterval);
-      toggleTimeOutSound();
-    } else if (quiz.matchResult !== "SinResponder" && !quiz.isMatchStarted) {
-      window.clearInterval(timerInterval);
-      toggleTimeOutSound();
     }
-  }, [seconds, quiz.isGameCompleted, quiz.matchResult, quiz.isMatchStarted]);
+  }, [seconds, quiz.isMatchStarted]);
 
   return {
     seconds: `0:${seconds < 10 ? "0" + seconds : seconds}`,
