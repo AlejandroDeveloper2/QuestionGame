@@ -5,7 +5,8 @@ import { AnswerOptionStyleProps } from "@models/StylePropsModels";
 
 const AnswerBox = styled.div<AnswerOptionStyleProps>`
   width: 100%;
-  height: 60px;
+  height: auto;
+  padding: var(--spacing-md);
   border-radius: var(--radius-sm);
   border: 4px ${({ bordercolor }: AnswerOptionStyleProps) => bordercolor} solid; //var(--primary-color-base)
   position: relative;
@@ -19,7 +20,7 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
     font-family: var(--primary-font-family);
     font-style: normal;
     font-weight: 900;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
     color: ${({ color }: AnswerOptionStyleProps) => color}; //var(--gray);
     text-align: center;
   }
@@ -33,17 +34,16 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    height: 80px;
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-2-5xl);
   }
-  @media (min-width: ${breakpoints.desktop}px) {
+  /* @media (min-width: ${breakpoints.desktop}px) {
     height: 100px;
-  }
+  } */
 `;
 
 const AnswerMarkBox = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: var(--radius-sm);
   background-color: var(--primary-color-base);
   display: grid;
@@ -58,14 +58,14 @@ const AnswerMarkBox = styled.div`
   span {
     font-family: var(--primary-font-family);
     font-weight: bold;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-2xl);
     color: var(--white);
     text-align: center;
     vertical-align: center;
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-2-5xl);
   }
   @media (min-width: ${breakpoints.desktop}px) {
     width: 60px;
