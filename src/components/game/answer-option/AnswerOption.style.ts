@@ -20,7 +20,7 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
     font-family: var(--primary-font-family);
     font-style: normal;
     font-weight: 900;
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
     color: ${({ color }: AnswerOptionStyleProps) => color}; //var(--gray);
     text-align: center;
   }
@@ -34,7 +34,9 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    font-size: var(--font-size-2-5xl);
+    p {
+      font-size: var(--font-size-4xl);
+    }
   }
   /* @media (min-width: ${breakpoints.desktop}px) {
     height: 100px;
@@ -58,14 +60,14 @@ const AnswerMarkBox = styled.div`
   span {
     font-family: var(--primary-font-family);
     font-weight: bold;
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
     color: var(--white);
     text-align: center;
     vertical-align: center;
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    font-size: var(--font-size-2-5xl);
+    font-size: var(--font-size-4xl);
   }
   @media (min-width: ${breakpoints.desktop}px) {
     width: 60px;

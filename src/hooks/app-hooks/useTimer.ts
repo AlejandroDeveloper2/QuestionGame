@@ -12,12 +12,22 @@ const useTimer = () => {
   const [timerInterval, setTimerInterval] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
-  const { toggle: toggleTimeOutSound, stopAudio: stopTimeoutSound } = useAudio(
-    "/sounds/time-out-sound.mp3"
+  const { toggle: toggleCountdownSound } = useAudio(
+    "/sounds/count-down-sound.mp3"
   );
-  const { toggle: toggleTimerSound, stopAudio } = useAudio(
-    "/sounds/timer-sound.mp3"
-  );
+
+  const button = window.document.createElement("button");
+  button.addEventListener("click", () => toggleCountdownSound());
+
+  useEffect(() => {
+    if (quiz.isMatchStarted && seconds === 5) {
+      button.click();
+    }
+    return () => {
+      button.removeEventListener("click", () => toggleCountdownSound());
+      button.remove();
+    };
+  }, [seconds, quiz.isMatchStarted]);
 
   const beginTimer = (): void => {
     setTimerInterval(
@@ -38,12 +48,6 @@ const useTimer = () => {
   }, [seconds]);
 
   useEffect(() => {
-    if (seconds > 0 && seconds <= 5) {
-      toggleTimerSound();
-    } else stopAudio();
-  }, [seconds]);
-
-  useEffect(() => {
     setSeconds(currentQuestion?.time);
   }, [currentQuestion]);
 
@@ -57,16 +61,7 @@ const useTimer = () => {
   }, [quiz.isMatchStarted, currentQuestion?.time]);
 
   useEffect(() => {
-    if (seconds === 0) {
-      toggleTimeOutSound();
-    } else {
-      stopTimeoutSound();
-    }
-  }, [seconds]);
-
-  useEffect(() => {
     if (seconds === 0 && quiz.isMatchStarted) {
-      toggleTimeOutSound();
       stopMatch(quiz.id);
       updateQuiz(quiz.id, "SinResponder");
       window.clearInterval(timerInterval);

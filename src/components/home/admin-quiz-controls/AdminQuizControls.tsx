@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { TbProgress } from "react-icons/tb";
 import { FaCheck } from "react-icons/fa6";
 import { FaCheckDouble } from "react-icons/fa";
@@ -14,6 +15,7 @@ import { IoExitOutline } from "react-icons/io5";
 
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
+import { getCorrectAnswer } from "@utils/functions";
 
 import {
   BadgeWithLabel,
@@ -28,7 +30,6 @@ import {
   QuestionInfoContainer,
   QuestionOptions,
 } from "./AdminQuizControls.style";
-import { getCorrectAnswer } from "@utils/functions";
 
 const AdminQuizControls = (): JSX.Element => {
   const {

@@ -33,7 +33,7 @@ const QuestionBox = styled.div`
     font-family: var(--primary-font-family);
     font-style: normal;
     font-weight: 900;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-3xl);
     color: var(--gray);
     text-align: center;
   }
@@ -45,13 +45,13 @@ const QuestionBox = styled.div`
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    width: 500px;
+    width: 600px;
     p {
-      font-size: var(--font-size-2xl);
+      font-size: var(--font-size-4xl);
     }
   }
   @media (min-width: ${breakpoints.desktop}px) {
-    width: 1020px;
+    width: 1150px;
   }
 
   @keyframes move-to-left {
@@ -77,11 +77,11 @@ const AnswerList = styled.ul`
     display: block;
   }
   @media (min-width: ${breakpoints.tablet}px) {
-    width: 500px;
+    width: 600px;
   }
 
   @media (min-width: ${breakpoints.desktop}px) {
-    width: 1020px;
+    width: 1150px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }

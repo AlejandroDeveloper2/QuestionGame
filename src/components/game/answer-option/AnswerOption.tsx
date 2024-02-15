@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
 import { AnswerOptionProps } from "@models/ComponentPropsModels";
 import useQuizMatchStore from "@zustand/quizMatchStore";
 import useQuizGameStore from "@zustand/quizGameStore";
@@ -21,14 +20,6 @@ const AnswerOption = ({
     "/sounds/correct-answer-sound.mp3"
   );
 
-  useEffect(() => {
-    if (quiz.matchResult === "Incorrecta") {
-      toggleWrongAnswerSound();
-    } else if (quiz.matchResult === "Correcta") {
-      toggleCorrectAnswerSound();
-    }
-  }, [quiz.matchResult]);
-
   return (
     <AnswerBox
       background={answerStyle[idAnswer].background}
@@ -36,6 +27,11 @@ const AnswerOption = ({
       bordercolor={answerStyle[idAnswer].bordercolor}
       opacity={answerStyle[idAnswer].opacity}
       onClick={() => {
+        if (answerData.isCorrectAnswer) {
+          toggleCorrectAnswerSound();
+        } else {
+          toggleWrongAnswerSound();
+        }
         answerQuestion(
           idAnswer,
           answerData,
