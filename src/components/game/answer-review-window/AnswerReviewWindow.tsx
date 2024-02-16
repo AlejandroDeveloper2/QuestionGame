@@ -15,7 +15,7 @@ import {
   MessageContainer,
 } from "./AnswerReviewWindow.style";
 
-import { CheckSvg, XSvg } from "@assets/index";
+import { CheckSvg } from "@assets/index";
 
 const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
   const { quiz, isLoading, leaveGame, updateQuiz } = useQuizGameStore();
@@ -59,8 +59,8 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
       ) : quiz.matchResult === "Incorrecta" ||
         quiz.matchResult === "SinResponderRetirado" ? (
         <MessageContainer>
-          <XSvg />
-          <p id="match-result-p">¡Perdiste el acumulado!</p>
+          <CheckSvg />
+          <p id="match-result-p">¡Ganancia Acumulada!</p>
           <BadgeWithLabel
             label="Premio seguro"
             Icon={TbMoneybag}

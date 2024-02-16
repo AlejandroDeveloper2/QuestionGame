@@ -21,6 +21,7 @@ const CardContainer = styled.div`
     color: var(--gray);
     text-align: center;
     text-transform: capitalize;
+    text-overflow: ellipsis;
   }
 
   ul {

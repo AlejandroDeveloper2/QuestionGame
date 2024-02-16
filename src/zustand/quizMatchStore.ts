@@ -58,7 +58,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     const expertRandomQuestions: Question[] = getRandomQuestionsPerCategory(
       quiz.questions,
       "Experto",
-      5
+      46
     );
     const finalRandomQuestions: Question[] = shuffleQuestionsAnswer(
       basicRandomQuestions.concat(

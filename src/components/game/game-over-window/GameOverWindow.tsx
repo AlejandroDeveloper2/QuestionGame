@@ -8,7 +8,7 @@ import { formatSeconds } from "@utils/functions";
 
 import { BadgeWithLabel, Spinner } from "@components/index";
 
-import { WinnerSvg, XSvg } from "@assets/index";
+import { WinnerSvg, CheckSvg } from "@assets/index";
 import { PlayerFinalStatistics, GameResultTitle } from "./GameOverWindow.style";
 
 const GameOverWindow = (): JSX.Element => {
@@ -27,15 +27,13 @@ const GameOverWindow = (): JSX.Element => {
     <>
       <GameResultTitle
         style={{
-          color: quiz.matchResult === "Correcta" ? "var(--gray)" : "var(--red)",
+          color: "var(--green)",
         }}
       >
-        {quiz.matchResult === "Correcta"
-          ? "¡Felicitaciones"
-          : "¡Upps perdiste "}
+        {quiz.matchResult === "Correcta" ? "¡Felicitaciones" : "¡Ganancias de "}
         <span>{playerName}!</span>
       </GameResultTitle>
-      {quiz.matchResult === "Correcta" ? <WinnerSvg /> : <XSvg />}
+      {quiz.matchResult === "Correcta" ? <WinnerSvg /> : <CheckSvg />}
 
       <PlayerFinalStatistics>
         <li>
