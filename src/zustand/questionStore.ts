@@ -12,12 +12,11 @@ const useQuestionStore = create<QuestionStore>((set) => ({
   isLoading: false,
   questions: [],
   updateQuizQuestions: async (questions: Question[]) => {
-    const quizIdProduction = "7u4vlowa718iw8y";
-    //const quizIdLocal = "o8zag1glioetlww";
+    const quizId = import.meta.env.VITE_QUIZ_ID_PRODUCTION;
     try {
       await client
         .collection("quiz")
-        .update(quizIdProduction, { questions }, { $autoCancel: false });
+        .update(quizId, { questions }, { $autoCancel: false });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
       console.log(parsedError);
