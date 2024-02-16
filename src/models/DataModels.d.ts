@@ -7,7 +7,12 @@ import {
 type ScreenType = "desktop" | "tablet" | "mobile";
 type Difficulty = "Basico" | "Intermedio" | "Experto";
 type AnswerMark = "A" | "B" | "C" | "D";
-type MatchResult = "Correcta" | "Incorrecta" | "SinResponder" | "EnEspera";
+type MatchResult =
+  | "Correcta"
+  | "Incorrecta"
+  | "SinResponder"
+  | "EnEspera"
+  | "SinResponderRetirado";
 
 interface Error {
   message: string;

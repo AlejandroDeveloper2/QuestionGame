@@ -3,7 +3,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { getAnswerMark } from "@utils/functions";
 import useQuizMatchStore from "@zustand/quizMatchStore";
 
-import { AnswerOption, BadgeBase, Logo } from "@components/index";
+import { AnswerOption, BadgeBase } from "@components/index";
 
 import { AnswerList, QuestionBox, QuestionContainer } from "./Question.style";
 
@@ -13,12 +13,6 @@ const Question = (): JSX.Element => {
 
   return (
     <QuestionContainer>
-      <figure>
-        <Logo
-          width={{ sm: 200, md: 220, lg: 270 }}
-          height={{ sm: 200, md: 220, lg: 270 }}
-        />
-      </figure>
       <QuestionBox>
         <div id="question-badge">
           <BadgeBase

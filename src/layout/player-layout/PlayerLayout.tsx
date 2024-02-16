@@ -6,12 +6,13 @@ import { FaRegFaceSmile, FaRegFaceMeh, FaRegFaceAngry } from "react-icons/fa6";
 
 import { getQuiz } from "@services/questions.service";
 import { useQuizMatchLoad, useTimer } from "@hooks/index";
+import useQuizGameStore from "@zustand/quizGameStore";
+import useQuizMatchStore from "@zustand/quizMatchStore";
 
 import { BadgeBase, BadgeWithLabel, Header, Spinner } from "@components/index";
 
-import { GameStatictics, MainContainer } from "./PlayerLayout.style";
-import useQuizGameStore from "@zustand/quizGameStore";
-import useQuizMatchStore from "@zustand/quizMatchStore";
+import { MainContainer } from "./PlayerLayout.style";
+import { TitleContainer } from "@components/shared/header/Header.style";
 
 const PlayerLayout = (): JSX.Element => {
   const location = useLocation();
@@ -38,12 +39,8 @@ const PlayerLayout = (): JSX.Element => {
   return (
     <MainContainer>
       <Header
-        headingText={`Pregunta ${currentQuestionIndex + 1}/${
-          randomQuestions.length
-        }`}
-        welcomeText={playerName ? playerName : "Sin Nombre"}
         style={{
-          height: { sm: 250, md: 170, lg: 170 },
+          height: { sm: 400, md: 170, lg: 170 },
           flexDirection: { sm: "column", md: "row", lg: "row" },
         }}
       >
@@ -68,27 +65,39 @@ const PlayerLayout = (): JSX.Element => {
             value={currentQuestion?.difficulty}
           />
         </div>
-        <GameStatictics>
-          {isLoading ? (
-            <Spinner color="var(--primary-color-base)" />
-          ) : (
+        {isLoading ? (
+          <Spinner color="var(--primary-color-base)" />
+        ) : (
+          <>
             <BadgeWithLabel
               label="Tiempo restante"
               style={{ backgroundColor: "var(--gray)", color: "var(--white)" }}
               Icon={FaHourglass}
               value={seconds + "s"}
             />
-          )}
-          <BadgeWithLabel
-            label="Dinero acumulado"
-            style={{
-              backgroundColor: "var(--primary-color-base)",
-              color: "var(--white)",
-            }}
-            Icon={FaCoins}
-            value={"$" + String(accumulatedEarn)}
-          />
-        </GameStatictics>
+
+            <TitleContainer>
+              <h1>{`Pregunta ${currentQuestionIndex + 1}/${
+                randomQuestions.length
+              }`}</h1>
+
+              <p>
+                <span>Bienvenido:</span>
+                {playerName ? playerName : "Sin Nombre"}
+              </p>
+            </TitleContainer>
+
+            <BadgeWithLabel
+              label="Dinero acumulado"
+              style={{
+                backgroundColor: "var(--primary-color-base)",
+                color: "var(--white)",
+              }}
+              Icon={FaCoins}
+              value={"$" + String(accumulatedEarn)}
+            />
+          </>
+        )}
       </Header>
       <Outlet />
     </MainContainer>

@@ -1,8 +1,8 @@
 import PocketBase from "pocketbase";
 
-const PRODUCTION_API_URL = import.meta.env.VITE_POCKETBASE_URL_PRODUCTION;
+const API_URL = import.meta.env.VITE_POCKETBASE_URL_LOCAL;
 
-export const apiUrl = PRODUCTION_API_URL;
+export const apiUrl = API_URL;
 const client = new PocketBase(apiUrl);
 
 export { client };

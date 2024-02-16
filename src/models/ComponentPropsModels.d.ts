@@ -105,8 +105,6 @@ interface ErrorBoxProps {
 }
 
 interface HeaderProps {
-  headingText: string;
-  welcomeText?: string;
   style: HeaderStyleProps;
   children: ReactNode | ReactNode[];
 }

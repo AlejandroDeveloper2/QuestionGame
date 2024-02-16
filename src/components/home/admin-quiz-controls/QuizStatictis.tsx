@@ -1,0 +1,80 @@
+import { FaCheck } from "react-icons/fa";
+import {
+  MdOutlineCancel,
+  MdPause,
+  MdQuestionMark,
+  MdTimelapse,
+} from "react-icons/md";
+
+import useQuizGameStore from "@zustand/quizGameStore";
+import { getCorrectAnswer } from "@utils/functions";
+
+import { BadgeWithLabel, ConsolationAwardForm } from "@components/index";
+
+const QuizStatictis = (): JSX.Element => {
+  const { quiz } = useQuizGameStore();
+  return (
+    <>
+      <BadgeWithLabel
+        label="Estado del timer"
+        Icon={quiz.isMatchStarted ? MdTimelapse : MdPause}
+        style={{
+          backgroundColor: "var(--primary-color-100)",
+          color: "var(--gray)",
+        }}
+        value={quiz.isMatchStarted ? "Corriendo" : "Pausado"}
+      />
+
+      <BadgeWithLabel
+        label="Respuesta correcta "
+        Icon={FaCheck}
+        style={{
+          backgroundColor: "var(--green)",
+          color: "var(--white)",
+        }}
+        value={getCorrectAnswer(quiz.currentQuestion?.answers)?.answerMark}
+      />
+
+      <BadgeWithLabel
+        label="Respuesta del jugador"
+        Icon={
+          quiz.matchResult === "SinResponder"
+            ? MdQuestionMark
+            : quiz.matchResult === "Correcta"
+            ? FaCheck
+            : quiz.matchResult === "Incorrecta"
+            ? MdOutlineCancel
+            : MdTimelapse
+        }
+        style={{
+          backgroundColor:
+            quiz.matchResult === "SinResponder"
+              ? "var(--orange)"
+              : quiz.matchResult === "Correcta"
+              ? "var(--green)"
+              : quiz.matchResult === "Incorrecta"
+              ? "var(--red)"
+              : "var(--gray)",
+          color: "var(--white)",
+        }}
+        value={
+          quiz.matchResult === "SinResponder"
+            ? "Sin responder"
+            : quiz.matchResult === "Incorrecta"
+            ? "Incorrecta"
+            : quiz.matchResult === "Correcta"
+            ? "Correcta"
+            : quiz.matchResult === "EnEspera"
+            ? "En espera"
+            : "Retirado"
+        }
+      />
+      {quiz.matchResult === "Incorrecta" ||
+      quiz.matchResult === "SinResponderRetirado" ? (
+        <ConsolationAwardForm />
+      ) : null}
+    </>
+  );
+};
+
+export default QuizStatictis;

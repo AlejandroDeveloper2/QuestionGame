@@ -41,7 +41,11 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
         <AnswerResultTitle style={{ color: "var(--red)" }}>
           ¡Respuesta Incorrecta!
         </AnswerResultTitle>
-      ) : null}
+      ) : (
+        <AnswerResultTitle style={{ color: "var(--orange)" }}>
+          ¡Se te acabo el tiempo!
+        </AnswerResultTitle>
+      )}
       {quiz.matchResult === "Correcta" && incorrectAnswers === 0 ? (
         <MessageContainer>
           <CheckSvg />
@@ -52,7 +56,8 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
           <CheckSvg />
           <span id="match-result-span">¡Continua con el juego!</span>
         </MessageContainer>
-      ) : quiz.matchResult === "Incorrecta" ? (
+      ) : quiz.matchResult === "Incorrecta" ||
+        quiz.matchResult === "SinResponderRetirado" ? (
         <MessageContainer>
           <XSvg />
           <p id="match-result-p">¡Perdiste el acumulado!</p>

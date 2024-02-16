@@ -14,7 +14,7 @@ const useQuizMatchLoad = () => {
     updatedCurrentQuestion,
     currentQuestionIndex,
     incorrectAnswers,
-    resetAccumulatedEarn,
+    //resetAccumulatedEarn,
   } = useQuizMatchStore();
   const { toggle: toggleLoserSound } = useAudio("/sounds/loser-sound.mp3");
   const { toggle: toggleWinnerSound } = useAudio("/sounds/winner-sound.mp3");
@@ -38,7 +38,7 @@ const useQuizMatchLoad = () => {
       toggleWinnerSound();
     } else if (
       (quiz.isGameCompleted && quiz.matchResult === "Incorrecta") ||
-      (quiz.isGameCompleted && quiz.matchResult === "SinResponder")
+      (quiz.isGameCompleted && quiz.matchResult === "SinResponderRetirado")
     ) {
       toggleLoserSound();
     }
@@ -51,12 +51,6 @@ const useQuizMatchLoad = () => {
       giveNewAttempt(quiz.id, false);
     }
   }, [incorrectAnswers, quiz.matchResult]);
-
-  useEffect(() => {
-    if (quiz.matchResult === "SinResponder") {
-      resetAccumulatedEarn();
-    }
-  }, [quiz.matchResult]);
 };
 
 export default useQuizMatchLoad;

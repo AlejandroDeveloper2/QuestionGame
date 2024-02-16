@@ -11,7 +11,7 @@ const AnswerOption = ({
   answerData,
   answerMark,
 }: AnswerOptionProps): JSX.Element => {
-  const { quiz, updateQuiz, stopMatch, leaveGame } = useQuizGameStore();
+  const { quiz, updateQuiz, stopMatch } = useQuizGameStore();
   const { answerStyle, answerQuestion } = useQuizMatchStore();
   const { toggle: toggleWrongAnswerSound } = useAudio(
     "/sounds/wrong-answer-sound.mp3"
@@ -32,15 +32,7 @@ const AnswerOption = ({
         } else {
           toggleWrongAnswerSound();
         }
-        answerQuestion(
-          idAnswer,
-          answerData,
-          quiz,
-          0,
-          updateQuiz,
-          stopMatch,
-          leaveGame
-        );
+        answerQuestion(idAnswer, answerData, quiz, updateQuiz, stopMatch);
       }}
     >
       <AnswerMarkBox>

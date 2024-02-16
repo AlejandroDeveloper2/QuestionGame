@@ -7,6 +7,8 @@ import { Category } from "@models/DataModels";
 
 import { CardList, Empty, Header, Input, Spinner } from "@components/index";
 
+import { TitleContainer } from "@components/shared/header/Header.style";
+
 const CategoriesPage = (): JSX.Element => {
   const categories = useCategoryStore((state) => state.categories);
   const isLoading = useCategoryStore((state) => state.isLoading);
@@ -19,12 +21,14 @@ const CategoriesPage = (): JSX.Element => {
   return (
     <>
       <Header
-        headingText="Panel de administración"
         style={{
           height: { sm: 344, md: 300, lg: 300 },
           flexDirection: { sm: "column", md: "column", lg: "column" },
         }}
       >
+        <TitleContainer>
+          <h1>Panel de administración</h1>
+        </TitleContainer>
         <Input
           type="text"
           placeholder="Ejemplo: Matemáticas"

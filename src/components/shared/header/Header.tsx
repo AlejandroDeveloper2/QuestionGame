@@ -1,22 +1,9 @@
 import { HeaderProps } from "@models/ComponentPropsModels";
-import { HeaderContainer, TitleContainer } from "./Header.style";
+import { HeaderContainer } from "./Header.style";
 
 const Header = (props: HeaderProps): JSX.Element => {
-  const { headingText, children, style, welcomeText } = props;
-  return (
-    <HeaderContainer {...style}>
-      <TitleContainer>
-        <h1>{headingText}</h1>
-        {welcomeText ? (
-          <p>
-            <span>Bienvenido:</span>
-            {" " + welcomeText}
-          </p>
-        ) : null}
-      </TitleContainer>
-      {children}
-    </HeaderContainer>
-  );
+  const { children, style } = props;
+  return <HeaderContainer {...style}>{children}</HeaderContainer>;
 };
 
 export default Header;

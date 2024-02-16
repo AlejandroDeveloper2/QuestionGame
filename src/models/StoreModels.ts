@@ -64,10 +64,8 @@ interface QuizMatchStore {
     idAnswer: number,
     selectedAnswer: Answer,
     quiz: Quiz,
-    timerValue: number,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>,
-    stopMatch: (id: string) => Promise<void>,
-    leaveGame: (id: string) => Promise<void>
+    stopMatch: (id: string) => Promise<void>
   ) => Promise<void>;
   updatedCurrentQuestion: (
     quiz: Quiz,

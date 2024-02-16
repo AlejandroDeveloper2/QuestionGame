@@ -8,6 +8,9 @@ import { FaRegCircleQuestion } from "react-icons/fa6";
 import { FaRegStar, FaCoins } from "react-icons/fa";
 
 import useQuestionStore from "@zustand/questionStore";
+import { useModal, useSearch } from "@hooks/index";
+import { Question } from "@models/DataModels";
+import useQuizGameStore from "@zustand/quizGameStore";
 
 import {
   AdminQuizControls,
@@ -19,9 +22,8 @@ import {
   Modal,
   Spinner,
 } from "@components/index";
-import { useModal, useSearch } from "@hooks/index";
-import { Question } from "@models/DataModels";
-import useQuizGameStore from "@zustand/quizGameStore";
+
+import { TitleContainer } from "@components/shared/header/Header.style";
 
 const HomePage = (): JSX.Element => {
   const questions = useQuestionStore((state) => state.questions);
@@ -43,12 +45,14 @@ const HomePage = (): JSX.Element => {
         <AdminQuizControls />
       </Modal>
       <Header
-        headingText="Panel de administración"
         style={{
           height: { sm: 344, md: 300, lg: 300 },
           flexDirection: { sm: "column", md: "column", lg: "column" },
         }}
       >
+        <TitleContainer>
+          <h1>Panel de administración</h1>
+        </TitleContainer>
         <Input
           type="text"
           placeholder="Ejemplo: Pregunta 1"

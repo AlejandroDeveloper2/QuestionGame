@@ -42,7 +42,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
   },
   startQuiz: async (id: string, questionsLength: number) => {
     /*La ejecuta el Admin */
-    if (questionsLength >= 60) {
+    if (questionsLength > 0) {
       try {
         const updatedQuiz: Quiz = await client
           .collection("quiz")

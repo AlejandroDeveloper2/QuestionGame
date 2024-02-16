@@ -9,14 +9,6 @@ const QuestionContainer = styled.div`
   align-items: center;
   gap: var(--spacing-md);
   position: relative;
-  figure {
-    display: none;
-  }
-  @media (min-width: ${breakpoints.tablet}px) {
-    figure {
-      display: block;
-    }
-  }
 `;
 
 const QuestionBox = styled.div`

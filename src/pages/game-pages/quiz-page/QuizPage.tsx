@@ -39,17 +39,17 @@ const QuizPage = (): JSX.Element => {
             quiz.isGameCompleted ||
             quiz.matchResult === "Correcta" ||
             quiz.matchResult === "Incorrecta" ||
-            (!quiz.isMatchStarted && quiz.matchResult !== "SinResponder")
+            (!quiz.isMatchStarted && quiz.matchResult !== "SinResponder") ||
+            (!quiz.isGameCompleted &&
+              quiz.matchResult === "SinResponderRetirado")
           }
           closeModal={closeModal}
         >
-          {(quiz.matchResult === "Correcta" ||
-            quiz.matchResult === "Incorrecta") &&
-          !quiz.isGameCompleted ? (
+          {quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
             <AnswerReviewWindow closeModal={closeModal} />
           ) : quiz.matchResult !== "EnEspera" && quiz.isGameCompleted ? (
             <GameOverWindow />
-          ) : !quiz.isMatchStarted && quiz.matchResult !== "SinResponder" ? (
+          ) : !quiz.isMatchStarted ? (
             <WaitingMatchWindow />
           ) : null}
         </Modal>
