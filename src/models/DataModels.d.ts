@@ -44,6 +44,7 @@ interface Quiz {
   isQuizStarted: boolean;
   isQuizFinished: boolean;
   isGameCompleted: boolean;
+  isGameRestarted: boolean;
 }
 
 interface ServerResponse {

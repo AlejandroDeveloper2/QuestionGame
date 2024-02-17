@@ -64,7 +64,7 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
           <BadgeWithLabel
             label="Premio seguro"
             Icon={TbMoneybag}
-            style={{ backgroundColor: "var(--gray)", color: "var(--white)" }}
+            style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
             value={"$" + String(quiz.consolationAward)}
           />
         </MessageContainer>

@@ -24,6 +24,7 @@ const getQuiz = async (): Promise<Quiz> => {
       category: "",
       difficulty: "Basico",
     },
+    isGameRestarted: false,
   };
   const config = {
     headers: {

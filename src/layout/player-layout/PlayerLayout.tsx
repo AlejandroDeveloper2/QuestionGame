@@ -41,13 +41,13 @@ const PlayerLayout = (): JSX.Element => {
       <Header
         style={{
           height: { sm: 400, md: 170, lg: 170 },
-          flexDirection: { sm: "column", md: "row", lg: "row" },
+          direction: { sm: "column", md: "row", lg: "row" },
         }}
       >
         <div id="difficulty-badge">
           <BadgeBase
             style={{
-              backgroundColor:
+              backgroundcolor:
                 currentQuestion?.difficulty === "Basico"
                   ? "var(--green)"
                   : currentQuestion?.difficulty === "Intermedio"
@@ -71,7 +71,7 @@ const PlayerLayout = (): JSX.Element => {
           <>
             <BadgeWithLabel
               label="Tiempo restante"
-              style={{ backgroundColor: "var(--gray)", color: "var(--white)" }}
+              style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
               Icon={FaHourglass}
               value={seconds + "s"}
             />
@@ -90,7 +90,7 @@ const PlayerLayout = (): JSX.Element => {
             <BadgeWithLabel
               label="Dinero acumulado"
               style={{
-                backgroundColor: "var(--primary-color-base)",
+                backgroundcolor: "var(--primary-color-base)",
                 color: "var(--white)",
               }}
               Icon={FaCoins}

@@ -11,7 +11,7 @@ const LoadingWindow = ({
   isLoading,
 }: LoadingWindowProps): JSX.Element => {
   return (
-    <LoadingWindowContainer opacity={opacity} isLoading={String(isLoading)}>
+    <LoadingWindowContainer opacity={opacity} isloading={String(isLoading)}>
       <IconIllustration1 />
       <IconIllustration2 />
       <Content>

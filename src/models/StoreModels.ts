@@ -28,6 +28,7 @@ interface QuizGameStore {
     award: ConsolationAwardFormData
   ) => Promise<void>;
   setCurrentQuestion: (id: string, currentQuestion: Question) => Promise<void>;
+  restartQuiz: (id: string, toggleValue: boolean) => Promise<void>;
 }
 
 interface QuestionStore {

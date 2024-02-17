@@ -13,11 +13,11 @@ const ModalOverlay = styled.div<ModalStyleProps>`
   place-content: center;
   top: 0;
   left: 0;
-  z-index: ${({ isModalVisible }: ModalStyleProps) =>
-    isModalVisible === "true" ? 50 : -50};
+  z-index: ${({ ismodalvisible }: ModalStyleProps) =>
+    ismodalvisible === "true" ? 50 : -50};
   transition: opacity 0.5s ease;
-  opacity: ${({ isModalVisible }: ModalStyleProps) =>
-    isModalVisible === "true" ? 1 : 0};
+  opacity: ${({ ismodalvisible }: ModalStyleProps) =>
+    ismodalvisible === "true" ? 1 : 0};
 `;
 
 const ModalBody = styled.div`

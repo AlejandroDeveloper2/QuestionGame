@@ -1,6 +1,6 @@
 import { TbProgress } from "react-icons/tb";
 import { FaCheckDouble } from "react-icons/fa";
-import { IoExitOutline } from "react-icons/io5";
+import { IoExitOutline, IoReloadOutline } from "react-icons/io5";
 
 import useQuizGameStore from "@zustand/quizGameStore";
 
@@ -10,11 +10,14 @@ import QuizOptions from "./QuizOptions";
 
 import {
   AdminQuizControlsContainer,
+  AdminQuizControlsFooter,
+  FinishGameButtonStyle,
   QuestionInfoContainer,
+  RestartGameButtonStyle,
 } from "./AdminQuizControls.style";
 
 const AdminQuizControls = (): JSX.Element => {
-  const { quiz, finishQuiz, isLoading } = useQuizGameStore();
+  const { quiz, finishQuiz, restartQuiz, isLoading } = useQuizGameStore();
 
   return isLoading ? (
     <Spinner
@@ -28,7 +31,7 @@ const AdminQuizControls = (): JSX.Element => {
           label="Estado del quiz"
           Icon={!quiz.isGameCompleted ? TbProgress : FaCheckDouble}
           style={{
-            backgroundColor: "var(--primary-color-base)",
+            backgroundcolor: "var(--primary-color-base)",
             color: "var(--white)",
           }}
           value={!quiz.isGameCompleted ? "En progreso" : "Terminado"}
@@ -38,30 +41,30 @@ const AdminQuizControls = (): JSX.Element => {
           <QuizOptions />
         </QuestionInfoContainer>
       </AdminQuizControlsContainer>
-      <ButtonWithIcon
-        disabled={!quiz.isGameCompleted}
-        type="button"
-        label="Terminar Quiz"
-        Icon={IoExitOutline}
-        style={{
-          background: "var(--red)",
-          color: "var(--white)",
-          width: {
-            sm: 300,
-            md: 400,
-            lg: 500,
-          },
-          height: {
-            sm: 78,
-            md: 84,
-            lg: 84,
-          },
-        }}
-        title="Finalizar con el quiz"
-        onClick={() => {
-          finishQuiz(quiz.id);
-        }}
-      />
+      <AdminQuizControlsFooter>
+        <ButtonWithIcon
+          disabled={!quiz.isGameCompleted}
+          type="button"
+          label="Terminar Quiz"
+          Icon={IoExitOutline}
+          style={FinishGameButtonStyle}
+          title="Finalizar con el quiz"
+          onClick={() => {
+            finishQuiz(quiz.id);
+          }}
+        />
+        <ButtonWithIcon
+          disabled={!quiz.isGameCompleted}
+          type="button"
+          label="Reiniciar Quiz"
+          Icon={IoReloadOutline}
+          style={RestartGameButtonStyle}
+          title="Reiniciar juego"
+          onClick={() => {
+            restartQuiz(quiz.id, true);
+          }}
+        />
+      </AdminQuizControlsFooter>
     </>
   );
 };

@@ -6,7 +6,7 @@ import useQuizMatchStore from "@zustand/quizMatchStore";
 import { useAudio } from "..";
 
 const useQuizMatchLoad = () => {
-  const { quiz, giveNewAttempt, updateQuiz, setCurrentQuestion } =
+  const { quiz, giveNewAttempt, updateQuiz, setCurrentQuestion, restartQuiz } =
     useQuizGameStore();
   const {
     currentQuestion,
@@ -14,7 +14,7 @@ const useQuizMatchLoad = () => {
     updatedCurrentQuestion,
     currentQuestionIndex,
     incorrectAnswers,
-    //resetAccumulatedEarn,
+    resetGame,
   } = useQuizMatchStore();
   const { toggle: toggleLoserSound } = useAudio("/sounds/loser-sound.mp3");
   const { toggle: toggleWinnerSound } = useAudio("/sounds/winner-sound.mp3");
@@ -51,6 +51,14 @@ const useQuizMatchLoad = () => {
       giveNewAttempt(quiz.id, false);
     }
   }, [incorrectAnswers, quiz.matchResult]);
+
+  useEffect(() => {
+    if (quiz.isGameRestarted) {
+      resetGame();
+      getRandomQuestions(quiz);
+      restartQuiz(quiz.id, false);
+    }
+  }, [quiz.isGameRestarted]);
 };
 
 export default useQuizMatchLoad;

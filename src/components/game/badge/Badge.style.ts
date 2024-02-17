@@ -6,8 +6,8 @@ import { breakpoints } from "@styles/Breakpoints";
 const Badge = styled.div<BadgeStyleProps>`
   padding: var(--spacing-sm) var(--spacing-sm);
   border-radius: var(--radius-sm);
-  background-color: ${({ backgroundColor }: BadgeStyleProps) =>
-    backgroundColor};
+  background-color: ${({ backgroundcolor }: BadgeStyleProps) =>
+    backgroundcolor};
   box-shadow: 0 0 10px var(--box-shadow-color);
   display: flex;
   justify-content: center;

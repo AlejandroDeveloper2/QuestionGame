@@ -11,7 +11,7 @@ const HeaderContainer = styled.header<HeaderStyleProps>`
   border-bottom-right-radius: var(--radius-xl);
   background-color: var(--white);
   display: flex;
-  flex-direction: ${({ flexDirection }: HeaderStyleProps) => flexDirection.sm};
+  flex-direction: ${({ direction }: HeaderStyleProps) => direction.sm};
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xl);
@@ -59,8 +59,7 @@ const HeaderContainer = styled.header<HeaderStyleProps>`
 
   @media (min-width: ${breakpoints.tablet}px) {
     height: ${({ height }: HeaderStyleProps) => height.md}px;
-    flex-direction: ${({ flexDirection }: HeaderStyleProps) =>
-      flexDirection.md};
+    flex-direction: ${({ direction }: HeaderStyleProps) => direction.md};
     div[id="input-container"] {
       width: 400px;
     }
@@ -79,8 +78,7 @@ const HeaderContainer = styled.header<HeaderStyleProps>`
       }
     }
     height: ${({ height }: HeaderStyleProps) => height.lg}px;
-    flex-direction: ${({ flexDirection }: HeaderStyleProps) =>
-      flexDirection.md};
+    flex-direction: ${({ direction }: HeaderStyleProps) => direction.md};
   }
 `;
 

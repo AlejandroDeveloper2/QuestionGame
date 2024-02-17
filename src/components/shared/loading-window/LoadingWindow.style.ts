@@ -33,8 +33,8 @@ const LoadingWindowContainer = styled.div<LoadingWindowStyleProps>`
   }
   opacity: ${({ opacity }: LoadingWindowStyleProps) => opacity};
   transition: opacity 0.6s ease;
-  z-index: ${({ isLoading }: LoadingWindowStyleProps) =>
-    isLoading === "false" ? -200 : 200};
+  z-index: ${({ isloading }: LoadingWindowStyleProps) =>
+    isloading === "false" ? -200 : 200};
 `;
 
 const Content = styled.div`

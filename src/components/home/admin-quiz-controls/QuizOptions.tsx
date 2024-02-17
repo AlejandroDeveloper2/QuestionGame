@@ -1,13 +1,21 @@
 import { MdOutlineRestartAlt, MdTimer } from "react-icons/md";
 import { GrNew } from "react-icons/gr";
 import { IoExit } from "react-icons/io5";
+import { FaPauseCircle } from "react-icons/fa";
 
 import { ButtonIconOnly } from "@components/index";
 
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
 
-import { QuestionOptions } from "./AdminQuizControls.style";
+import {
+  LeaveGameButtonStyle,
+  NewAttemptButtonStyle,
+  QuestionOptions,
+  RestartQuestionButtonStyle,
+  StartTimerButtonStyle,
+  StopTimerButtonStyle,
+} from "./AdminQuizControls.style";
 
 const QuizOptions = (): JSX.Element => {
   const { quiz, startMatch, giveNewAttempt, stopMatch, updateQuiz } =
@@ -20,56 +28,30 @@ const QuizOptions = (): JSX.Element => {
         disabled={
           quiz.isGameCompleted ||
           quiz.isMatchStarted ||
-          quiz.matchResult === "SinResponder"
+          quiz.matchResult !== "EnEspera"
         }
         type="button"
         Icon={MdTimer}
-        style={{
-          background: "var(--white)",
-          color: "var(--gray)",
-          width: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-          height: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-        }}
+        style={StartTimerButtonStyle}
         title="Iniciar temporizador"
         onClick={() => {
           startMatch(quiz.id);
         }}
       />
-      {/* <ButtonIconOnly
-      disabled={
-        quiz.isGameCompleted ||
-        quiz.isMatchStarted ||
-        quiz.matchResult === "SinResponder"
-      }
-      type="button"
-      Icon={MdTimer}
-      style={{
-        background: "var(--gray)",
-        color: "var(--white)",
-        width: {
-          sm: 60,
-          md: 60,
-          lg: 80,
-        },
-        height: {
-          sm: 60,
-          md: 60,
-          lg: 80,
-        },
-      }}
-      title="Pausar temporizador"
-      onClick={() => {
-        stopMatch(quiz.id);
-      }}
-    /> */}
+      <ButtonIconOnly
+        disabled={
+          quiz.isGameCompleted ||
+          !quiz.isMatchStarted ||
+          quiz.matchResult !== "EnEspera"
+        }
+        type="button"
+        Icon={FaPauseCircle}
+        style={StopTimerButtonStyle}
+        title="Pausar temporizador"
+        onClick={() => {
+          stopMatch(quiz.id);
+        }}
+      />
       <ButtonIconOnly
         disabled={
           quiz.isGameCompleted ||
@@ -80,20 +62,7 @@ const QuizOptions = (): JSX.Element => {
         }
         type="button"
         Icon={GrNew}
-        style={{
-          background: "var(--primary-color-base)",
-          color: "var(--white)",
-          width: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-          height: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-        }}
+        style={NewAttemptButtonStyle}
         title="Conceder otra oportunidad"
         onClick={() => {
           giveNewAttempt(quiz.id, true);
@@ -103,20 +72,7 @@ const QuizOptions = (): JSX.Element => {
         disabled={quiz.isGameCompleted || quiz.matchResult !== "SinResponder"}
         type="button"
         Icon={MdOutlineRestartAlt}
-        style={{
-          background: "var(--orange)",
-          color: "var(--white)",
-          width: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-          height: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-        }}
+        style={RestartQuestionButtonStyle}
         title="Reiniciar pregunta"
         onClick={() => {
           updateMatchStatus(quiz.id, stopMatch, updateQuiz);
@@ -127,20 +83,7 @@ const QuizOptions = (): JSX.Element => {
         type="button"
         Icon={IoExit}
         title="Retirarse del juego"
-        style={{
-          background: "var(--red)",
-          color: "var(--white)",
-          width: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-          height: {
-            sm: 60,
-            md: 60,
-            lg: 80,
-          },
-        }}
+        style={LeaveGameButtonStyle}
         onClick={() => updateQuiz(quiz.id, "SinResponderRetirado")}
       />
     </QuestionOptions>

@@ -36,13 +36,14 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     isMatchStarted: false,
     isGameCompleted: false,
     isNewAttempt: false,
+    isGameRestarted: false,
   },
   setQuiz: async (quiz: Quiz) => {
     set({ quiz });
   },
   startQuiz: async (id: string, questionsLength: number) => {
     /*La ejecuta el Admin */
-    if (questionsLength >= 60) {
+    if (questionsLength > 0) {
       try {
         const updatedQuiz: Quiz = await client
           .collection("quiz")
@@ -95,6 +96,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
           isGameCompleted: false,
           isMatchStarted: false,
           isNewAttempt: false,
+          isGameRestarted: false,
           matchResult: "EnEspera",
           consolationAward: 0,
         },
@@ -187,6 +189,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     }
   },
   setConsolationAward: async (id: string, award: ConsolationAwardFormData) => {
+    set({ isLoading: true });
     try {
       const updatedQuiz: Quiz = await client
         .collection("quiz")
@@ -196,9 +199,16 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
           { $autoCancel: false }
         );
       set({ quiz: updatedQuiz });
+      toast.success("Premio seguro asignado con exito!", toastOptions);
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
+      toast.error(
+        "Ha ocurrido un error al asignar el premio seguro!",
+        toastOptions
+      );
       console.log(parsedError);
+    } finally {
+      set({ isLoading: false });
     }
   },
   setCurrentQuestion: async (id: string, currentQuestion: Question) => {
@@ -210,6 +220,35 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
       set({ quiz: updatedQuiz });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  restartQuiz: async (id: string, toggleValue: boolean) => {
+    set({ isLoading: true });
+    try {
+      const updatedQuiz: Quiz = await client.collection("quiz").update(
+        id,
+        {
+          isGameRestarted: toggleValue,
+          isGameCompleted: false,
+          matchResult: "EnEspera",
+          consolationAward: 0,
+        },
+        { $autoCancel: false }
+      );
+      set({ quiz: updatedQuiz });
+      if (toggleValue)
+        toast.success("Quiz reiniciado con exito!", toastOptions);
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      if (toggleValue)
+        toast.success(
+          "Ha ocurrido un error al reiniciar el quiz!",
+          toastOptions
+        );
       console.log(parsedError);
     } finally {
       set({ isLoading: false });

@@ -17,7 +17,7 @@ const Question = (): JSX.Element => {
         <div id="question-badge">
           <BadgeBase
             Icon={FaRegQuestionCircle}
-            style={{ backgroundColor: "var(--gray)", color: "var(--white)" }}
+            style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
             value=""
           />
         </div>

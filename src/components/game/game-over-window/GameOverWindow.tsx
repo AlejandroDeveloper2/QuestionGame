@@ -41,7 +41,7 @@ const GameOverWindow = (): JSX.Element => {
             label="Total Ganancias"
             Icon={FaCoins}
             style={{
-              backgroundColor: "var(--primary-color-base)",
+              backgroundcolor: "var(--primary-color-base)",
               color: "var(--white)",
             }}
             value={
@@ -56,7 +56,7 @@ const GameOverWindow = (): JSX.Element => {
             label="Tiempo Total"
             Icon={IoTimeOutline}
             style={{
-              backgroundColor: "var(--gray)",
+              backgroundcolor: "var(--gray)",
               color: "var(--white)",
             }}
             value={formatSeconds(timeTaken) + "s"}
@@ -67,7 +67,7 @@ const GameOverWindow = (): JSX.Element => {
             label="Comodines usados"
             Icon={IoHelpBuoyOutline}
             style={{
-              backgroundColor: "var(--primary-color-100)",
+              backgroundcolor: "var(--primary-color-100)",
               color: "var(--gray)",
             }}
             value={String(usedWildcards)}

@@ -43,6 +43,10 @@ const useTimer = () => {
     );
   };
 
+  const stopTimer = (): void => {
+    window.clearInterval(timerInterval);
+  };
+
   useEffect(() => {
     updateTimerValue(seconds);
   }, [seconds]);
@@ -55,18 +59,18 @@ const useTimer = () => {
     if (quiz.isMatchStarted) {
       beginTimer();
     } else {
-      window.clearInterval(timerInterval);
-      setSeconds(currentQuestion?.time);
+      stopTimer();
+      if (quiz.matchResult !== "EnEspera") setSeconds(currentQuestion?.time);
     }
-    return () => window.clearInterval(timerInterval);
-  }, [quiz.isMatchStarted, currentQuestion?.time]);
+    return () => stopTimer();
+  }, [quiz.isMatchStarted, currentQuestion?.time, quiz.matchResult]);
 
   useEffect(() => {
     const stopQuizTimeout = async () => {
       if (seconds === 0 && quiz.isMatchStarted) {
         await stopMatch(quiz.id);
         await updateQuiz(quiz.id, "SinResponder");
-        window.clearInterval(timerInterval);
+        stopTimer();
       }
     };
     stopQuizTimeout();

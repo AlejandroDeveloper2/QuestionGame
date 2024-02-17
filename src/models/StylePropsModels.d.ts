@@ -17,7 +17,7 @@ interface LoadStyleProps {
 
 interface LoadingWindowStyleProps {
   opacity: number;
-  isLoading: string;
+  isloading: string;
 }
 
 interface LinkStyleProps {
@@ -25,11 +25,11 @@ interface LinkStyleProps {
 }
 
 interface ModalStyleProps {
-  isModalVisible: string;
+  ismodalvisible: string;
 }
 
 interface BadgeStyleProps {
-  backgroundColor: string;
+  backgroundcolor: string;
   color: string;
 }
 
@@ -37,7 +37,7 @@ type FlexDirection = "row" | "column";
 
 interface HeaderStyleProps {
   height: Size;
-  flexDirection: { sm: FlexDirection; md: FlexDirection; lg: FlexDirection };
+  direction: { sm: FlexDirection; md: FlexDirection; lg: FlexDirection };
 }
 
 interface AnswerOptionStyleProps {

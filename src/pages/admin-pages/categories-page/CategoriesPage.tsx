@@ -23,7 +23,7 @@ const CategoriesPage = (): JSX.Element => {
       <Header
         style={{
           height: { sm: 344, md: 300, lg: 300 },
-          flexDirection: { sm: "column", md: "column", lg: "column" },
+          direction: { sm: "column", md: "column", lg: "column" },
         }}
       >
         <TitleContainer>

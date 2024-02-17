@@ -10,7 +10,7 @@ const Modal = (props: ModalProps): JSX.Element => {
     props;
 
   return (
-    <ModalOverlay isModalVisible={String(isModalVisible)}>
+    <ModalOverlay ismodalvisible={String(isModalVisible)}>
       <ModalBody>
         {hasCloseButton ? (
           <ButtonIconOnly

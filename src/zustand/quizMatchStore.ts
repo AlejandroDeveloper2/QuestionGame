@@ -111,7 +111,12 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
       await stopMatch(quiz.id);
 
       if (!get().isDividedWildCard) {
-        set({ accumulatedEarn: quiz.consolationAward });
+        set(({ accumulatedEarn }) => ({
+          accumulatedEarn:
+            quiz.consolationAward === 0
+              ? accumulatedEarn
+              : quiz.consolationAward,
+        }));
       }
 
       if (get().selectedAnswers > 1 || get().selectedAnswers === 0) {

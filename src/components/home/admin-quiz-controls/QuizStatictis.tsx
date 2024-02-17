@@ -19,7 +19,7 @@ const QuizStatictis = (): JSX.Element => {
         label="Estado del timer"
         Icon={quiz.isMatchStarted ? MdTimelapse : MdPause}
         style={{
-          backgroundColor: "var(--primary-color-100)",
+          backgroundcolor: "var(--primary-color-100)",
           color: "var(--gray)",
         }}
         value={quiz.isMatchStarted ? "Corriendo" : "Pausado"}
@@ -29,7 +29,7 @@ const QuizStatictis = (): JSX.Element => {
         label="Respuesta correcta "
         Icon={FaCheck}
         style={{
-          backgroundColor: "var(--green)",
+          backgroundcolor: "var(--green)",
           color: "var(--white)",
         }}
         value={getCorrectAnswer(quiz.currentQuestion?.answers)?.answerMark}
@@ -47,7 +47,7 @@ const QuizStatictis = (): JSX.Element => {
             : MdTimelapse
         }
         style={{
-          backgroundColor:
+          backgroundcolor:
             quiz.matchResult === "SinResponder"
               ? "var(--orange)"
               : quiz.matchResult === "Correcta"
