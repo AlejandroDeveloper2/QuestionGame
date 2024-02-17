@@ -18,7 +18,7 @@ const CallWildCard = ({ callSeconds }: CallWildCardProps): JSX.Element => {
           label="Tiempo del comodin"
           Icon={MdOutlineTimer}
           style={{
-            backgroundColor: "var(--primary-color-base)",
+            backgroundcolor: "var(--primary-color-base)",
             color: "var(--white)",
           }}
           value={callSeconds + "s"}
