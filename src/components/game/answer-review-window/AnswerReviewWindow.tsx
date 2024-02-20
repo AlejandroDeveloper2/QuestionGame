@@ -7,7 +7,7 @@ import { AnswerReviewProps } from "@models/ComponentPropsModels";
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
 
-import { BadgeWithLabel, ButtonWithIcon, Spinner } from "@components/index";
+import { BadgeWithLabel, ButtonWithIcon } from "@components/index";
 
 import {
   AnswerResultTitle,
@@ -18,22 +18,10 @@ import {
 import { CheckSvg } from "@assets/index";
 
 const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
-  const { quiz, isLoading, leaveGame, updateQuiz } = useQuizGameStore();
-  const {
-    currentQuestionIndex,
-    currentQuestion,
-    nextQuestion,
-    exitMatch,
-    randomQuestions,
-    incorrectAnswers,
-  } = useQuizMatchStore();
+  const { quiz, leaveGame, updateQuiz } = useQuizGameStore();
+  const { match, nextQuestion, exitMatch } = useQuizMatchStore();
 
-  return isLoading ? (
-    <Spinner
-      message="Cargando resultado de la ronda..."
-      color="var(--primary-color-base)"
-    />
-  ) : (
+  return (
     <>
       {quiz.matchResult === "Correcta" ? (
         <AnswerResultTitle>¡Respuesta Correcta!</AnswerResultTitle>
@@ -46,12 +34,14 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
           ¡Se te acabo el tiempo!
         </AnswerResultTitle>
       )}
-      {quiz.matchResult === "Correcta" && incorrectAnswers === 0 ? (
+      {quiz.matchResult === "Correcta" && match.incorrectAnswers === 0 ? (
         <MessageContainer>
           <CheckSvg />
-          <span id="match-result-span">+ ${currentQuestion?.reward}</span>
+          <span id="match-result-span">+ ${match.currentQuestion?.reward}</span>
         </MessageContainer>
-      ) : incorrectAnswers > 0 && quiz.matchResult === "Correcta" ? (
+      ) : match.incorrectAnswers > 0 &&
+        quiz.matchResult === "Correcta" &&
+        !match.isDividedWildCard ? (
         <MessageContainer>
           <CheckSvg />
           <span id="match-result-span">¡Continua con el juego!</span>
@@ -71,7 +61,7 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
       ) : null}
       <Controls>
         {quiz.matchResult === "Correcta" &&
-        currentQuestionIndex < randomQuestions.length - 1 ? (
+        match.currentQuestionIndex < match.randomQuestions?.length - 1 ? (
           <ButtonWithIcon
             Icon={GrLinkNext}
             label="Continuar"
@@ -92,7 +82,6 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
             title="Continuar con la siguiente pregunta"
             onClick={() => {
               nextQuestion(quiz, updateQuiz);
-              //closeModal();
             }}
           />
         ) : null}

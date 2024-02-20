@@ -1,4 +1,5 @@
 import { Answer, AnswerMark, Difficulty, Question } from "@models/DataModels";
+import { AnswerOptionStyleProps } from "@models/StylePropsModels";
 
 export const getInitialValues = <T>(
   formId: "category" | "question",
@@ -106,4 +107,36 @@ export const getCorrectAnswer = (currentQuestionAnswers: Answer[]) => {
   );
 
   return { ...correctAnswer, answerMark: answerMarks[indexAnswerMark] };
+};
+
+export const getCorrectAnswerStyle = (
+  idAnswer: number,
+  answerStyle: AnswerOptionStyleProps[]
+): AnswerOptionStyleProps[] => {
+  return answerStyle.map((style, i) => {
+    if (idAnswer === i)
+      return {
+        background: "var(--green)",
+        color: "var(--white)",
+        bordercolor: "var(--white)",
+        opacity: 1,
+      };
+    return style;
+  });
+};
+
+export const getIncorrectAnswerStyle = (
+  idAnswer: number,
+  answerStyle: AnswerOptionStyleProps[]
+): AnswerOptionStyleProps[] => {
+  return answerStyle.map((style, i) => {
+    if (idAnswer === i)
+      return {
+        background: "var(--red)",
+        color: "var(--white)",
+        bordercolor: "var(--white)",
+        opacity: 1,
+      };
+    return style;
+  });
 };

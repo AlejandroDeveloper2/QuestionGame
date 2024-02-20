@@ -3,10 +3,14 @@ import { FaCheckDouble } from "react-icons/fa";
 import { IoExitOutline, IoReloadOutline } from "react-icons/io5";
 
 import useQuizGameStore from "@zustand/quizGameStore";
+import useQuizMatchStore from "@zustand/quizMatchStore";
 
-import { BadgeWithLabel, ButtonWithIcon, Spinner } from "@components/index";
+import { BadgeWithLabel, ButtonWithIcon } from "@components/index";
 import QuizStatictis from "./QuizStatictis";
 import QuizOptions from "./QuizOptions";
+import QuizAnswers from "./QuizAnswers";
+import QuizMatchControls from "./QuizMatchControls";
+import QuizWildcards from "./QuizWildcards";
 
 import {
   AdminQuizControlsContainer,
@@ -17,14 +21,10 @@ import {
 } from "./AdminQuizControls.style";
 
 const AdminQuizControls = (): JSX.Element => {
-  const { quiz, finishQuiz, restartQuiz, isLoading } = useQuizGameStore();
+  const { quiz, finishQuiz, restartQuiz } = useQuizGameStore();
+  const { resetGame, getRandomQuestions } = useQuizMatchStore();
 
-  return isLoading ? (
-    <Spinner
-      message="Actualizando estado del quiz.."
-      color="var(--primary-color-base)"
-    />
-  ) : (
+  return (
     <>
       <AdminQuizControlsContainer>
         <BadgeWithLabel
@@ -39,6 +39,9 @@ const AdminQuizControls = (): JSX.Element => {
         <QuestionInfoContainer>
           <QuizStatictis />
           <QuizOptions />
+          <QuizWildcards />
+          <QuizAnswers />
+          <QuizMatchControls />
         </QuestionInfoContainer>
       </AdminQuizControlsContainer>
       <AdminQuizControlsFooter>
@@ -60,8 +63,10 @@ const AdminQuizControls = (): JSX.Element => {
           Icon={IoReloadOutline}
           style={RestartGameButtonStyle}
           title="Reiniciar juego"
-          onClick={() => {
-            restartQuiz(quiz.id, true);
+          onClick={async () => {
+            await resetGame();
+            await getRandomQuestions(quiz);
+            await restartQuiz(quiz.id);
           }}
         />
       </AdminQuizControlsFooter>

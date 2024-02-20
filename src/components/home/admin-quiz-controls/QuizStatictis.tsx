@@ -7,12 +7,15 @@ import {
 } from "react-icons/md";
 
 import useQuizGameStore from "@zustand/quizGameStore";
+import useQuizMatchStore from "@zustand/quizMatchStore";
 import { getCorrectAnswer } from "@utils/functions";
 
 import { BadgeWithLabel, ConsolationAwardForm } from "@components/index";
 
 const QuizStatictis = (): JSX.Element => {
   const { quiz } = useQuizGameStore();
+  const { match } = useQuizMatchStore();
+
   return (
     <>
       <BadgeWithLabel
@@ -32,7 +35,7 @@ const QuizStatictis = (): JSX.Element => {
           backgroundcolor: "var(--green)",
           color: "var(--white)",
         }}
-        value={getCorrectAnswer(quiz.currentQuestion?.answers)?.answerMark}
+        value={getCorrectAnswer(match.currentQuestion?.answers)?.answerMark}
       />
 
       <BadgeWithLabel

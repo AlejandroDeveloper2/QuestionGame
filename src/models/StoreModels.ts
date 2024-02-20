@@ -1,15 +1,23 @@
 import { NavigateFunction } from "react-router-dom";
-import { Answer, Category, MatchResult, Question, Quiz } from "./DataModels";
+
+import {
+  Answer,
+  Category,
+  Match,
+  MatchResult,
+  Question,
+  Quiz,
+} from "./DataModels";
 import {
   AddCategoryFormData,
   AddQuestionFormData,
   ConsolationAwardFormData,
 } from "./FormDataModel";
-import { AnswerOptionStyleProps } from "./StylePropsModels";
 
 interface QuizGameStore {
   quiz: Quiz;
   isLoading: boolean;
+  setPlayerName: (playerName: string) => Promise<void>;
   setQuiz: (quiz: Quiz) => void;
   startQuiz: (id: string, questionsLength: number) => Promise<void>;
   finishQuiz: (id: string) => Promise<void>;
@@ -27,8 +35,7 @@ interface QuizGameStore {
     id: string,
     award: ConsolationAwardFormData
   ) => Promise<void>;
-  setCurrentQuestion: (id: string, currentQuestion: Question) => Promise<void>;
-  restartQuiz: (id: string, toggleValue: boolean) => Promise<void>;
+  restartQuiz: (id: string) => Promise<void>;
 }
 
 interface QuestionStore {
@@ -45,22 +52,13 @@ interface QuestionStore {
 }
 
 interface QuizMatchStore {
-  isDividedWildCard: boolean;
-  selectedAnswers: number;
-  timerValue: number;
-  currentQuestionIndex: number;
-  correctAnswers: number;
-  incorrectAnswers: number;
-  accumulatedEarn: number;
-  usedWildcards: number;
-  timeTaken: number;
-  randomQuestions: Question[];
-  currentQuestion: Question;
-  answerStyle: AnswerOptionStyleProps[];
-  updateTimerValue: (timer: number) => void;
-  updateTimeTaken: () => void;
-  resetAccumulatedEarn: () => void;
-  getRandomQuestions: (quiz: Quiz) => void;
+  match: Match;
+  setMatch: (match: Match) => void;
+  updateIncorrectAnswer: () => Promise<void>;
+  updateTimerValue: (timer: number) => Promise<void>;
+  updateTimeTaken: () => Promise<void>;
+  resetAccumulatedEarn: () => Promise<void>;
+  getRandomQuestions: (quiz: Quiz) => Promise<void>;
   answerQuestion: (
     idAnswer: number,
     selectedAnswer: Answer,
@@ -76,9 +74,10 @@ interface QuizMatchStore {
     quiz: Quiz,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
   ) => Promise<void>;
-  spendDividedWildCard: () => void;
-  resetDividedWildCard: () => void;
-  spendCallWildCard: (openModal: () => void, closeModal: () => void) => void;
+  spendDividedWildCard: () => Promise<void>;
+  resetDividedWildCard: () => Promise<void>;
+  spendCallWildCard: () => Promise<void>;
+  resetCallWildCard: () => Promise<void>;
   updateMatchStatus: (
     id: string,
     stopMatch: (id: string) => Promise<void>,
@@ -88,7 +87,7 @@ interface QuizMatchStore {
     quiz: Quiz,
     leaveGame: (id: string) => Promise<void>
   ) => Promise<void>;
-  resetGame: () => void;
+  resetGame: () => Promise<void>;
 }
 
 interface CategoryStore {

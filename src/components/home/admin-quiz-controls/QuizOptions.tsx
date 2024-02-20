@@ -20,7 +20,7 @@ import {
 const QuizOptions = (): JSX.Element => {
   const { quiz, startMatch, giveNewAttempt, stopMatch, updateQuiz } =
     useQuizGameStore();
-  const { incorrectAnswers, updateMatchStatus } = useQuizMatchStore();
+  const { match, updateMatchStatus } = useQuizMatchStore();
 
   return (
     <QuestionOptions>
@@ -56,9 +56,10 @@ const QuizOptions = (): JSX.Element => {
         disabled={
           quiz.isGameCompleted ||
           quiz.isNewAttempt ||
-          incorrectAnswers > 1 ||
+          match.incorrectAnswers > 1 ||
           quiz.matchResult === "Correcta" ||
-          quiz.matchResult === "EnEspera"
+          quiz.matchResult === "EnEspera" ||
+          quiz.matchResult === "SinResponderRetirado"
         }
         type="button"
         Icon={GrNew}

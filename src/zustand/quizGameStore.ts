@@ -3,12 +3,7 @@ import { NavigateFunction } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { QuizGameStore } from "@models/StoreModels";
-import {
-  MatchResult,
-  Quiz,
-  ServerResponse,
-  Question,
-} from "@models/DataModels";
+import { MatchResult, Quiz, ServerResponse } from "@models/DataModels";
 
 import { client } from "@config/pocketbase";
 import toastOptions from "@constants/toastOptions";
@@ -18,16 +13,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
   isLoading: false,
   quiz: {
     id: "",
-    currentQuestion: {
-      id: "",
-      name: "",
-      questionBody: "",
-      answers: [],
-      time: 0,
-      reward: 0,
-      category: "",
-      difficulty: "Basico",
-    },
+    playerName: "",
     questions: [],
     matchResult: "EnEspera",
     consolationAward: 0,
@@ -36,14 +22,28 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     isMatchStarted: false,
     isGameCompleted: false,
     isNewAttempt: false,
-    isGameRestarted: false,
   },
-  setQuiz: async (quiz: Quiz) => {
+  setQuiz: (quiz: Quiz) => {
     set({ quiz });
+  },
+  setPlayerName: async (playerName: string) => {
+    try {
+      const updatedQuiz: Quiz = await client
+        .collection("quiz")
+        .update(
+          import.meta.env.VITE_QUIZ_ID_PRODUCTION,
+          { playerName },
+          { $autoCancel: false }
+        );
+      set({ quiz: updatedQuiz });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
   },
   startQuiz: async (id: string, questionsLength: number) => {
     /*La ejecuta el Admin */
-    if (questionsLength > 0) {
+    if (questionsLength >= 60) {
       try {
         const updatedQuiz: Quiz = await client
           .collection("quiz")
@@ -96,9 +96,9 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
           isGameCompleted: false,
           isMatchStarted: false,
           isNewAttempt: false,
-          isGameRestarted: false,
           matchResult: "EnEspera",
           consolationAward: 0,
+          playerName: "",
         },
         { $autoCancel: false }
       );
@@ -211,28 +211,13 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
       set({ isLoading: false });
     }
   },
-  setCurrentQuestion: async (id: string, currentQuestion: Question) => {
-    set({ isLoading: true });
-    try {
-      const updatedQuiz: Quiz = await client
-        .collection("quiz")
-        .update(id, { currentQuestion }, { $autoCancel: false });
-      set({ quiz: updatedQuiz });
-    } catch (_e: unknown) {
-      const parsedError = _e as ServerResponse;
-      console.log(parsedError);
-    } finally {
-      set({ isLoading: false });
-    }
-  },
 
-  restartQuiz: async (id: string, toggleValue: boolean) => {
+  restartQuiz: async (id: string) => {
     set({ isLoading: true });
     try {
       const updatedQuiz: Quiz = await client.collection("quiz").update(
         id,
         {
-          isGameRestarted: toggleValue,
           isGameCompleted: false,
           matchResult: "EnEspera",
           consolationAward: 0,
@@ -240,15 +225,11 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
         { $autoCancel: false }
       );
       set({ quiz: updatedQuiz });
-      if (toggleValue)
-        toast.success("Quiz reiniciado con exito!", toastOptions);
+      toast.success("Quiz reiniciado con exito!", toastOptions);
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
-      if (toggleValue)
-        toast.success(
-          "Ha ocurrido un error al reiniciar el quiz!",
-          toastOptions
-        );
+
+      toast.error("Ha ocurrido un error al reiniciar el quiz!", toastOptions);
       console.log(parsedError);
     } finally {
       set({ isLoading: false });

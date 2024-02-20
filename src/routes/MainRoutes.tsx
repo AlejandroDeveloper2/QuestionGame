@@ -13,7 +13,7 @@ const MainRoutes = (): JSX.Element => {
           <Route index element={<HomePage />} />
           <Route path="/admin/categories" element={<CategoriesPage />} />
         </Route>
-        <Route path="/quiz/:playerName" element={<PlayerLayout />}>
+        <Route path="/quiz" element={<PlayerLayout />}>
           <Route index element={<QuizPage />} />
         </Route>
       </Routes>

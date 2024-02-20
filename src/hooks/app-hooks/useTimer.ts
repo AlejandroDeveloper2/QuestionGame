@@ -7,25 +7,54 @@ import { useAudio } from "..";
 
 const useTimer = () => {
   const { quiz, updateQuiz, stopMatch } = useQuizGameStore();
-  const { updateTimeTaken, currentQuestion, updateTimerValue } =
-    useQuizMatchStore();
+  const { match, updateTimeTaken, updateTimerValue } = useQuizMatchStore();
   const [timerInterval, setTimerInterval] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
   const { toggle: toggleCountdownSound } = useAudio(
     "/sounds/count-down-sound.mp3"
   );
+  const {
+    playing,
+    toggle: toggleClockSound,
+    replayAudio,
+    stopAudio,
+  } = useAudio("/sounds/tictac-sound.mp3");
 
-  const button = window.document.createElement("button");
-  button.addEventListener("click", () => toggleCountdownSound());
+  const $buttonTimeout = window.document.createElement("button");
+  $buttonTimeout.addEventListener("click", () => toggleCountdownSound());
+  const $buttonClocksound = window.document.createElement("button");
+  $buttonClocksound.addEventListener("click", () => toggleClockSound());
+
+  useEffect(() => {
+    if (seconds === 5) {
+      stopAudio();
+    }
+  }, [seconds]);
+
+  useEffect(() => {
+    if (quiz.isMatchStarted) {
+      replayAudio();
+      $buttonClocksound.click();
+    } else {
+      if (playing) {
+        replayAudio();
+        $buttonClocksound.click();
+      }
+    }
+    return () => {
+      $buttonClocksound.removeEventListener("click", () => toggleClockSound());
+      $buttonClocksound.remove();
+    };
+  }, [quiz.isMatchStarted]);
 
   useEffect(() => {
     if (quiz.isMatchStarted && seconds === 5) {
-      button.click();
+      $buttonTimeout.click();
     }
     return () => {
-      button.removeEventListener("click", () => toggleCountdownSound());
-      button.remove();
+      $buttonTimeout.removeEventListener("click", () => toggleCountdownSound());
+      $buttonTimeout.remove();
     };
   }, [seconds, quiz.isMatchStarted]);
 
@@ -52,18 +81,19 @@ const useTimer = () => {
   }, [seconds]);
 
   useEffect(() => {
-    setSeconds(currentQuestion?.time);
-  }, [currentQuestion?.time]);
+    setSeconds(match.currentQuestion?.time);
+  }, [match.currentQuestion?.time]);
 
   useEffect(() => {
     if (quiz.isMatchStarted) {
       beginTimer();
     } else {
       stopTimer();
-      if (quiz.matchResult !== "EnEspera") setSeconds(currentQuestion?.time);
+      if (quiz.matchResult !== "EnEspera")
+        setSeconds(match.currentQuestion?.time);
     }
     return () => stopTimer();
-  }, [quiz.isMatchStarted, currentQuestion?.time, quiz.matchResult]);
+  }, [quiz.isMatchStarted, match.currentQuestion?.time, quiz.matchResult]);
 
   useEffect(() => {
     const stopQuizTimeout = async () => {

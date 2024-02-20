@@ -4,6 +4,8 @@ import {
   AddCategoryFormData,
 } from "./FormDataModel";
 
+import { AnswerOptionStyleProps } from "./StylePropsModels";
+
 type ScreenType = "desktop" | "tablet" | "mobile";
 type Difficulty = "Basico" | "Intermedio" | "Experto";
 type AnswerMark = "A" | "B" | "C" | "D";
@@ -35,8 +37,8 @@ interface Category extends AddCategoryFormData {
 
 interface Quiz {
   id: string;
+  playerName: string;
   questions: Question[];
-  currentQuestion: Question;
   matchResult: MatchResult;
   consolationAward: number;
   isMatchStarted: boolean;
@@ -44,7 +46,22 @@ interface Quiz {
   isQuizStarted: boolean;
   isQuizFinished: boolean;
   isGameCompleted: boolean;
-  isGameRestarted: boolean;
+}
+
+interface Match {
+  isDividedWildCard: boolean;
+  isCallWildCard: boolean;
+  selectedAnswers: number;
+  timerValue: number;
+  currentQuestionIndex: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  accumulatedEarn: number;
+  usedWildcards: number;
+  timeTaken: number;
+  randomQuestions: Question[];
+  currentQuestion: Question;
+  answerStyle: AnswerOptionStyleProps[];
 }
 
 interface ServerResponse {
@@ -62,6 +79,7 @@ export type {
   Question,
   Category,
   AnswerMark,
+  Match,
   Quiz,
   ServerResponse,
 };

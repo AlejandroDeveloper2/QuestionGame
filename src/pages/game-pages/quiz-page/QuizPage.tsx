@@ -19,7 +19,7 @@ import {
 
 const QuizPage = (): JSX.Element => {
   const navigate = useNavigate();
-  const { resetGame, isDividedWildCard } = useQuizMatchStore();
+  const { resetGame, match } = useQuizMatchStore();
   const { quiz, resetQuiz } = useQuizGameStore();
   const { closeModal } = useModal();
 
@@ -33,7 +33,7 @@ const QuizPage = (): JSX.Element => {
 
   return (
     <>
-      {quiz.isQuizFinished ? null : !isDividedWildCard ? (
+      {quiz.isQuizFinished ? null : !match.isDividedWildCard ? (
         <Modal
           isModalVisible={
             quiz.isGameCompleted ||

@@ -15,28 +15,26 @@ import {
 import { WildCardsMenuContainer } from "./WildCardsMenu.style";
 
 const WildCardsMenu = (): JSX.Element => {
-  const { isModalVisible, closeModal, openModal } = useModal();
-  const {
-    spendDividedWildCard,
-    spendCallWildCard,
-    selectedAnswers,
-    isDividedWildCard,
-  } = useQuizMatchStore();
+  const { closeModal } = useModal();
+  const { match, spendDividedWildCard, spendCallWildCard } =
+    useQuizMatchStore();
   const { stopMatch, quiz } = useQuizGameStore();
-  const { callSeconds, startCallTimer } = useCallTimer();
-  const { isPopUpVisible, togglePopUp } = useFloatPop(
-    selectedAnswers,
-    isDividedWildCard
-  );
+  const { callSeconds } = useCallTimer();
+  useFloatPop();
 
   return (
     <>
-      <DividedWildCard isPopUpVisible={isPopUpVisible} />
-      <Modal isModalVisible={isModalVisible} closeModal={closeModal}>
+      <DividedWildCard isPopUpVisible={match.isDividedWildCard} />
+      <Modal isModalVisible={match.isCallWildCard} closeModal={closeModal}>
         <CallWildCard callSeconds={callSeconds} />
       </Modal>
       <WildCardsMenuContainer>
         <ButtonIconOnly
+          disabled={
+            match.isDividedWildCard ||
+            quiz.isGameCompleted ||
+            !quiz.isMatchStarted
+          }
           type="button"
           Icon={FaDivide}
           style={{
@@ -56,11 +54,13 @@ const WildCardsMenu = (): JSX.Element => {
           title="Comodin 50/50"
           onClick={() => {
             stopMatch(quiz.id);
-            togglePopUp();
             spendDividedWildCard();
           }}
         />
         <ButtonIconOnly
+          disabled={
+            match.isCallWildCard || quiz.isGameCompleted || !quiz.isMatchStarted
+          }
           type="button"
           Icon={IoCall}
           style={{
@@ -79,8 +79,7 @@ const WildCardsMenu = (): JSX.Element => {
           }}
           title="Comodin llamada a un amigo"
           onClick={() => {
-            spendCallWildCard(openModal, closeModal);
-            startCallTimer();
+            spendCallWildCard();
             stopMatch(quiz.id);
           }}
         />

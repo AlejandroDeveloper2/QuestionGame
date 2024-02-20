@@ -4,7 +4,6 @@ import useQuizMatchStore from "@zustand/quizMatchStore";
 import useQuizGameStore from "@zustand/quizGameStore";
 
 import { AnswerBox, AnswerMarkBox } from "./AnswerOption.style";
-import { useAudio } from "@hooks/index";
 
 const AnswerOption = ({
   idAnswer,
@@ -12,26 +11,15 @@ const AnswerOption = ({
   answerMark,
 }: AnswerOptionProps): JSX.Element => {
   const { quiz, updateQuiz, stopMatch } = useQuizGameStore();
-  const { answerStyle, answerQuestion } = useQuizMatchStore();
-  const { toggle: toggleWrongAnswerSound } = useAudio(
-    "/sounds/wrong-answer-sound.mp3"
-  );
-  const { toggle: toggleCorrectAnswerSound } = useAudio(
-    "/sounds/correct-answer-sound.mp3"
-  );
+  const { match, answerQuestion } = useQuizMatchStore();
 
   return (
     <AnswerBox
-      background={answerStyle[idAnswer].background}
-      color={answerStyle[idAnswer].color}
-      bordercolor={answerStyle[idAnswer].bordercolor}
-      opacity={answerStyle[idAnswer].opacity}
+      background={match.answerStyle[idAnswer]?.background}
+      color={match.answerStyle[idAnswer]?.color}
+      bordercolor={match.answerStyle[idAnswer]?.bordercolor}
+      opacity={match.answerStyle[idAnswer]?.opacity}
       onClick={() => {
-        if (answerData.isCorrectAnswer) {
-          toggleCorrectAnswerSound();
-        } else {
-          toggleWrongAnswerSound();
-        }
         answerQuestion(idAnswer, answerData, quiz, updateQuiz, stopMatch);
       }}
     >

@@ -8,7 +8,7 @@ import { AnswerOption, BadgeBase } from "@components/index";
 import { AnswerList, QuestionBox, QuestionContainer } from "./Question.style";
 
 const Question = (): JSX.Element => {
-  const { currentQuestion } = useQuizMatchStore();
+  const { match } = useQuizMatchStore();
   const answerMarks = getAnswerMark();
 
   return (
@@ -21,10 +21,10 @@ const Question = (): JSX.Element => {
             value=""
           />
         </div>
-        <p>{currentQuestion ? currentQuestion.questionBody : ""}</p>
+        <p>{match.currentQuestion ? match.currentQuestion.questionBody : ""}</p>
       </QuestionBox>
       <AnswerList>
-        {currentQuestion?.answers.map((answer, i) => (
+        {match.currentQuestion?.answers?.map((answer, i) => (
           <AnswerOption
             key={i}
             idAnswer={i}

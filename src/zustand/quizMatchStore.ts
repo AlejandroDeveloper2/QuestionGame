@@ -1,76 +1,146 @@
 import { create } from "zustand";
 
-import { Answer, MatchResult, Question, Quiz } from "@models/DataModels";
+import {
+  Answer,
+  Match,
+  MatchResult,
+  Question,
+  Quiz,
+  ServerResponse,
+} from "@models/DataModels";
 import { QuizMatchStore } from "@models/StoreModels";
-import { AnswerOptionStyleProps } from "@models/StylePropsModels";
+
 import {
   getRandomQuestionsPerCategory,
-  giveNewAttempt,
   shuffleQuestionsAnswer,
 } from "@utils/functions";
+import { client } from "@config/pocketbase";
 
-const initialAnswerStyle: AnswerOptionStyleProps[] = Array(4).fill({
-  background: "var(--primary-color-100)",
-  color: "var(--gray)",
-  bordercolor: "var(--primary-color-300)",
-  opacity: 1,
-});
+import {
+  validateAnswer,
+  validateAnswerWithDividedHelp,
+  validateIsnewAttempt,
+} from "@utils/answerQuestionHelpers";
+import { initialAnswerStyle } from "@constants/initialAnswerStyles";
+
+const matchId = import.meta.env.VITE_MATCH_ID_PRODUCTION;
 
 const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
-  isDividedWildCard: false,
-  selectedAnswers: 0,
-  timerValue: 0,
-  currentQuestionIndex: 0,
-  correctAnswers: 0,
-  incorrectAnswers: 0,
-  accumulatedEarn: 0,
-  usedWildcards: 0,
-  timeTaken: 0,
-  randomQuestions: [],
-  currentQuestion: {
-    id: "",
-    name: "",
-    questionBody: "",
-    answers: [],
-    time: 0,
-    reward: 0,
-    category: "",
-    difficulty: "Basico",
+  match: {
+    isDividedWildCard: false,
+    isCallWildCard: false,
+    selectedAnswers: 0,
+    timerValue: 0,
+    currentQuestionIndex: 0,
+    correctAnswers: 0,
+    incorrectAnswers: 0,
+    accumulatedEarn: 0,
+    usedWildcards: 0,
+    timeTaken: 0,
+    randomQuestions: [],
+    currentQuestion: {
+      id: "",
+      name: "",
+      questionBody: "",
+      answers: [],
+      time: 0,
+      reward: 0,
+      category: "",
+      difficulty: "Basico",
+    },
+    answerStyle: initialAnswerStyle,
   },
-  answerStyle: initialAnswerStyle,
-  updateTimerValue: (timer: number) => {
-    set({ timerValue: timer });
-  },
-  updateTimeTaken: () => {
-    set(({ timeTaken }) => ({ timeTaken: timeTaken + 1 }));
-  },
-  resetAccumulatedEarn: () => {
-    set({ accumulatedEarn: 0 });
-  },
-  getRandomQuestions: (quiz: Quiz) => {
-    const basicRandomQuestions: Question[] = getRandomQuestionsPerCategory(
-      quiz.questions,
-      "Basico",
-      5
-    );
-    const intermediateRandomQuestions: Question[] =
-      getRandomQuestionsPerCategory(quiz.questions, "Intermedio", 5);
-    const expertRandomQuestions: Question[] = getRandomQuestionsPerCategory(
-      quiz.questions,
-      "Experto",
-      46
-    );
-    const finalRandomQuestions: Question[] = shuffleQuestionsAnswer(
-      basicRandomQuestions.concat(
-        intermediateRandomQuestions,
-        expertRandomQuestions
-      )
-    );
 
-    set({ randomQuestions: finalRandomQuestions });
-    set(({ currentQuestionIndex }) => ({
-      currentQuestion: basicRandomQuestions[currentQuestionIndex],
-    }));
+  setMatch: async (match: Match) => {
+    set({ match });
+  },
+  updateIncorrectAnswer: async () => {
+    try {
+      const updatedMatch: Match = await client
+        .collection("match")
+        .update(
+          matchId,
+          { incorrectAnswers: get().match.incorrectAnswers + 1 },
+          { $autoCancel: false }
+        );
+
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
+  },
+  updateTimerValue: async (timer: number) => {
+    try {
+      const updatedMatch: Match = await client
+        .collection("match")
+        .update(matchId, { timerValue: timer }, { $autoCancel: false });
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
+  },
+  updateTimeTaken: async () => {
+    try {
+      const updatedMatch: Match = await client
+        .collection("match")
+        .update(
+          matchId,
+          { timeTaken: get().match.timeTaken + 1 },
+          { $autoCancel: false }
+        );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
+  },
+  resetAccumulatedEarn: async () => {
+    try {
+      const updatedMatch: Match = await client
+        .collection("match")
+        .update(matchId, { accumulatedEarn: 0 }, { $autoCancel: false });
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
+  },
+  getRandomQuestions: async (quiz: Quiz) => {
+    try {
+      const basicRandomQuestions: Question[] = getRandomQuestionsPerCategory(
+        quiz.questions,
+        "Basico",
+        5
+      );
+      const intermediateRandomQuestions: Question[] =
+        getRandomQuestionsPerCategory(quiz.questions, "Intermedio", 5);
+      const expertRandomQuestions: Question[] = getRandomQuestionsPerCategory(
+        quiz.questions,
+        "Experto",
+        46
+      );
+      const finalRandomQuestions: Question[] = shuffleQuestionsAnswer(
+        basicRandomQuestions.concat(
+          intermediateRandomQuestions,
+          expertRandomQuestions
+        )
+      );
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          randomQuestions: finalRandomQuestions,
+          currentQuestion:
+            basicRandomQuestions[get().match.currentQuestionIndex],
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
   },
   answerQuestion: async (
     idAnswer: number,
@@ -79,112 +149,150 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>,
     stopMatch: (id: string) => Promise<void>
   ) => {
-    if (get().isDividedWildCard)
-      set(({ selectedAnswers }) => ({ selectedAnswers: selectedAnswers + 1 }));
-    else set({ selectedAnswers: 0 });
-    if (selectedAnswer.isCorrectAnswer) {
-      await stopMatch(quiz.id);
-      await updateQuiz(quiz.id, "Correcta");
-      set(({ correctAnswers }) => ({ correctAnswers: correctAnswers + 1 }));
-      if (get().selectedAnswers >= 1 || get().selectedAnswers === 0) {
-        get().resetDividedWildCard();
-      }
-      if (!quiz.isNewAttempt) {
-        set({ incorrectAnswers: 0 });
-        set(({ accumulatedEarn, currentQuestion }) => ({
-          accumulatedEarn: accumulatedEarn + currentQuestion.reward,
-        }));
-      }
+    try {
+      /*isDividedWildcard */
+      const { selectedAnswers } = validateAnswerWithDividedHelp(get().match);
+      /*Validate answer */
+      const { correctAnswers, incorrectAnswers, accumulatedEarn, answerStyle } =
+        await validateAnswer(
+          get().match,
+          idAnswer,
+          selectedAnswer,
+          quiz,
+          get().resetDividedWildCard,
+          updateQuiz,
+          stopMatch
+        );
 
-      const newStyles = get().answerStyle.map((style, i) => {
-        if (idAnswer === i)
-          return {
-            background: "var(--green)",
-            color: "var(--white)",
-            bordercolor: "var(--white)",
-            opacity: 1,
-          };
-        return style;
-      });
-      set({ answerStyle: newStyles });
-    } else {
-      await stopMatch(quiz.id);
-
-      if (!get().isDividedWildCard) {
-        set(({ accumulatedEarn }) => ({
-          accumulatedEarn:
-            quiz.consolationAward === 0
-              ? accumulatedEarn
-              : quiz.consolationAward,
-        }));
-      }
-
-      if (get().selectedAnswers > 1 || get().selectedAnswers === 0) {
-        get().resetDividedWildCard();
-        await updateQuiz(quiz.id, "Incorrecta");
-      } else await updateQuiz(quiz.id, "EnEspera");
-      set(({ incorrectAnswers }) => ({
-        incorrectAnswers: incorrectAnswers + 1,
-      }));
-
-      const newStyles = get().answerStyle.map((style, i) => {
-        if (idAnswer === i)
-          return {
-            background: "var(--red)",
-            color: "var(--white)",
-            bordercolor: "var(--white)",
-            opacity: 1,
-          };
-        return style;
-      });
-      set({ answerStyle: newStyles });
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          selectedAnswers,
+          correctAnswers,
+          incorrectAnswers,
+          accumulatedEarn,
+          answerStyle,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
     }
   },
   updatedCurrentQuestion: async (
     quiz: Quiz,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
   ) => {
-    if (quiz.isNewAttempt) {
-      await updateQuiz(quiz.id, "EnEspera");
-      set({ answerStyle: initialAnswerStyle });
-      set({
-        currentQuestion: giveNewAttempt(quiz.questions, get().randomQuestions),
-      });
-      return;
+    try {
+      /*validate isNewAttempt */
+      const { answerStyle, currentQuestion } = await validateIsnewAttempt(
+        get().match,
+        quiz,
+        initialAnswerStyle,
+        updateQuiz
+      );
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          answerStyle,
+          currentQuestion,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError.message);
     }
-    set(({ randomQuestions, currentQuestionIndex }) => ({
-      currentQuestion: randomQuestions[currentQuestionIndex],
-    }));
   },
   nextQuestion: async (
     quiz: Quiz,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
   ) => {
-    set({ answerStyle: initialAnswerStyle });
-    await updateQuiz(quiz.id, "EnEspera");
-    if (get().currentQuestionIndex < get().randomQuestions.length) {
-      set(({ currentQuestionIndex }) => ({
-        currentQuestionIndex: currentQuestionIndex + 1,
-      }));
+    try {
+      await updateQuiz(quiz.id, "EnEspera");
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          answerStyle: initialAnswerStyle,
+          currentQuestionIndex:
+            get().match.currentQuestionIndex <
+            get().match.randomQuestions.length
+              ? get().match.currentQuestionIndex + 1
+              : get().match.currentQuestionIndex,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
     }
   },
-  spendDividedWildCard: () => {
-    set({ isDividedWildCard: true });
-    set(({ usedWildcards }) => ({
-      usedWildcards: usedWildcards + 1,
-    }));
+  spendDividedWildCard: async () => {
+    try {
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          isDividedWildCard: true,
+          usedWildcards: get().match.usedWildcards + 1,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
   },
-  resetDividedWildCard: () => {
-    set({ isDividedWildCard: false, selectedAnswers: 0 });
+  resetDividedWildCard: async () => {
+    try {
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          isDividedWildCard: false,
+          selectedAnswers: 0,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
   },
-  spendCallWildCard: (openModal: () => void, closeModal: () => void) => {
-    set(({ usedWildcards }) => ({
-      usedWildcards: usedWildcards + 1,
-    }));
-    openModal();
-    window.setTimeout(() => {
-      closeModal();
-    }, 20000);
+  spendCallWildCard: async () => {
+    try {
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          usedWildcards: get().match.usedWildcards + 1,
+          isCallWildCard: true,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
+  },
+  resetCallWildCard: async () => {
+    try {
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          isCallWildCard: false,
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
   },
   updateMatchStatus: async (
     id: string,
@@ -197,30 +305,41 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
   exitMatch: async (quiz: Quiz, leaveGame: (id: string) => Promise<void>) => {
     await leaveGame(quiz.id);
   },
-  resetGame: () => {
-    set({
-      isDividedWildCard: false,
-      selectedAnswers: 0,
-      timerValue: 0,
-      incorrectAnswers: 0,
-      currentQuestionIndex: 0,
-      correctAnswers: 0,
-      accumulatedEarn: 0,
-      usedWildcards: 0,
-      answerStyle: initialAnswerStyle,
-      timeTaken: 0,
-      randomQuestions: [],
-      currentQuestion: {
-        id: "",
-        name: "",
-        questionBody: "",
-        answers: [],
-        time: 0,
-        reward: 0,
-        category: "",
-        difficulty: "Basico",
-      },
-    });
+  resetGame: async () => {
+    try {
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
+          isCallWildCard: false,
+          isDividedWildCard: false,
+          selectedAnswers: 0,
+          timerValue: 0,
+          incorrectAnswers: 0,
+          currentQuestionIndex: 0,
+          correctAnswers: 0,
+          accumulatedEarn: 0,
+          usedWildcards: 0,
+          answerStyle: initialAnswerStyle,
+          timeTaken: 0,
+          randomQuestions: [],
+          currentQuestion: {
+            id: "",
+            name: "",
+            questionBody: "",
+            answers: [],
+            time: 0,
+            reward: 0,
+            category: "",
+            difficulty: "Basico",
+          },
+        },
+        { $autoCancel: false }
+      );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
   },
 }));
 

@@ -18,3 +18,4 @@ export { default as useQuizMatchLoad } from "@hooks/app-hooks/useQuizMatchLoad";
 export { default as useCallTimer } from "@hooks/app-hooks/useCallTimer";
 export { default as useAudio } from "@hooks/app-hooks/useAudio";
 export { default as useFloatPop } from "@hooks/app-hooks/useFloatPopUp";
+export { default as usePlayGameSounds } from "@hooks/app-hooks/usePlayGameSounds";

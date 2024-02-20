@@ -1,12 +1,11 @@
-import { Quiz, ServerResponse } from "@models/DataModels";
+import { Match, ServerResponse } from "@models/DataModels";
 import { client } from "@config/pocketbase";
 
-const getQuiz = async (): Promise<Quiz> => {
-  let response: Quiz[];
-
+const getMatch = async (): Promise<Match> => {
+  let response: Match[];
   try {
     response = await client
-      .collection("quiz")
+      .collection("match")
       .getFullList({ $autoCancel: false });
   } catch (_e: unknown) {
     const errorMessage = (_e as ServerResponse).message;
@@ -15,4 +14,4 @@ const getQuiz = async (): Promise<Quiz> => {
   return response[0];
 };
 
-export { getQuiz };
+export { getMatch };

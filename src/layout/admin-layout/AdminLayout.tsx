@@ -6,13 +6,21 @@ import useSWR from "swr";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useAnswerForm, useLoadRecords, useModal } from "@hooks/index";
+import {
+  useAnswerForm,
+  useLoadRecords,
+  useModal,
+  useQuizMatchLoad,
+} from "@hooks/index";
 import {
   addCategoryFormInitialValues,
   addQuestionFormInitialValues,
 } from "@constants/formsInitialValues";
-import useQuizGameStore from "@zustand/quizGameStore";
+
 import { getQuiz } from "@services/questions.service";
+import { getMatch } from "@services/match.service";
+import useQuizGameStore from "@zustand/quizGameStore";
+import useQuizMatchStore from "@zustand/quizMatchStore";
 
 import {
   Navigation,
@@ -24,14 +32,8 @@ const Modal = lazy(() => import("@components/shared/modal/Modal"));
 import { MainContainer } from "./AdminLayout.style";
 
 const AdminLayout = (): JSX.Element => {
-  const setQuiz = useQuizGameStore((state) => state.setQuiz);
-  useSWR("api/collections/quiz/records", getQuiz, {
-    refreshInterval: 100,
-    onSuccess: (quiz) => {
-      setQuiz(quiz);
-    },
-  });
   useLoadRecords();
+  useQuizMatchLoad();
   const { toggleForm, isAddAnswerFormOpen } = useAnswerForm();
   const { isModalVisible, closeModal, openModal } = useModal();
   const {
@@ -40,6 +42,21 @@ const AdminLayout = (): JSX.Element => {
     openModal: openSecondModal,
   } = useModal();
   const location = useLocation();
+  const { setQuiz } = useQuizGameStore();
+  const { setMatch } = useQuizMatchStore();
+
+  useSWR("api/collections/quiz/records", getQuiz, {
+    refreshInterval: 100,
+    onSuccess: (quiz) => {
+      setQuiz(quiz);
+    },
+  });
+  useSWR("api/collections/match/records", getMatch, {
+    refreshInterval: 100,
+    onSuccess: (match) => {
+      setMatch(match);
+    },
+  });
 
   return (
     <MainContainer>

@@ -3,21 +3,15 @@ import { useEffect } from "react";
 
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
-import { useAudio } from "..";
 
 const useQuizMatchLoad = () => {
-  const { quiz, giveNewAttempt, updateQuiz, setCurrentQuestion, restartQuiz } =
-    useQuizGameStore();
+  const { quiz, giveNewAttempt, updateQuiz } = useQuizGameStore();
   const {
-    currentQuestion,
+    match,
     getRandomQuestions,
     updatedCurrentQuestion,
-    currentQuestionIndex,
-    incorrectAnswers,
-    resetGame,
+    updateIncorrectAnswer,
   } = useQuizMatchStore();
-  const { toggle: toggleLoserSound } = useAudio("/sounds/loser-sound.mp3");
-  const { toggle: toggleWinnerSound } = useAudio("/sounds/winner-sound.mp3");
 
   useEffect(() => {
     if (quiz.isQuizStarted) {
@@ -27,38 +21,22 @@ const useQuizMatchLoad = () => {
 
   useEffect(() => {
     updatedCurrentQuestion(quiz, updateQuiz);
-  }, [currentQuestionIndex, quiz.isNewAttempt]);
+  }, [match.currentQuestionIndex, quiz.isNewAttempt]);
 
   useEffect(() => {
-    setCurrentQuestion(quiz.id, currentQuestion);
-  }, [currentQuestion]);
-
-  useEffect(() => {
-    if (quiz.isGameCompleted && quiz.matchResult === "Correcta") {
-      toggleWinnerSound();
-    } else if (
-      (quiz.isGameCompleted && quiz.matchResult === "Incorrecta") ||
-      (quiz.isGameCompleted && quiz.matchResult === "SinResponderRetirado")
-    ) {
-      toggleLoserSound();
-    }
-  }, [quiz.isGameCompleted, quiz.matchResult]);
-
-  useEffect(() => {
-    if (incorrectAnswers > 1) {
+    if (match.incorrectAnswers > 1) {
       giveNewAttempt(quiz.id, false);
     } else if (quiz.matchResult !== "EnEspera") {
       giveNewAttempt(quiz.id, false);
     }
-  }, [incorrectAnswers, quiz.matchResult]);
+  }, [match.incorrectAnswers, quiz.matchResult]);
 
+  /*Validar si se le acaba el tiempo y se le da una oportunidad con una pregunta dificil */
   useEffect(() => {
-    if (quiz.isGameRestarted) {
-      resetGame();
-      getRandomQuestions(quiz);
-      restartQuiz(quiz.id, false);
+    if (quiz.matchResult === "SinResponder") {
+      updateIncorrectAnswer();
     }
-  }, [quiz.isGameRestarted]);
+  }, [quiz.matchResult]);
 };
 
 export default useQuizMatchLoad;

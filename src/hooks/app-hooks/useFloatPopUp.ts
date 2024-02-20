@@ -1,25 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import useQuizMatchStore from "@zustand/quizMatchStore";
+import { useEffect } from "react";
 
-const useFloatPopUp = (
-  selectedQuestions: number,
-  isDividedWildCard: boolean
-) => {
-  const [isPopUpVisible, setIsPopUpVisible] = useState<boolean>(false);
+const useFloatPopUp = () => {
+  const { match, resetDividedWildCard } = useQuizMatchStore();
 
-  const togglePopUp = (): void => {
-    setIsPopUpVisible(!isPopUpVisible);
+  const resetDivided = async () => {
+    await resetDividedWildCard();
   };
 
   useEffect(() => {
-    if (selectedQuestions >= 2 || !isDividedWildCard) {
-      setIsPopUpVisible(false);
+    if (match.selectedAnswers >= 2) {
+      resetDivided();
     }
-  }, [selectedQuestions, isDividedWildCard]);
-
-  return {
-    isPopUpVisible,
-    togglePopUp,
-  };
+  }, [match.isDividedWildCard, match.selectedAnswers]);
 };
 export default useFloatPopUp;

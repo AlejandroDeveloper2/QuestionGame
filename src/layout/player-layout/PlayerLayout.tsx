@@ -1,40 +1,40 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Outlet } from "react-router-dom";
 import useSWR from "swr";
-import { Outlet, useLocation } from "react-router-dom";
 
 import { FaHourglass, FaCoins } from "react-icons/fa";
 import { FaRegFaceSmile, FaRegFaceMeh, FaRegFaceAngry } from "react-icons/fa6";
 
-import { getQuiz } from "@services/questions.service";
-import { useQuizMatchLoad, useTimer } from "@hooks/index";
-import useQuizGameStore from "@zustand/quizGameStore";
+import { usePlayGameSounds, useQuizMatchLoad, useTimer } from "@hooks/index";
 import useQuizMatchStore from "@zustand/quizMatchStore";
+import { getMatch } from "@services/match.service";
+import { getQuiz } from "@services/questions.service";
+import useQuizGameStore from "@zustand/quizGameStore";
 
-import { BadgeBase, BadgeWithLabel, Header, Spinner } from "@components/index";
+import { BadgeBase, BadgeWithLabel, Header } from "@components/index";
 
 import { MainContainer } from "./PlayerLayout.style";
 import { TitleContainer } from "@components/shared/header/Header.style";
 
 const PlayerLayout = (): JSX.Element => {
-  const location = useLocation();
-  const { setQuiz, isLoading } = useQuizGameStore();
+  useQuizMatchLoad();
+  usePlayGameSounds();
+  const { match, setMatch } = useQuizMatchStore();
+  const { setQuiz, quiz } = useQuizGameStore();
+
   useSWR("api/collections/quiz/records", getQuiz, {
+    refreshInterval: 100,
     onSuccess: (quiz) => {
       setQuiz(quiz);
     },
-    refreshInterval: 100,
   });
-
-  useQuizMatchLoad();
-
+  useSWR("api/collections/match/records", getMatch, {
+    refreshInterval: 100,
+    onSuccess: (match) => {
+      setMatch(match);
+    },
+  });
   const { seconds } = useTimer();
-  const {
-    accumulatedEarn,
-    currentQuestion,
-    randomQuestions,
-    currentQuestionIndex,
-  } = useQuizMatchStore();
-
-  const playerName = location.pathname.split("/")[2].replace("%20", " ");
 
   return (
     <MainContainer>
@@ -48,56 +48,50 @@ const PlayerLayout = (): JSX.Element => {
           <BadgeBase
             style={{
               backgroundcolor:
-                currentQuestion?.difficulty === "Basico"
+                match.currentQuestion?.difficulty === "Basico"
                   ? "var(--green)"
-                  : currentQuestion?.difficulty === "Intermedio"
+                  : match.currentQuestion?.difficulty === "Intermedio"
                   ? "var(--orange)"
                   : "var(--red)",
               color: "var(--white)",
             }}
             Icon={
-              currentQuestion?.difficulty === "Basico"
+              match.currentQuestion?.difficulty === "Basico"
                 ? FaRegFaceSmile
-                : currentQuestion?.difficulty === "Intermedio"
+                : match.currentQuestion?.difficulty === "Intermedio"
                 ? FaRegFaceMeh
                 : FaRegFaceAngry
             }
-            value={currentQuestion?.difficulty}
+            value={match.currentQuestion?.difficulty}
           />
         </div>
-        {isLoading ? (
-          <Spinner color="var(--primary-color-base)" />
-        ) : (
-          <>
-            <BadgeWithLabel
-              label="Tiempo restante"
-              style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
-              Icon={FaHourglass}
-              value={seconds + "s"}
-            />
+        <BadgeWithLabel
+          label="Tiempo restante"
+          style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
+          Icon={FaHourglass}
+          value={seconds + "s"}
+        />
 
-            <TitleContainer>
-              <h1>{`Pregunta ${currentQuestionIndex + 1}/${
-                randomQuestions.length
-              }`}</h1>
+        <TitleContainer>
+          <h1>{`Pregunta ${match.currentQuestionIndex + 1}/${
+            match?.randomQuestions?.length
+          }`}</h1>
 
-              <p>
-                <span>Bienvenido:</span>
-                {playerName ? playerName : "Sin Nombre"}
-              </p>
-            </TitleContainer>
+          <p>
+            <span>Bienvenido:</span>
+            {quiz.playerName ? quiz.playerName : "Sin Nombre"}
+          </p>
+        </TitleContainer>
 
-            <BadgeWithLabel
-              label="Dinero acumulado"
-              style={{
-                backgroundcolor: "var(--primary-color-base)",
-                color: "var(--white)",
-              }}
-              Icon={FaCoins}
-              value={"$" + String(accumulatedEarn)}
-            />
-          </>
-        )}
+        <BadgeWithLabel
+          label="Dinero acumulado"
+          style={{
+            backgroundcolor: "var(--primary-color-base)",
+            color: "var(--white)",
+          }}
+          Icon={FaCoins}
+          value={"$" + String(match.accumulatedEarn)}
+        />
       </Header>
       <Outlet />
     </MainContainer>

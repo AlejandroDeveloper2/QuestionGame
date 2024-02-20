@@ -9,7 +9,7 @@ const AdminQuizControlsContainer = styled.div`
   gap: var(--spacing-md);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   max-height: 500px;
   overflow-y: auto;
@@ -27,7 +27,8 @@ const QuestionInfoContainer = styled.div`
   width: 100%;
   gap: var(--spacing-sm);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 `;
@@ -36,6 +37,33 @@ const QuestionOptions = styled(QuestionInfoContainer)`
   flex-direction: row;
   flex-wrap: wrap;
 `;
+
+const AnswerOptions = styled(QuestionOptions)`
+  flex-direction: column;
+  ol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  p {
+    font-size: var(--font-size-md);
+    color: var(--gray);
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    font-family: var(--primary-font-family);
+  }
+
+  @media (min-width: ${breakpoints.tablet}px) {
+    p {
+      font-size: var(--font-size-xl);
+    }
+  }
+`;
+
+const MatchControlsContainer = styled(AnswerOptions)``;
+const QuizWildcardsContainer = styled(AnswerOptions)``;
 
 const AdminQuizControlsFooter = styled.div`
   width: 100%;
@@ -86,6 +114,25 @@ const LeaveGameButtonStyle: ButtonStyleType = {
   color: "var(--white)",
 };
 
+/*Answers options Button styles*/
+const AnswerOptionButtonStyle: ButtonStyleType = {
+  ...StartTimerButtonStyle,
+  background: "var(--primary-color-base)",
+  color: "var(--white)",
+};
+
+const CallButtonStyle: ButtonStyleType = {
+  ...StartTimerButtonStyle,
+  background: "var(--primary-color-base)",
+  color: "var(--white)",
+};
+
+const DividedButtonStyle: ButtonStyleType = {
+  ...StartTimerButtonStyle,
+  background: "var(--white)",
+  color: "var(--primary-color-base)",
+};
+
 /*Footer Button Styles */
 const FinishGameButtonStyle: ButtonStyleType = {
   background: "var(--red)",
@@ -107,16 +154,44 @@ const RestartGameButtonStyle: ButtonStyleType = {
   background: "var(--orange)",
 };
 
+const ContinueGameButtonStyle: ButtonStyleType = {
+  ...FinishGameButtonStyle,
+  width: {
+    sm: 100,
+    md: 100,
+    lg: 150,
+  },
+  height: {
+    sm: 60,
+    md: 60,
+    lg: 70,
+  },
+  background: "var(--primary-color-base)",
+};
+
+const StopGameButtonStyle: ButtonStyleType = {
+  ...ContinueGameButtonStyle,
+  background: "var(--red)",
+};
+
 export {
   AdminQuizControlsContainer,
   QuestionInfoContainer,
   QuestionOptions,
+  AnswerOptions,
+  MatchControlsContainer,
+  QuizWildcardsContainer,
   AdminQuizControlsFooter,
   StartTimerButtonStyle,
   StopTimerButtonStyle,
   NewAttemptButtonStyle,
   LeaveGameButtonStyle,
+  AnswerOptionButtonStyle,
+  CallButtonStyle,
+  DividedButtonStyle,
   RestartQuestionButtonStyle,
   FinishGameButtonStyle,
   RestartGameButtonStyle,
+  ContinueGameButtonStyle,
+  StopGameButtonStyle,
 };

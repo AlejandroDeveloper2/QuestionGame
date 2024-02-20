@@ -21,10 +21,14 @@ const useAudio = (url: string) => {
     };
   }, [audio]);
 
+  const replayAudio = () => {
+    audio.currentTime = 0;
+  };
+
   const stopAudio = () => {
     setPlaying(false);
   };
-  return { playing, toggle, stopAudio };
+  return { playing, toggle, stopAudio, replayAudio };
 };
 
 export default useAudio;

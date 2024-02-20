@@ -10,12 +10,16 @@ import { CustomForm, LoaderBar, LoadingWindow, Logo } from "@components/index";
 
 import { FormContainer, PageContainer } from "./StartPage.style";
 import { IconIllustration1, IconIllustration2 } from "@assets/index";
+import useQuizGameStore from "@zustand/quizGameStore";
 
 const StartPage = (): JSX.Element => {
   const navigate = useNavigate();
+  const setPlayerName = useQuizGameStore((state) => state.setPlayerName);
+
   const { formRef, data, errors, handleChange, handleSubmit } =
     useForm<StartFormData>(startFormInitialValues, [validateUsername], () => {
-      navigate(`/quiz/${data.username}`);
+      setPlayerName(data.username);
+      navigate("/quiz");
     });
   const { isScreenLoading, load } = useLoader();
 
