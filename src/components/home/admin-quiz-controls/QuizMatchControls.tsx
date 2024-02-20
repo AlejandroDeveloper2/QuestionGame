@@ -42,6 +42,8 @@ const QuizMatchControls = (): JSX.Element => {
             quiz.matchResult === "EnEspera" ||
             quiz.matchResult === "SinResponder" ||
             (quiz.isGameCompleted && quiz.consolationAward === "") ||
+            (quiz.matchResult === "Incorrecta" &&
+              quiz.consolationAward === "") ||
             quiz.isGameCompleted
           }
           type="button"
