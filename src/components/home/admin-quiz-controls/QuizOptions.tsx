@@ -59,7 +59,8 @@ const QuizOptions = (): JSX.Element => {
           match.incorrectAnswers > 1 ||
           quiz.matchResult === "Correcta" ||
           quiz.matchResult === "EnEspera" ||
-          quiz.matchResult === "SinResponderRetirado"
+          quiz.matchResult === "SinResponderRetirado" ||
+          quiz.consolationAward !== ""
         }
         type="button"
         Icon={GrNew}

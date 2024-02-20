@@ -40,7 +40,7 @@ interface Quiz {
   playerName: string;
   questions: Question[];
   matchResult: MatchResult;
-  consolationAward: number;
+  consolationAward: string;
   isMatchStarted: boolean;
   isNewAttempt: boolean;
   isQuizStarted: boolean;

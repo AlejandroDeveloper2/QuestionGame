@@ -59,7 +59,7 @@ export const validateEmptyFields = <T>(
           addError({ message: "Todos los campos son requeridos!" });
         } else wrongFields.push({ fieldkey: key, error: false });
       } else if (typeof element === "number") {
-        if (element === 0) {
+        if (element === null) {
           wrongFields.push({ fieldkey: key, error: true });
           addError({ message: "Todos los campos son requeridos!" });
         } else if (element < 0) {

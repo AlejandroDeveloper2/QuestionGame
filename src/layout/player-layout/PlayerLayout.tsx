@@ -26,6 +26,7 @@ const PlayerLayout = (): JSX.Element => {
     refreshInterval: 100,
     onSuccess: (quiz) => {
       setQuiz(quiz);
+      console.log(quiz.consolationAward);
     },
   });
   useSWR("api/collections/match/records", getMatch, {

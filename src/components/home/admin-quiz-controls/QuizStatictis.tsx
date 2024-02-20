@@ -72,8 +72,9 @@ const QuizStatictis = (): JSX.Element => {
             : "Retirado"
         }
       />
-      {quiz.matchResult === "Incorrecta" ||
-      quiz.matchResult === "SinResponderRetirado" ? (
+      {(quiz.matchResult === "Incorrecta" ||
+        quiz.matchResult === "SinResponderRetirado") &&
+      quiz.consolationAward === "" ? (
         <ConsolationAwardForm />
       ) : null}
     </>

@@ -83,6 +83,9 @@ interface QuizMatchStore {
     stopMatch: (id: string) => Promise<void>,
     updateQuiz: (id: string, matchResult: MatchResult) => Promise<void>
   ) => Promise<void>;
+  setConsolationAwardToAccumulatedEarn: (
+    consolationAward: string
+  ) => Promise<void>;
   exitMatch: (
     quiz: Quiz,
     leaveGame: (id: string) => Promise<void>

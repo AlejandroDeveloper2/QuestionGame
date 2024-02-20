@@ -16,7 +16,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     playerName: "",
     questions: [],
     matchResult: "EnEspera",
-    consolationAward: 0,
+    consolationAward: "",
     isQuizStarted: false,
     isQuizFinished: false,
     isMatchStarted: false,
@@ -97,7 +97,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
           isMatchStarted: false,
           isNewAttempt: false,
           matchResult: "EnEspera",
-          consolationAward: 0,
+          consolationAward: "",
           playerName: "",
         },
         { $autoCancel: false }
@@ -220,7 +220,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
         {
           isGameCompleted: false,
           matchResult: "EnEspera",
-          consolationAward: 0,
+          consolationAward: "",
         },
         { $autoCancel: false }
       );

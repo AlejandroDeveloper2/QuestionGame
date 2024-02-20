@@ -59,20 +59,28 @@ export const validateAnswer = async (
       ...updatedMatch,
       answerStyle: newStyles,
     };
+    await stopMatch(quiz.id);
   } else {
     if (!updatedMatch.isDividedWildCard) {
       updatedMatch = {
         ...updatedMatch,
         accumulatedEarn:
-          quiz.consolationAward === 0
+          quiz.consolationAward === ""
             ? updatedMatch.accumulatedEarn
-            : quiz.consolationAward,
+            : window.parseInt(quiz.consolationAward),
       };
     }
-    if (updatedMatch.selectedAnswers > 1 || !updatedMatch.isDividedWildCard) {
-      resetDividedWildCard();
+    if (
+      updatedMatch.selectedAnswers > 1 ||
+      updatedMatch.selectedAnswers === 0
+    ) {
+      console.log(updatedMatch.selectedAnswers);
       await updateQuiz(quiz.id, "Incorrecta");
-    } else await updateQuiz(quiz.id, "EnEspera");
+      await resetDividedWildCard();
+      await stopMatch(quiz.id);
+    } else {
+      await updateQuiz(quiz.id, "EnEspera");
+    }
 
     const newStyles = getIncorrectAnswerStyle(
       idAnswer,
@@ -84,8 +92,6 @@ export const validateAnswer = async (
       answerStyle: newStyles,
     };
   }
-  await stopMatch(quiz.id);
-
   return updatedMatch;
 };
 

@@ -55,7 +55,9 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
             label="Premio seguro"
             Icon={TbMoneybag}
             style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
-            value={"$" + String(quiz.consolationAward)}
+            value={
+              quiz.consolationAward === "" ? "$0" : "$" + quiz.consolationAward
+            }
           />
         </MessageContainer>
       ) : null}

@@ -155,7 +155,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
       /*Validate answer */
       const { correctAnswers, incorrectAnswers, accumulatedEarn, answerStyle } =
         await validateAnswer(
-          get().match,
+          { ...get().match, selectedAnswers },
           idAnswer,
           selectedAnswer,
           quiz,
@@ -225,6 +225,19 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
         },
         { $autoCancel: false }
       );
+      set({ match: updatedMatch });
+    } catch (_e: unknown) {
+      const parsedError = _e as ServerResponse;
+      console.log(parsedError);
+    }
+  },
+  setConsolationAwardToAccumulatedEarn: async (consolationAward: string) => {
+    try {
+      const updatedMatch: Match = await client
+        .collection("match")
+        .update(matchId, {
+          accumulatedEarn: window.parseInt(consolationAward),
+        });
       set({ match: updatedMatch });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;

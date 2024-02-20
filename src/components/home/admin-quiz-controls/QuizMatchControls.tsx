@@ -40,8 +40,9 @@ const QuizMatchControls = (): JSX.Element => {
         <ButtonIconOnly
           disabled={
             quiz.matchResult === "EnEspera" ||
-            quiz.isGameCompleted ||
-            quiz.matchResult === "SinResponder"
+            quiz.matchResult === "SinResponder" ||
+            (quiz.isGameCompleted && quiz.consolationAward === "") ||
+            quiz.isGameCompleted
           }
           type="button"
           Icon={TbDoorExit}

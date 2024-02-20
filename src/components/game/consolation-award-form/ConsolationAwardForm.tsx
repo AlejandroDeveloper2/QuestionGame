@@ -5,13 +5,17 @@ import { consolationAwardFormInitialValues } from "@constants/formsInitialValues
 import { useForm } from "@hooks/index";
 import { ConsolationAwardFormData } from "@models/FormDataModel";
 
-import { CustomForm } from "@components/index";
 import useQuizGameStore from "@zustand/quizGameStore";
+import useQuizMatchStore from "@zustand/quizMatchStore";
+
+import { CustomForm } from "@components/index";
 
 const ConsolationAwardForm = (): JSX.Element => {
   const { quiz, setConsolationAward } = useQuizGameStore();
+  const { setConsolationAwardToAccumulatedEarn } = useQuizMatchStore();
   const action = () => {
     setConsolationAward(quiz.id, data);
+    setConsolationAwardToAccumulatedEarn(String(data.consolationAward));
   };
 
   const { formRef, data, errors, handleChange, handleSubmit } =
