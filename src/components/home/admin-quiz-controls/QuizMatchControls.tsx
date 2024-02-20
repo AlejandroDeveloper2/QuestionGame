@@ -44,7 +44,9 @@ const QuizMatchControls = (): JSX.Element => {
             (quiz.isGameCompleted && quiz.consolationAward === "") ||
             (quiz.matchResult === "Incorrecta" &&
               quiz.consolationAward === "") ||
-            quiz.isGameCompleted
+            quiz.isGameCompleted ||
+            (quiz.matchResult === "SinResponderRetirado" &&
+              quiz.consolationAward === "")
           }
           type="button"
           Icon={TbDoorExit}

@@ -33,7 +33,7 @@ const WildCardsMenu = (): JSX.Element => {
           disabled={
             match.isDividedWildCard ||
             quiz.isGameCompleted ||
-            !quiz.isMatchStarted
+            (!quiz.isMatchStarted && quiz.matchResult !== "SinResponder")
           }
           type="button"
           Icon={FaDivide}
@@ -59,7 +59,9 @@ const WildCardsMenu = (): JSX.Element => {
         />
         <ButtonIconOnly
           disabled={
-            match.isCallWildCard || quiz.isGameCompleted || !quiz.isMatchStarted
+            match.isCallWildCard ||
+            quiz.isGameCompleted ||
+            (!quiz.isMatchStarted && quiz.matchResult !== "SinResponder")
           }
           type="button"
           Icon={IoCall}
