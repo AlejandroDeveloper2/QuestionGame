@@ -56,7 +56,7 @@ const QuizOptions = (): JSX.Element => {
         disabled={
           quiz.isGameCompleted ||
           quiz.isNewAttempt ||
-          match.incorrectAnswers > 1 ||
+          match.incorrectAnswers > 2 ||
           quiz.matchResult === "Correcta" ||
           quiz.matchResult === "EnEspera" ||
           quiz.matchResult === "SinResponderRetirado" ||
