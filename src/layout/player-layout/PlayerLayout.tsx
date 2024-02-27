@@ -26,7 +26,6 @@ const PlayerLayout = (): JSX.Element => {
     refreshInterval: 100,
     onSuccess: (quiz) => {
       setQuiz(quiz);
-      console.log(quiz.consolationAward);
     },
   });
   useSWR("api/collections/match/records", getMatch, {
@@ -41,7 +40,7 @@ const PlayerLayout = (): JSX.Element => {
     <MainContainer>
       <Header
         style={{
-          height: { sm: 400, md: 170, lg: 170 },
+          height: { sm: 480, md: 180, lg: 180 },
           direction: { sm: "column", md: "row", lg: "row" },
         }}
       >
@@ -66,15 +65,21 @@ const PlayerLayout = (): JSX.Element => {
             value={match.currentQuestion?.difficulty}
           />
         </div>
+
         <BadgeWithLabel
           label="Tiempo restante"
-          style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}
+          style={{
+            backgroundcolor: "var(--gray)",
+            color: "var(--white)",
+            padding: "var(--spacing-xl)",
+            fontsize: "var(--font-size-3xl)",
+          }}
           Icon={FaHourglass}
           value={seconds + "s"}
         />
 
         <TitleContainer>
-          <h1>{`Pregunta ${match.currentQuestionIndex + 1}/${
+          <h1>{`${match.currentQuestionIndex + 1}/${
             match?.randomQuestions?.length
           }`}</h1>
 
@@ -89,6 +94,8 @@ const PlayerLayout = (): JSX.Element => {
           style={{
             backgroundcolor: "var(--primary-color-base)",
             color: "var(--white)",
+            padding: "var(--spacing-xl)",
+            fontsize: "var(--font-size-3xl)",
           }}
           Icon={FaCoins}
           value={"$" + String(match.accumulatedEarn)}

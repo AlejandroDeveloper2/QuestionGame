@@ -31,6 +31,8 @@ interface ModalStyleProps {
 interface BadgeStyleProps {
   backgroundcolor: string;
   color: string;
+  padding?: string;
+  fontsize?: string;
 }
 
 type FlexDirection = "row" | "column";

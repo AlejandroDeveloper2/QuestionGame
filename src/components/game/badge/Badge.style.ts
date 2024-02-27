@@ -4,7 +4,8 @@ import { BadgeStyleProps } from "@models/StylePropsModels";
 import { breakpoints } from "@styles/Breakpoints";
 
 const Badge = styled.div<BadgeStyleProps>`
-  padding: var(--spacing-sm) var(--spacing-sm);
+  padding: ${({ padding }: BadgeStyleProps) =>
+    padding ? padding : "var(--spacing-sm) var(--spacing-sm)"};
   border-radius: var(--radius-sm);
   background-color: ${({ backgroundcolor }: BadgeStyleProps) =>
     backgroundcolor};
@@ -20,7 +21,8 @@ const Badge = styled.div<BadgeStyleProps>`
     color: ${({ color }: BadgeStyleProps) => color};
   }
   span {
-    font-size: var(--font-size-xl);
+    font-size: ${({ fontsize }: BadgeStyleProps) =>
+      fontsize ? fontsize : "var(--font-size-xl)"};
     font-family: var(--primary-font-family);
     color: ${({ color }: BadgeStyleProps) => color};
     text-align: center;
@@ -28,9 +30,8 @@ const Badge = styled.div<BadgeStyleProps>`
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
-    span {
-      font-size: var(--font-size-2xl);
-    }
+    font-size: ${({ fontsize }: BadgeStyleProps) =>
+      fontsize ? fontsize : "var(--font-size-2xl)"};
   }
 `;
 
