@@ -4,22 +4,35 @@ import { breakpoints } from "@styles/Breakpoints";
 import { ButtonStyleType } from "@models/StylePropsModels";
 
 const AdminQuizControlsContainer = styled.div`
-  width: 300px;
+  width: 100%;
   height: auto;
   gap: var(--spacing-md);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  max-height: 500px;
+  max-height: 560px;
   overflow-y: auto;
 
+  /* @media (min-width: ${breakpoints.tablet}px) {
+    width: 100;
+  } */
   @media (min-width: ${breakpoints.tablet}px) {
-    width: 400px;
+    width: 650px;
+    max-height: 580px;
   }
-  @media (min-width: ${breakpoints.tablet}px) {
-    width: 500px;
-    max-height: 550px;
+`;
+
+const AnswersWildCardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xs);
+
+  @media (min-width: ${breakpoints.mobileMedium}px) {
+    flex-direction: row-reverse;
+    gap: var(--spacing-md);
   }
 `;
 
@@ -44,7 +57,7 @@ const AnswerOptions = styled(QuestionOptions)`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
   }
   p {
     font-size: var(--font-size-md);
@@ -56,6 +69,9 @@ const AnswerOptions = styled(QuestionOptions)`
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
+    ol {
+      gap: var(--spacing-sm);
+    }
     p {
       font-size: var(--font-size-xl);
     }
@@ -71,7 +87,18 @@ const AdminQuizControlsFooter = styled.div`
   flex-direction: row;
   gap: var(--spacing-sm);
   justify-content: center;
-  flex-wrap: wrap;
+  button {
+    span {
+      display: none;
+    }
+  }
+  @media (min-width: ${breakpoints.tablet}px) {
+    button {
+      span {
+        display: block;
+      }
+    }
+  }
 `;
 
 /*Quiz Options Button Styles */
@@ -117,6 +144,16 @@ const LeaveGameButtonStyle: ButtonStyleType = {
 /*Answers options Button styles*/
 const AnswerOptionButtonStyle: ButtonStyleType = {
   ...StartTimerButtonStyle,
+  width: {
+    sm: 50,
+    md: 60,
+    lg: 80,
+  },
+  height: {
+    sm: 50,
+    md: 60,
+    lg: 80,
+  },
   background: "var(--primary-color-base)",
   color: "var(--white)",
 };
@@ -138,12 +175,12 @@ const FinishGameButtonStyle: ButtonStyleType = {
   background: "var(--red)",
   color: "var(--white)",
   width: {
-    sm: 300,
+    sm: 100,
     md: 250,
     lg: 250,
   },
   height: {
-    sm: 78,
+    sm: 64,
     md: 84,
     lg: 84,
   },
@@ -182,6 +219,7 @@ export {
   MatchControlsContainer,
   QuizWildcardsContainer,
   AdminQuizControlsFooter,
+  AnswersWildCardContainer,
   StartTimerButtonStyle,
   StopTimerButtonStyle,
   NewAttemptButtonStyle,

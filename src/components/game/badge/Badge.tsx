@@ -5,9 +5,9 @@ import {
 
 import { Badge, BadgeContainer } from "./Badge.style";
 
-const BadgeBase = ({ Icon, style, value }: BadgeBaseProps): JSX.Element => {
+const BadgeBase = ({ Icon, style, value, id }: BadgeBaseProps): JSX.Element => {
   return (
-    <Badge {...style}>
+    <Badge {...style} id={id}>
       <Icon />
       <span>{value}</span>
     </Badge>
@@ -19,11 +19,12 @@ const BadgeWithLabel = ({
   style,
   label,
   value,
+  id,
 }: BadgeWithLabelProps): JSX.Element => {
   return (
     <BadgeContainer>
       <label>{label}</label>
-      <BadgeBase style={style} Icon={Icon} value={value} />
+      <BadgeBase id={id} style={style} Icon={Icon} value={value} />
     </BadgeContainer>
   );
 };

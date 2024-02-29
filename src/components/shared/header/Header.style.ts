@@ -30,8 +30,12 @@ const HeaderContainer = styled.header<HeaderStyleProps>`
   }
   div[id="difficulty-badge"] {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 5px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 60px;
+    height: 40px;
     span {
       display: none;
     }
@@ -62,6 +66,13 @@ const HeaderContainer = styled.header<HeaderStyleProps>`
     flex-direction: ${({ direction }: HeaderStyleProps) => direction.md};
     div[id="input-container"] {
       width: 400px;
+    }
+    div[id="difficulty-badge"] {
+      width: auto;
+      height: auto;
+      right: auto;
+      top: 10px;
+      left: 10px;
     }
     p {
       font-size: var(--font-size-md);

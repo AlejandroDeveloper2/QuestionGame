@@ -181,6 +181,7 @@ interface BadgeBaseProps {
   Icon: IconType;
   style: BadgeStyleProps;
   value: string;
+  id: string;
 }
 
 interface BadgeWithLabelProps extends BadgeBaseProps {

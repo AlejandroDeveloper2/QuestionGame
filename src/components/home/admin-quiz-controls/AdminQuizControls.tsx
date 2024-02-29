@@ -15,6 +15,7 @@ import QuizWildcards from "./QuizWildcards";
 import {
   AdminQuizControlsContainer,
   AdminQuizControlsFooter,
+  AnswersWildCardContainer,
   FinishGameButtonStyle,
   QuestionInfoContainer,
   RestartGameButtonStyle,
@@ -28,6 +29,7 @@ const AdminQuizControls = (): JSX.Element => {
     <>
       <AdminQuizControlsContainer>
         <BadgeWithLabel
+          id="badge-quiz-status"
           label="Estado del quiz"
           Icon={!quiz.isGameCompleted ? TbProgress : FaCheckDouble}
           style={{
@@ -39,8 +41,10 @@ const AdminQuizControls = (): JSX.Element => {
         <QuestionInfoContainer>
           <QuizStatictis />
           <QuizOptions />
-          <QuizWildcards />
-          <QuizAnswers />
+          <AnswersWildCardContainer>
+            <QuizWildcards />
+            <QuizAnswers />
+          </AnswersWildCardContainer>
           <QuizMatchControls />
         </QuestionInfoContainer>
       </AdminQuizControlsContainer>

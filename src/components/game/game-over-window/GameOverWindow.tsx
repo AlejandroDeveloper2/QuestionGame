@@ -29,6 +29,7 @@ const GameOverWindow = (): JSX.Element => {
       <PlayerFinalStatistics>
         <li>
           <BadgeWithLabel
+            id="badge-total-earns"
             label="Total Ganancias"
             Icon={FaCoins}
             style={{
@@ -44,6 +45,7 @@ const GameOverWindow = (): JSX.Element => {
         </li>
         <li>
           <BadgeWithLabel
+            id="badge-total-time"
             label="Tiempo Total"
             Icon={IoTimeOutline}
             style={{
@@ -55,6 +57,7 @@ const GameOverWindow = (): JSX.Element => {
         </li>
         <li>
           <BadgeWithLabel
+            id="badge-used-wildcards"
             label="Comodines usados"
             Icon={IoHelpBuoyOutline}
             style={{

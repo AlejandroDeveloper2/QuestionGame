@@ -15,6 +15,10 @@ const GameResultTitle = styled.h2`
   font-size: var(--font-size-4xl);
   text-align: center;
   color: var(--primary-color-base);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   span {
     color: var(--gray);
     margin-left: var(--spacing-xs);

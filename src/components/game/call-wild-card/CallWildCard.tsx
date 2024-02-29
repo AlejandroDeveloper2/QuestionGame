@@ -15,6 +15,7 @@ const CallWildCard = ({ callSeconds }: CallWildCardProps): JSX.Element => {
         <IoCall id="call-icon" />
         <p>Tienes 20 segundos para que tu amigo responda!</p>
         <BadgeWithLabel
+          id="badge-call-timer"
           label="Tiempo del comodin"
           Icon={MdOutlineTimer}
           style={{

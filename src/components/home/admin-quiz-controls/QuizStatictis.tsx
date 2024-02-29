@@ -19,6 +19,7 @@ const QuizStatictis = (): JSX.Element => {
   return (
     <>
       <BadgeWithLabel
+        id="badge-timer-status"
         label="Estado del timer"
         Icon={quiz.isMatchStarted ? MdTimelapse : MdPause}
         style={{
@@ -29,6 +30,7 @@ const QuizStatictis = (): JSX.Element => {
       />
 
       <BadgeWithLabel
+        id="badge-correct-answer"
         label="Respuesta correcta "
         Icon={FaCheck}
         style={{
@@ -39,6 +41,7 @@ const QuizStatictis = (): JSX.Element => {
       />
 
       <BadgeWithLabel
+        id="badge-player-answer"
         label="Respuesta del jugador"
         Icon={
           quiz.matchResult === "SinResponder"

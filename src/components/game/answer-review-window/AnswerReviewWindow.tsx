@@ -52,6 +52,7 @@ const AnswerReviewWindow = ({ closeModal }: AnswerReviewProps): JSX.Element => {
           <CheckSvg />
           <p id="match-result-p">¡Ganancia Acumulada!</p>
           <BadgeWithLabel
+            id="badge-consolation-award"
             label="Premio seguro"
             Icon={TbMoneybag}
             style={{ backgroundcolor: "var(--gray)", color: "var(--white)" }}

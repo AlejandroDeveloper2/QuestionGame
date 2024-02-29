@@ -12,7 +12,7 @@ const QuestionContainer = styled.div`
 `;
 
 const QuestionBox = styled.div`
-  width: 340px;
+  width: 90%;
   border-radius: var(--radius-sm);
   position: relative;
   display: grid;
@@ -34,12 +34,16 @@ const QuestionBox = styled.div`
     left: -40px;
     top: 25%;
     bottom: 0;
+    display: none;
   }
 
   @media (min-width: ${breakpoints.tablet}px) {
     width: 600px;
     p {
       font-size: var(--font-size-4xl);
+    }
+    div[id="question-badge"] {
+      display: block;
     }
   }
   @media (min-width: ${breakpoints.desktop}px) {
@@ -58,7 +62,7 @@ const QuestionBox = styled.div`
 `;
 
 const AnswerList = styled.ul`
-  width: 340px;
+  width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -4,7 +4,7 @@ import styled from "styled-components";
 const WildCardsMenuContainer = styled.nav`
   width: 100%;
   height: auto;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   gap: var(--spacing-sm);
