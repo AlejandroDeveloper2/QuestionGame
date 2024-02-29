@@ -24,12 +24,12 @@ const useQuizMatchLoad = () => {
   }, [match.currentQuestionIndex, quiz.isNewAttempt]);
 
   useEffect(() => {
-    if (match.incorrectAnswers > 1) {
+    if (match.incorrectAnswers === 0) {
       giveNewAttempt(quiz.id, false);
-    } else if (quiz.matchResult !== "EnEspera") {
+    } else if (quiz.matchResult === "Correcta" && quiz.isNewAttempt) {
       giveNewAttempt(quiz.id, false);
     }
-  }, [match.incorrectAnswers, quiz.matchResult]);
+  }, [match.incorrectAnswers, quiz.matchResult, quiz.isNewAttempt]);
 
   /*Validar si se le acaba el tiempo y se le da una oportunidad con una pregunta dificil */
   useEffect(() => {

@@ -10,8 +10,10 @@ const AnswerBox = styled.div<AnswerOptionStyleProps>`
   border-radius: var(--radius-sm);
   border: 4px ${({ bordercolor }: AnswerOptionStyleProps) => bordercolor} solid; //var(--primary-color-base)
   position: relative;
-  display: grid;
-  place-content: center;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--spacing-md);
   background-color: ${({ background }: AnswerOptionStyleProps) =>
     background}; //var(--primary-color-100);
   transition: all 0.6s ease;
@@ -51,11 +53,6 @@ const AnswerMarkBox = styled.div`
   display: grid;
   place-content: center;
   transition: transform ease 0.6s;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 10px;
-  margin: auto;
 
   span {
     font-family: var(--primary-font-family);

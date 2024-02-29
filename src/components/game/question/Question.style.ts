@@ -31,10 +31,11 @@ const QuestionBox = styled.div`
   }
   div[id="question-badge"] {
     position: absolute;
-    left: -40px;
+    left: -20px;
     top: 25%;
     bottom: 0;
     display: none;
+    height: 60px;
   }
 
   @media (min-width: ${breakpoints.tablet}px) {

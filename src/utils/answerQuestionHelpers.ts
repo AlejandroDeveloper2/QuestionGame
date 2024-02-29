@@ -74,7 +74,6 @@ export const validateAnswer = async (
       updatedMatch.selectedAnswers > 1 ||
       updatedMatch.selectedAnswers === 0
     ) {
-      console.log(updatedMatch.selectedAnswers);
       await updateQuiz(quiz.id, "Incorrecta");
       await resetDividedWildCard();
       await stopMatch(quiz.id);
