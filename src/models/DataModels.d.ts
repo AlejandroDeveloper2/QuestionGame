@@ -55,6 +55,14 @@ interface Match {
   answerStyle: AnswerOptionStyleProps[];
 }
 
+interface Auth {
+  token: string | null;
+  record: {
+    username: string;
+    email: string;
+  };
+}
+
 interface ServerResponse {
   message: string;
   code: number;
@@ -70,5 +78,6 @@ export type {
   AnswerMark,
   Match,
   Quiz,
+  Auth,
   ServerResponse,
 };

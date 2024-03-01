@@ -53,7 +53,13 @@ const HeaderContainer = styled.header<HeaderStyleProps>`
     }
   }
 
-  button {
+  button[type="button"] {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  button[type="submit"] {
     position: absolute;
     bottom: -15%;
     margin: auto;

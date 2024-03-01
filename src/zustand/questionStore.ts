@@ -12,7 +12,7 @@ const useQuestionStore = create<QuestionStore>((set) => ({
   isLoading: false,
   questions: [],
   updateQuizQuestions: async (questions: Question[]) => {
-    const quizId = import.meta.env.VITE_QUIZ_ID_LOCAL;
+    const quizId = import.meta.env.VITE_QUIZ_ID_PRODUCTION;
     try {
       await client
         .collection("quiz")

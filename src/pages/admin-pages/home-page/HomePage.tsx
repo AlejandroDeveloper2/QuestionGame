@@ -4,7 +4,7 @@ import {
   MdOutlineAccessTime,
   MdOutlineCategory,
 } from "react-icons/md";
-import { FaRegCircleQuestion } from "react-icons/fa6";
+import { FaRegCircleQuestion, FaPowerOff } from "react-icons/fa6";
 import { FaRegStar, FaCoins } from "react-icons/fa";
 
 import useQuestionStore from "@zustand/questionStore";
@@ -14,6 +14,7 @@ import useQuizGameStore from "@zustand/quizGameStore";
 
 import {
   AdminQuizControls,
+  ButtonIconOnly,
   ButtonWithIcon,
   CardList,
   Empty,
@@ -24,6 +25,7 @@ import {
 } from "@components/index";
 
 import { TitleContainer } from "@components/shared/header/Header.style";
+import useAuthStore from "@zustand/authStore";
 
 const HomePage = (): JSX.Element => {
   const questions = useQuestionStore((state) => state.questions);
@@ -33,6 +35,8 @@ const HomePage = (): JSX.Element => {
     "name"
   );
   const quizStore = useQuizGameStore();
+  const logout = useAuthStore((state) => state.logout);
+
   const { closeModal, openModal } = useModal();
 
   return (
@@ -50,6 +54,18 @@ const HomePage = (): JSX.Element => {
           direction: { sm: "column", md: "column", lg: "column" },
         }}
       >
+        <ButtonIconOnly
+          type="button"
+          title="Cerrar sesión!"
+          onClick={logout}
+          style={{
+            background: "var(--white)",
+            color: "var(--primary-color-base)",
+            width: { sm: 60, md: 60, lg: 70 },
+            height: { sm: 60, md: 60, lg: 70 },
+          }}
+          Icon={FaPowerOff}
+        />
         <TitleContainer>
           <h1>Panel de administración</h1>
         </TitleContainer>

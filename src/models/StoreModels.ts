@@ -2,6 +2,7 @@ import { NavigateFunction } from "react-router-dom";
 
 import {
   Answer,
+  Auth,
   Category,
   Match,
   MatchResult,
@@ -12,6 +13,7 @@ import {
   AddCategoryFormData,
   AddQuestionFormData,
   ConsolationAwardFormData,
+  LoginFormData,
 } from "./FormDataModel";
 
 interface QuizGameStore {
@@ -105,4 +107,19 @@ interface CategoryStore {
   ) => Promise<void>;
 }
 
-export type { QuizGameStore, QuestionStore, QuizMatchStore, CategoryStore };
+interface AuthStore {
+  authData: Auth;
+  isValid: boolean;
+  isLoading: boolean;
+  login: (userCredentials: LoginFormData) => Promise<void>;
+  refreshUserAuth: () => Promise<void>;
+  logout: () => void;
+}
+
+export type {
+  QuizGameStore,
+  QuestionStore,
+  QuizMatchStore,
+  CategoryStore,
+  AuthStore,
+};
