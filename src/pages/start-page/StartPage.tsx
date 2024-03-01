@@ -2,25 +2,34 @@ import { FaRegUser, FaPlay } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { useLoader, useForm } from "@hooks/index";
+import useQuizGameStore from "@zustand/quizGameStore";
+import { validationSchema } from "./ValidationSchema";
+
 import { StartFormData } from "@models/FormDataModel";
-import { startFormInitialValues } from "@constants/formsInitialValues";
-import { validateUsername } from "@utils/formValidations";
+import {
+  initialErrors,
+  initialValues,
+} from "@constants/form-initial-values/StartInitialValues";
 
 import { CustomForm, LoaderBar, LoadingWindow, Logo } from "@components/index";
 
 import { FormContainer, PageContainer } from "./StartPage.style";
 import { IconIllustration1, IconIllustration2 } from "@assets/index";
-import useQuizGameStore from "@zustand/quizGameStore";
 
 const StartPage = (): JSX.Element => {
   const navigate = useNavigate();
   const setPlayerName = useQuizGameStore((state) => state.setPlayerName);
 
   const { formRef, data, errors, handleChange, handleSubmit } =
-    useForm<StartFormData>(startFormInitialValues, [validateUsername], () => {
-      setPlayerName(data.username);
-      navigate("/quiz");
-    });
+    useForm<StartFormData>(
+      initialValues,
+      initialErrors,
+      validationSchema,
+      () => {
+        setPlayerName(data.username);
+        navigate("/quiz");
+      }
+    );
   const { isScreenLoading, load } = useLoader();
 
   return (
@@ -50,6 +59,7 @@ const StartPage = (): JSX.Element => {
                 label="Nombre del jugador"
                 name="username"
                 value={data.username}
+                errorMessage={errors.username.message}
                 Icon={FaRegUser}
                 onChange={handleChange}
               />
@@ -66,7 +76,6 @@ const StartPage = (): JSX.Element => {
               }}
               Icon={FaPlay}
             />
-            <CustomForm.ErrorBox errors={errors} />
           </CustomForm>
         </FormContainer>
       </PageContainer>

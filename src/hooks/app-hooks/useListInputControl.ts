@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const useListInputControl = <S>(options: S[]) => {
-  const [optionList, setOptionList] = useState<S[]>(options);
+const useListInputControl = <T>(
+  options: T[],
+  key: string,
+  updateFormData: <T>(fieldValue: T, key: string) => void
+) => {
+  const [optionList, setOptionList] = useState<T[]>(options);
 
-  const addOption = (option: S): void => {
+  useEffect(() => {
+    updateFormData<T[]>(optionList, key);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionList]);
+
+  const addOption = (option: T): void => {
     setOptionList([...optionList, option]);
   };
 

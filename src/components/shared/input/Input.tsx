@@ -6,6 +6,8 @@ import {
   SelectProps,
 } from "@models/ComponentPropsModels";
 
+import { ErrorMessage } from "@components/index";
+
 import {
   InputBody,
   InputContainer,
@@ -14,7 +16,7 @@ import {
 } from "./Input.style";
 
 const BaseInput = (props: BaseInputProps): JSX.Element => {
-  const { label, name, Icon, children } = props;
+  const { label, name, errorMessage, Icon, children } = props;
   return (
     <InputContainer id="input-container">
       <label htmlFor={name}>{label}</label>
@@ -22,16 +24,31 @@ const BaseInput = (props: BaseInputProps): JSX.Element => {
         <Icon id="input-icon" />
         {children}
       </InputBody>
+      <ErrorMessage message={errorMessage} />
     </InputContainer>
   );
 };
 
 const Input = (props: InputProps): JSX.Element => {
-  const { label, type, placeholder, name, Icon, value, disabled, onChange } =
-    props;
+  const {
+    label,
+    type,
+    placeholder,
+    name,
+    Icon,
+    value,
+    errorMessage,
+    disabled,
+    onChange,
+  } = props;
 
   return (
-    <BaseInput label={label} Icon={Icon} name={name}>
+    <BaseInput
+      label={label}
+      Icon={Icon}
+      name={name}
+      errorMessage={errorMessage}
+    >
       <InputElement
         type={type}
         placeholder={placeholder}
@@ -45,10 +62,24 @@ const Input = (props: InputProps): JSX.Element => {
 };
 
 const Select = (props: SelectProps): JSX.Element => {
-  const { label, name, Icon, disabled, options, inputKey, onChange, value } =
-    props;
+  const {
+    label,
+    name,
+    Icon,
+    disabled,
+    options,
+    inputKey,
+    errorMessage,
+    onChange,
+    value,
+  } = props;
   return (
-    <BaseInput label={label} Icon={Icon} name={name}>
+    <BaseInput
+      label={label}
+      Icon={Icon}
+      name={name}
+      errorMessage={errorMessage}
+    >
       <SelectElement
         disabled={disabled ? disabled : false}
         onChange={onChange}

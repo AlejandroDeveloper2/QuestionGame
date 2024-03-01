@@ -1,15 +1,19 @@
 import { CgRename } from "react-icons/cg";
 import { MdOutlineCancel, MdClose } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
+import { IoMdAdd } from "react-icons/io";
 
-import { addAnswerFormInitialValues } from "@constants/formsInitialValues";
 import { AddAnswerFormProps } from "@models/ComponentPropsModels";
 import { AddAnswerFormData } from "@models/FormDataModel";
+import {
+  initialValues,
+  initialErrors,
+} from "@constants/form-initial-values/AnswerFormInitialValues";
 
-import { useComposedForm } from "@hooks/index";
+import { useForm, useMultiOptionInput } from "@hooks/index";
+import { validationSchema } from "./ValidationSchema";
 
 import { CustomForm } from "@components/index";
-import { IoMdAdd } from "react-icons/io";
 
 const AddAnswerForm = ({
   addOption,
@@ -20,17 +24,20 @@ const AddAnswerForm = ({
     toggleForm();
   };
 
-  const { formRef, data, errors, handleChange, handleSubmit, markOption } =
-    useComposedForm<AddAnswerFormData, boolean>(
-      addAnswerFormInitialValues,
-      [],
-      action,
-      {
-        options: [true, false],
-        defaultOption: false,
-        inputKey: "isCorrectAnswer",
-      }
+  const { formRef, data, errors, updateFormData, handleChange, handleSubmit } =
+    useForm<AddAnswerFormData>(
+      initialValues,
+      initialErrors,
+      validationSchema,
+      action
     );
+
+  const { markOption } = useMultiOptionInput<boolean>(
+    [true, false],
+    false,
+    "isCorrectAnswer",
+    updateFormData
+  );
 
   return (
     <CustomForm formRef={formRef} handleSubmit={handleSubmit}>
@@ -44,6 +51,7 @@ const AddAnswerForm = ({
           name="answerText"
           value={data.answerText}
           Icon={CgRename}
+          errorMessage={errors.answerText.message}
           onChange={handleChange}
         />
         <CustomForm.MultiOptionInput
@@ -53,6 +61,7 @@ const AddAnswerForm = ({
           icons={[FaCheck, MdClose]}
           selectedOption={data.isCorrectAnswer}
           markOption={markOption}
+          errorMessage={errors.isCorrectAnswer.message}
         />
       </CustomForm.FieldSet>
       <CustomForm.Button
@@ -81,7 +90,6 @@ const AddAnswerForm = ({
         Icon={MdOutlineCancel}
         type="button"
       />
-      <CustomForm.ErrorBox errors={errors} />
     </CustomForm>
   );
 };

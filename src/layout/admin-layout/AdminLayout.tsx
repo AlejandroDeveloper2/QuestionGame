@@ -12,15 +12,13 @@ import {
   useModal,
   useQuizMatchLoad,
 } from "@hooks/index";
-import {
-  addCategoryFormInitialValues,
-  addQuestionFormInitialValues,
-} from "@constants/formsInitialValues";
-
 import { getQuiz } from "@services/questions.service";
 import { getMatch } from "@services/match.service";
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
+
+import { initialValues } from "@constants/form-initial-values/CategoryFormInitialValues";
+import { initialValues as questionInitialValues } from "@constants/form-initial-values/QuestionFormInitialValues";
 
 import {
   Navigation,
@@ -75,7 +73,7 @@ const AdminLayout = (): JSX.Element => {
           isAddAnswerFormOpen={isAddAnswerFormOpen}
           closeModal={closeModal}
           toggleForm={toggleForm}
-          initialValues={addQuestionFormInitialValues}
+          initialValues={questionInitialValues}
         />
       </Modal>
       <Modal
@@ -86,7 +84,7 @@ const AdminLayout = (): JSX.Element => {
       >
         <AddCategoryForm
           mode="add"
-          initialValues={addCategoryFormInitialValues}
+          initialValues={initialValues}
           closeModal={closeSecondModal}
         />
       </Modal>

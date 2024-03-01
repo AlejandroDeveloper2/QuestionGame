@@ -20,10 +20,6 @@ const ErrorMessageContainer = styled.div`
     text-transform: capitalize;
     color: var(--red-light);
   }
-  svg {
-    fill: var(--red-light);
-    font-size: var(--font-size-2xl);
-  }
 
   @media (min-width: ${breakpoints.tablet}px) {
     p {

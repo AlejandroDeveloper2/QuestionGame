@@ -16,15 +16,6 @@ type MatchResult =
   | "EnEspera"
   | "SinResponderRetirado";
 
-interface Error {
-  message: string;
-}
-
-interface ValidationType {
-  fieldkey: string;
-  error: boolean;
-}
-
 interface Answer extends AddAnswerFormData {}
 
 interface Question extends AddQuestionFormData {
@@ -73,8 +64,6 @@ export type {
   MatchResult,
   ScreenType,
   Difficulty,
-  Error,
-  ValidationType,
   Answer,
   Question,
   Category,

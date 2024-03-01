@@ -23,7 +23,7 @@ import {
 } from "@utils/answerQuestionHelpers";
 import { initialAnswerStyle } from "@constants/initialAnswerStyles";
 
-const matchId = import.meta.env.VITE_MATCH_ID_PRODUCTION;
+const matchId = import.meta.env.VITE_MATCH_ID_LOCAL;
 
 const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
   match: {
@@ -119,7 +119,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
       const expertRandomQuestions: Question[] = getRandomQuestionsPerCategory(
         quiz.questions,
         "Experto",
-        46
+        5
       );
       const finalRandomQuestions: Question[] = shuffleQuestionsAnswer(
         basicRandomQuestions.concat(

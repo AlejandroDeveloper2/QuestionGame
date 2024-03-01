@@ -60,6 +60,7 @@ const HomePage = (): JSX.Element => {
           name="question"
           value={searchValue}
           Icon={GrSearch}
+          errorMessage=""
           onChange={handleSearch}
         />
         <ButtonWithIcon

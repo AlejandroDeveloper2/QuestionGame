@@ -50,22 +50,4 @@ const FieldSetContainer = styled.fieldset<FieldSetStyleProps>`
   }
 `;
 
-const ErrorBoxContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  justify-content: flex-start;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding-bottom: var(--spacing-md);
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 100px;
-
-  @media (min-width: ${breakpoints.desktop}px) {
-    gap: var(--spacing-md);
-  }
-`;
-
-export { FormBody, FieldSetContainer, ErrorBoxContainer };
+export { FormBody, FieldSetContainer };

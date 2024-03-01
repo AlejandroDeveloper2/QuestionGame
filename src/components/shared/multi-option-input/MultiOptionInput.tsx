@@ -1,6 +1,6 @@
 import { MultiOptionInputProps } from "@models/ComponentPropsModels";
 
-import { ButtonIconOnly } from "@components/index";
+import { ButtonIconOnly, ErrorMessage } from "@components/index";
 
 import {
   MultiOptionInputContainer,
@@ -8,7 +8,15 @@ import {
 } from "./MultiOptionInput.style";
 
 const MultiOptionInput = (props: MultiOptionInputProps): JSX.Element => {
-  const { label, options, selectedOption, name, icons, markOption } = props;
+  const {
+    label,
+    options,
+    selectedOption,
+    name,
+    icons,
+    errorMessage,
+    markOption,
+  } = props;
 
   const parseBooleanOptions = (): string[] => {
     const parsedOptions = options.map((option) => {
@@ -53,6 +61,7 @@ const MultiOptionInput = (props: MultiOptionInputProps): JSX.Element => {
           />
         ))}
       </OptionList>
+      <ErrorMessage message={errorMessage} />
     </MultiOptionInputContainer>
   );
 };

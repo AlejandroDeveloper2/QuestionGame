@@ -37,6 +37,7 @@ const CategoriesPage = (): JSX.Element => {
           value={searchValue}
           Icon={GrSearch}
           onChange={handleSearch}
+          errorMessage=""
         />
       </Header>
       <h2>Categorias ({records.length})</h2>

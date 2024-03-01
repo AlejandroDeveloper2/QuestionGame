@@ -3,10 +3,12 @@ import { IoMdAdd } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 
 import { useForm } from "@hooks/index";
+import useCategoryStore from "@zustand/categoryStore";
+import { validationSchema } from "./ValidationSchema";
 
 import { AddCategoryFormProps } from "@models/ComponentPropsModels";
 import { AddCategoryFormData } from "@models/FormDataModel";
-import useCategoryStore from "@zustand/categoryStore";
+import { initialErrors } from "@constants/form-initial-values/CategoryFormInitialValues";
 
 import { CustomForm } from "@components/index";
 
@@ -24,8 +26,14 @@ const AddCategoryForm = ({
     else if (mode === "edit" && id) editCategory(id, data);
     closeModal();
   };
+
   const { formRef, data, errors, handleChange, handleSubmit } =
-    useForm<AddCategoryFormData>(initialValues, [], action);
+    useForm<AddCategoryFormData>(
+      initialValues,
+      initialErrors,
+      validationSchema,
+      action
+    );
 
   return (
     <CustomForm formRef={formRef} handleSubmit={handleSubmit}>
@@ -39,6 +47,7 @@ const AddCategoryForm = ({
           name="name"
           value={data.name}
           Icon={CgRename}
+          errorMessage={errors.name.message}
           onChange={handleChange}
         />
       </CustomForm.FieldSet>
@@ -55,7 +64,6 @@ const AddCategoryForm = ({
         Icon={mode === "add" ? IoMdAdd : MdEdit}
         type="submit"
       />
-      <CustomForm.ErrorBox errors={errors} />
     </CustomForm>
   );
 };

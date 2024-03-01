@@ -9,14 +9,19 @@ import {
   FaRegFaceMeh,
 } from "react-icons/fa6";
 
-import { useSpecialForm } from "@hooks/index";
+import {
+  useForm,
+  useListInputControl,
+  useMultiOptionInput,
+} from "@hooks/index";
+import useQuestionStore from "@zustand/questionStore";
+import useCategoryStore from "@zustand/categoryStore";
+import { validationSchema } from "./ValidationSchema";
+
 import { AddQuestionFormData } from "@models/FormDataModel";
 import { AddQuestionFormProps } from "@models/ComponentPropsModels";
 import { Answer, Difficulty } from "@models/DataModels";
-import { validateAnswerOptions } from "@utils/formValidations";
-
-import useQuestionStore from "@zustand/questionStore";
-import useCategoryStore from "@zustand/categoryStore";
+import { initialErrors } from "@constants/form-initial-values/QuestionFormInitialValues";
 
 import { CustomForm, AddAnswerForm } from "@components/index";
 
@@ -28,37 +33,40 @@ const AddQuestionForm = ({
   closeModal,
   toggleForm,
 }: AddQuestionFormProps): JSX.Element => {
-  const addQuestion = useQuestionStore((state) => state.addQuestion);
-  const editQuestion = useQuestionStore((state) => state.editQuestion);
+  const { addQuestion, editQuestion } = useQuestionStore();
   const categories = useCategoryStore((state) => state.categories);
 
-  const action = () => {
-    if (mode === "add") addQuestion(data);
-    else if (mode === "edit" && id) editQuestion(id, data);
+  function action() {
+    if (mode === "add") {
+      addQuestion(data);
+      clearOptionList();
+    } else if (mode === "edit" && id) {
+      editQuestion(id, data);
+    }
     closeModal();
-  };
+  }
 
-  const {
-    formRef,
-    data,
-    errors,
-    handleChange,
-    handleSubmit,
-    addOption,
-    removeOption,
-    markOption,
-  } = useSpecialForm<AddQuestionFormData, Answer, Difficulty>(
-    initialValues,
-    [validateAnswerOptions],
-    action,
-    { inputKey: "answers", options: initialValues.answers },
-    {
-      inputKey: "difficulty",
-      options: ["Basico", "Intermedio", "Experto"],
-      defaultOption: "Basico",
-    },
-    mode
+  const { formRef, data, errors, updateFormData, handleChange, handleSubmit } =
+    useForm<AddQuestionFormData>(
+      initialValues,
+      initialErrors,
+      validationSchema,
+      action
+    );
+
+  const { markOption } = useMultiOptionInput<Difficulty>(
+    ["Basico", "Intermedio", "Experto"],
+    "Basico",
+    "difficulty",
+    updateFormData
   );
+
+  const { addOption, removeOption, clearOptionList } =
+    useListInputControl<Answer>(
+      initialValues.answers,
+      "answers",
+      updateFormData
+    );
 
   if (isAddAnswerFormOpen)
     return <AddAnswerForm addOption={addOption} toggleForm={toggleForm} />;
@@ -74,6 +82,7 @@ const AddQuestionForm = ({
           name="name"
           value={data.name}
           Icon={CgRename}
+          errorMessage={errors.name.message}
           onChange={handleChange}
         />
         <CustomForm.Input
@@ -83,12 +92,14 @@ const AddQuestionForm = ({
           name="questionBody"
           value={data.questionBody}
           Icon={CiTextAlignJustify}
+          errorMessage={errors.questionBody.message}
           onChange={handleChange}
         />
         <CustomForm.ListInputControl
           label="Opciones de respuesta"
           name="answers"
           options={data.answers}
+          errorMessage={errors.answers.message}
           toggleForm={toggleForm}
           removeOption={removeOption}
         />
@@ -98,6 +109,7 @@ const AddQuestionForm = ({
           label="Tiempo para responder (segundos)"
           name="time"
           value={data.time}
+          errorMessage={errors.time.message}
           Icon={IoTimeOutline}
           onChange={handleChange}
         />
@@ -107,6 +119,7 @@ const AddQuestionForm = ({
           label="Recompensa"
           name="reward"
           value={data.reward}
+          errorMessage={errors.reward.message}
           Icon={MdAttachMoney}
           onChange={handleChange}
         />
@@ -117,6 +130,7 @@ const AddQuestionForm = ({
           value={data.category}
           Icon={MdOutlineCategory}
           options={categories}
+          errorMessage={errors.category.message}
           onChange={handleChange}
         />
         <CustomForm.MultiOptionInput
@@ -125,6 +139,7 @@ const AddQuestionForm = ({
           options={["Basico", "Intermedio", "Experto"]}
           icons={[FaRegFaceGrinBeam, FaRegFaceMeh, FaRegFaceAngry]}
           selectedOption={data.difficulty}
+          errorMessage={errors.difficulty.message}
           markOption={markOption}
         />
       </CustomForm.FieldSet>
@@ -143,7 +158,6 @@ const AddQuestionForm = ({
         Icon={mode === "add" ? IoMdAdd : MdEdit}
         type="submit"
       />
-      <CustomForm.ErrorBox errors={errors} />
     </CustomForm>
   );
 };

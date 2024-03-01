@@ -1,18 +1,23 @@
 import { MdAttachMoney } from "react-icons/md";
 import { TbMoneybag } from "react-icons/tb";
 
-import { consolationAwardFormInitialValues } from "@constants/formsInitialValues";
 import { useForm } from "@hooks/index";
-import { ConsolationAwardFormData } from "@models/FormDataModel";
-
 import useQuizGameStore from "@zustand/quizGameStore";
 import useQuizMatchStore from "@zustand/quizMatchStore";
+import { validationSchema } from "./ValidationSchema";
+
+import { ConsolationAwardFormData } from "@models/FormDataModel";
+import {
+  initialErrors,
+  initialValues,
+} from "@constants/form-initial-values/ConsolationAwardInitialValues";
 
 import { CustomForm } from "@components/index";
 
 const ConsolationAwardForm = (): JSX.Element => {
   const { quiz, setConsolationAward } = useQuizGameStore();
   const { setConsolationAwardToAccumulatedEarn } = useQuizMatchStore();
+
   const action = () => {
     setConsolationAward(quiz.id, data);
     setConsolationAwardToAccumulatedEarn(String(data.consolationAward));
@@ -20,10 +25,12 @@ const ConsolationAwardForm = (): JSX.Element => {
 
   const { formRef, data, errors, handleChange, handleSubmit } =
     useForm<ConsolationAwardFormData>(
-      consolationAwardFormInitialValues,
-      [],
+      initialValues,
+      initialErrors,
+      validationSchema,
       action
     );
+
   return (
     <CustomForm formRef={formRef} handleSubmit={handleSubmit}>
       <CustomForm.FieldSet
@@ -36,6 +43,7 @@ const ConsolationAwardForm = (): JSX.Element => {
           name="consolationAward"
           value={data.consolationAward}
           Icon={MdAttachMoney}
+          errorMessage={errors.consolationAward.message}
           onChange={handleChange}
         />
       </CustomForm.FieldSet>
@@ -52,7 +60,6 @@ const ConsolationAwardForm = (): JSX.Element => {
         Icon={TbMoneybag}
         type="submit"
       />
-      <CustomForm.ErrorBox errors={errors} />
     </CustomForm>
   );
 };

@@ -1,5 +1,14 @@
 import { Answer, Difficulty } from "./DataModels";
 
+type FieldErrorType = {
+  message: string;
+  error: boolean;
+};
+
+interface WrongInput {
+  [x: string]: FieldErrorType;
+}
+
 interface StartFormData {
   username: string;
 }
@@ -27,10 +36,18 @@ interface ConsolationAwardFormData {
   consolationAward: number;
 }
 
+interface LoginFormData {
+  username: string;
+  password: string;
+}
+
 export type {
+  FieldErrorType,
+  WrongInput,
   StartFormData,
   AddQuestionFormData,
   AddAnswerFormData,
   AddCategoryFormData,
   ConsolationAwardFormData,
+  LoginFormData,
 };

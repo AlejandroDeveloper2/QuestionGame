@@ -7,7 +7,7 @@ import {
   BadgeStyleProps,
   HeaderStyleProps,
 } from "./StylePropsModels";
-import { Error, Difficulty, Answer, AnswerMark } from "./DataModels";
+import { Difficulty, Answer, AnswerMark } from "./DataModels";
 import { AddQuestionFormData } from "./FormDataModel";
 
 export type Size = { sm: number; md: number; lg: number };
@@ -56,6 +56,7 @@ interface BaseInputProps {
   label: string;
   name: string;
   Icon: IconType;
+  errorMessage: string;
   children?: ReactNode | ReactNode[];
 }
 
@@ -98,10 +99,6 @@ interface ButtonIconOnlyProps extends BaseButtonProps {
 
 interface ErrorMessageProps {
   message: string;
-}
-
-interface ErrorBoxProps {
-  errors: Error[];
 }
 
 interface HeaderProps {
@@ -159,6 +156,7 @@ interface ListInputControlProps {
   label: string;
   options: T[];
   name: string;
+  errorMessage: string;
   toggleForm: () => void;
   removeOption: (id: number) => void;
 }
@@ -174,6 +172,7 @@ interface MultiOptionInputProps {
   options: T[];
   name: string;
   selectedOption: T;
+  errorMessage: string;
   markOption: (option: T) => void;
 }
 
@@ -223,7 +222,6 @@ export type {
   ButtonWithIconProps,
   ButtonIconOnlyProps,
   ErrorMessageProps,
-  ErrorBoxProps,
   HeaderProps,
   NavigationProps,
   CardListProps,

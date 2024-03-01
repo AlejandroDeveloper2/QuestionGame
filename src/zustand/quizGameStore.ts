@@ -31,7 +31,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
       const updatedQuiz: Quiz = await client
         .collection("quiz")
         .update(
-          import.meta.env.VITE_QUIZ_ID_PRODUCTION,
+          import.meta.env.VITE_QUIZ_ID_LOCAL,
           { playerName },
           { $autoCancel: false }
         );
@@ -43,7 +43,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
   },
   startQuiz: async (id: string, questionsLength: number) => {
     /*La ejecuta el Admin */
-    if (questionsLength >= 60) {
+    if (questionsLength > 0) {
       try {
         const updatedQuiz: Quiz = await client
           .collection("quiz")

@@ -3,7 +3,7 @@ import { IoMdClose } from "react-icons/io";
 
 import { ListInputControlProps } from "@models/ComponentPropsModels";
 
-import { ButtonIconOnly } from "@components/index";
+import { ButtonIconOnly, ErrorMessage } from "@components/index";
 
 import {
   ElementList,
@@ -13,7 +13,8 @@ import {
 } from "./ListInputControl.style";
 
 const ListInputControl = (props: ListInputControlProps): JSX.Element => {
-  const { label, options, name, toggleForm, removeOption } = props;
+  const { label, options, name, errorMessage, toggleForm, removeOption } =
+    props;
 
   return (
     <ListInputContainer id={name}>
@@ -59,6 +60,7 @@ const ListInputControl = (props: ListInputControlProps): JSX.Element => {
           onClick={toggleForm}
         />
       </ListInputBody>
+      <ErrorMessage message={errorMessage} />
     </ListInputContainer>
   );
 };
