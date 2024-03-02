@@ -67,10 +67,8 @@ const AdminQuizControls = (): JSX.Element => {
           Icon={IoReloadOutline}
           style={RestartGameButtonStyle}
           title="Reiniciar juego"
-          onClick={async () => {
-            await resetGame();
-            await getRandomQuestions(quiz);
-            await restartQuiz(quiz.id);
+          onClick={() => {
+            restartQuiz(quiz, resetGame, getRandomQuestions);
           }}
         />
       </AdminQuizControlsFooter>

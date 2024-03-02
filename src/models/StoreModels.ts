@@ -27,7 +27,7 @@ interface QuizGameStore {
   resetQuiz: (
     id: string,
     navigate: NavigateFunction,
-    resetGame: () => void
+    resetGame: () => Promise<void>
   ) => Promise<void>;
   startMatch: (id: string) => Promise<void>;
   stopMatch: (id: string) => Promise<void>;
@@ -37,7 +37,11 @@ interface QuizGameStore {
     id: string,
     award: ConsolationAwardFormData
   ) => Promise<void>;
-  restartQuiz: (id: string) => Promise<void>;
+  restartQuiz: (
+    quiz: Quiz,
+    resetGame: () => Promise<void>,
+    getRandomQuestions: (quiz: Quiz) => Promise<void>
+  ) => Promise<void>;
 }
 
 interface QuestionStore {

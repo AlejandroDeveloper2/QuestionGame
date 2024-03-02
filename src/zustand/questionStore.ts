@@ -16,7 +16,7 @@ const useQuestionStore = create<QuestionStore>((set) => ({
     try {
       await client
         .collection("quiz")
-        .update(quizId, { questions }, { $autoCancel: false });
+        .update(quizId, { questions }, { requestKey: null });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
       console.log(parsedError);
@@ -27,7 +27,7 @@ const useQuestionStore = create<QuestionStore>((set) => ({
     try {
       const questions: Question[] = await client
         .collection("questions")
-        .getFullList({ $autoCancel: false });
+        .getFullList({ requestKey: null });
       set({ questions });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -42,7 +42,7 @@ const useQuestionStore = create<QuestionStore>((set) => ({
     try {
       const savedQuestion: Question = await client
         .collection("questions")
-        .create(question, { $autoCancel: false });
+        .create(question, { requestKey: null });
       set(({ questions }) => ({ questions: [...questions, savedQuestion] }));
       toast.success("Pregunta agregada con exito!", toastOptions);
     } catch (_e: unknown) {
@@ -71,7 +71,7 @@ const useQuestionStore = create<QuestionStore>((set) => ({
     try {
       const updatedQuestion: Question = await client
         .collection("questions")
-        .update(id, modifiedQuestion, { $autoCancel: false });
+        .update(id, modifiedQuestion, { requestKey: null });
       set(({ questions }) => ({
         questions: questions.map((question) => {
           if (question.id === id) return updatedQuestion;

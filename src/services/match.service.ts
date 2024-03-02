@@ -6,7 +6,7 @@ const getMatch = async (): Promise<Match> => {
   try {
     response = await client
       .collection("match")
-      .getFullList({ $autoCancel: false });
+      .getFullList({ requestKey: null });
   } catch (_e: unknown) {
     const errorMessage = (_e as ServerResponse).message;
     throw new Error(errorMessage);

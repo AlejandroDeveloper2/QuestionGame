@@ -37,7 +37,9 @@ const useAuthStore = create<AuthStore>((set) => ({
   refreshUserAuth: async () => {
     set({ isLoading: true });
     try {
-      const authData: Auth = await client.collection("users").authRefresh();
+      const authData: Auth = await client
+        .collection("users")
+        .authRefresh({ requestKey: null });
       set({ authData });
       set({ isValid: client.authStore.isValid });
     } catch (_e: unknown) {

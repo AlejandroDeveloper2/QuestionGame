@@ -7,7 +7,7 @@ const getQuiz = async (): Promise<Quiz> => {
   try {
     response = await client
       .collection("quiz")
-      .getFullList({ $autoCancel: false });
+      .getFullList({ requestKey: null });
   } catch (_e: unknown) {
     const errorMessage = (_e as ServerResponse).message;
     throw new Error(errorMessage);

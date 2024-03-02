@@ -20,7 +20,7 @@ import {
 const QuizPage = (): JSX.Element => {
   const navigate = useNavigate();
   const { resetGame, match } = useQuizMatchStore();
-  const { quiz, resetQuiz } = useQuizGameStore();
+  const { isLoading, quiz, resetQuiz } = useQuizGameStore();
   const { closeModal } = useModal();
 
   useEffect(() => {
@@ -45,7 +45,9 @@ const QuizPage = (): JSX.Element => {
           }
           closeModal={closeModal}
         >
-          {quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
+          {isLoading ? (
+            <Spinner message="Cargando..." color="var(--white)" />
+          ) : quiz.matchResult !== "EnEspera" && !quiz.isGameCompleted ? (
             <AnswerReviewWindow closeModal={closeModal} />
           ) : quiz.matchResult !== "EnEspera" && quiz.isGameCompleted ? (
             <GameOverWindow />

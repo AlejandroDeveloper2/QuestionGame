@@ -61,7 +61,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
         .update(
           matchId,
           { incorrectAnswers: get().match.incorrectAnswers + 1 },
-          { $autoCancel: false }
+          { requestKey: null }
         );
 
       set({ match: updatedMatch });
@@ -74,7 +74,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     try {
       const updatedMatch: Match = await client
         .collection("match")
-        .update(matchId, { timerValue: timer }, { $autoCancel: false });
+        .update(matchId, { timerValue: timer }, { requestKey: null });
       set({ match: updatedMatch });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -88,7 +88,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
         .update(
           matchId,
           { timeTaken: get().match.timeTaken + 1 },
-          { $autoCancel: false }
+          { requestKey: null }
         );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -100,7 +100,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
     try {
       const updatedMatch: Match = await client
         .collection("match")
-        .update(matchId, { accumulatedEarn: 0 }, { $autoCancel: false });
+        .update(matchId, { accumulatedEarn: 0 }, { requestKey: null });
       set({ match: updatedMatch });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -132,9 +132,9 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
         {
           randomQuestions: finalRandomQuestions,
           currentQuestion:
-            basicRandomQuestions[get().match.currentQuestionIndex],
+            finalRandomQuestions[get().match.currentQuestionIndex],
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -173,7 +173,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
           accumulatedEarn,
           answerStyle,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -199,7 +199,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
           answerStyle,
           currentQuestion,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -223,7 +223,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
               ? get().match.currentQuestionIndex + 1
               : get().match.currentQuestionIndex,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -233,11 +233,13 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
   },
   setConsolationAwardToAccumulatedEarn: async (consolationAward: string) => {
     try {
-      const updatedMatch: Match = await client
-        .collection("match")
-        .update(matchId, {
+      const updatedMatch: Match = await client.collection("match").update(
+        matchId,
+        {
           accumulatedEarn: window.parseInt(consolationAward),
-        });
+        },
+        { requestKey: null }
+      );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -252,7 +254,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
           isDividedWildCard: true,
           usedWildcards: get().match.usedWildcards + 1,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -268,7 +270,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
           isDividedWildCard: false,
           selectedAnswers: 0,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -284,7 +286,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
           usedWildcards: get().match.usedWildcards + 1,
           isCallWildCard: true,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -299,7 +301,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
         {
           isCallWildCard: false,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {
@@ -346,7 +348,7 @@ const useQuizMatchStore = create<QuizMatchStore>((set, get) => ({
             difficulty: "Basico",
           },
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ match: updatedMatch });
     } catch (_e: unknown) {

@@ -16,7 +16,7 @@ const useCategoryStore = create<CategoryStore>((set) => ({
       set({ isLoading: true });
       const categories: Category[] = await client
         .collection("categories")
-        .getFullList({ $autoCancel: false });
+        .getFullList({ requestKey: null });
       set({ categories });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -31,7 +31,7 @@ const useCategoryStore = create<CategoryStore>((set) => ({
     try {
       const savedCategory: Category = await client
         .collection("categories")
-        .create(category, { $autoCancel: false });
+        .create(category);
       set(({ categories }) => ({ categories: [...categories, savedCategory] }));
       toast.success("Categoria agregada con exito!", toastOptions);
     } catch (_e: unknown) {
@@ -63,7 +63,7 @@ const useCategoryStore = create<CategoryStore>((set) => ({
     try {
       const updatedCategory: Category = await client
         .collection("categories")
-        .update(id, modifiedCategory, { $autoCancel: false });
+        .update(id, modifiedCategory);
       set(({ categories }) => ({
         categories: categories.map((category) => {
           if (category.id === id) return updatedCategory;

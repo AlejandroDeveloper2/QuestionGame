@@ -33,7 +33,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
         .update(
           import.meta.env.VITE_QUIZ_ID_PRODUCTION,
           { playerName },
-          { $autoCancel: false }
+          { requestKey: null }
         );
       set({ quiz: updatedQuiz });
     } catch (_e: unknown) {
@@ -47,7 +47,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
       try {
         const updatedQuiz: Quiz = await client
           .collection("quiz")
-          .update(id, { isQuizStarted: true }, { $autoCancel: false });
+          .update(id, { isQuizStarted: true }, { requestKey: null });
         set({ quiz: updatedQuiz });
         toast.success("Quiz Iniciado!", toastOptions);
       } catch (_e: unknown) {
@@ -72,7 +72,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
           isQuizStarted: false,
           isQuizFinished: true,
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ quiz: updatedQuiz });
       toast.success("Quiz Finalizado!", toastOptions);
@@ -85,9 +85,9 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
   resetQuiz: async (
     id: string,
     navigate: NavigateFunction,
-    resetGame: () => void
+    resetGame: () => Promise<void>
   ) => {
-    resetGame();
+    await resetGame();
     try {
       const updatedQuiz: Quiz = await client.collection("quiz").update(
         id,
@@ -100,7 +100,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
           consolationAward: "",
           playerName: "",
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
       set({ quiz: updatedQuiz });
       navigate("/");
@@ -115,7 +115,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     try {
       const updatedQuiz: Quiz = await client
         .collection("quiz")
-        .update(id, { matchResult }, { $autoCancel: false });
+        .update(id, { matchResult }, { requestKey: null });
       set({ quiz: updatedQuiz });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -128,7 +128,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     try {
       const updatedQuiz: Quiz = await client
         .collection("quiz")
-        .update(id, { isGameCompleted: true }, { $autoCancel: false });
+        .update(id, { isGameCompleted: true }, { requestKey: null });
       set({ quiz: updatedQuiz });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -141,7 +141,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     try {
       const updatedQuiz: Quiz = await client
         .collection("quiz")
-        .update(id, { isMatchStarted: true }, { $autoCancel: false });
+        .update(id, { isMatchStarted: true }, { requestKey: null });
       set({ quiz: updatedQuiz });
       toast.success("Conteo regresivo iniciado!", toastOptions);
     } catch (_e: unknown) {
@@ -161,7 +161,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     try {
       const updatedQuiz: Quiz = await client
         .collection("quiz")
-        .update(id, { isMatchStarted: false }, { $autoCancel: false });
+        .update(id, { isMatchStarted: false }, { requestKey: null });
       set({ quiz: updatedQuiz });
       toast.success("Conteo regresivo detenido!", toastOptions);
     } catch (_e: unknown) {
@@ -181,7 +181,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     try {
       const updatedQuiz: Quiz = await client
         .collection("quiz")
-        .update(id, { isNewAttempt }, { $autoCancel: false });
+        .update(id, { isNewAttempt }, { requestKey: null });
       set({ quiz: updatedQuiz });
     } catch (_e: unknown) {
       const parsedError = _e as ServerResponse;
@@ -196,7 +196,7 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
         .update(
           id,
           { consolationAward: award.consolationAward },
-          { $autoCancel: false }
+          { requestKey: null }
         );
       set({ quiz: updatedQuiz });
       toast.success("Premio seguro asignado con exito!", toastOptions);
@@ -212,18 +212,26 @@ const useQuizGameStore = create<QuizGameStore>((set) => ({
     }
   },
 
-  restartQuiz: async (id: string) => {
+  restartQuiz: async (
+    quiz: Quiz,
+    resetGame: () => Promise<void>,
+    getRandomQuestions: (quiz: Quiz) => Promise<void>
+  ) => {
     set({ isLoading: true });
     try {
       const updatedQuiz: Quiz = await client.collection("quiz").update(
-        id,
+        quiz.id,
         {
           isGameCompleted: false,
           matchResult: "EnEspera",
           consolationAward: "",
         },
-        { $autoCancel: false }
+        { requestKey: null }
       );
+
+      await resetGame();
+      await getRandomQuestions(quiz);
+
       set({ quiz: updatedQuiz });
       toast.success("Quiz reiniciado con exito!", toastOptions);
     } catch (_e: unknown) {
